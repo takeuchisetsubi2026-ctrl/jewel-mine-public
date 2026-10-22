@@ -944,7 +944,7 @@ body::after{content:none!important}
  background:transparent!important;box-shadow:none!important;text-shadow:0 3px 6px #160b08!important}
 </style>
 <style id="v391-notifications">
-/* v4.0.5: small nonblocking jewel pill; no full-size panel */
+/* v4.0.6: small nonblocking jewel pill; no full-size panel */
 .gem-bonus-pop{
   position:fixed!important;left:50%!important;top:32%!important;
   transform:translate(-50%,-50%)!important;
@@ -968,7 +968,7 @@ body::after{content:none!important}
 .toast.combo .sub{display:none!important}
 </style>
 <style>
-/* v4.0.5: dedicated celebratory FEVER word, no obstructing panel */
+/* v4.0.6: dedicated celebratory FEVER word, no obstructing panel */
 .toast.fever-notice{
   top:43%!important;left:50%!important;
   transform:translate(-50%,-50%)!important;
@@ -990,7 +990,7 @@ body::after{content:none!important}
 </style>
 
 <style>
-/* v4.0.5: solid, individually colored FEVER letters */
+/* v4.0.6: solid, individually colored FEVER letters */
 .toast.fever-notice{background:none!important;-webkit-text-fill-color:initial!important;color:#fff!important;}
 .toast.fever-notice .fever-letters{display:flex;gap:.015em;white-space:nowrap;line-height:1.12;}
 .toast.fever-notice .fever-letters b{font:inherit;font-weight:1000;-webkit-text-fill-color:currentColor!important;
@@ -1002,13 +1002,13 @@ body::after{content:none!important}
 .toast.fever-notice .fever-letters b:nth-child(5){color:#59aaff!important}
 </style>
 <style>
-/* v4.0.5: score is always contained within its own plaque. */
+/* v4.0.6: score is always contained within its own plaque. */
 .scorehero{min-width:0!important;overflow:hidden!important;box-sizing:border-box!important}
 .scorevalue{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;white-space:nowrap!important;letter-spacing:-.025em!important;overflow:visible!important}
 </style>
 
 <style>
-/* v4.0.5: brighter mine-break effects without obscuring the board */
+/* v4.0.6: brighter mine-break effects without obscuring the board */
 .clear-fx-group{position:fixed;inset:0;pointer-events:none;overflow:hidden}
 .clear-shard{clip-path:polygon(8% 0,95% 17%,80% 90%,25% 100%,0 42%)}
 .burst-bit{animation-duration:.78s!important;box-shadow:0 0 6px var(--burst-color),inset 0 1px 2px #fff9!important}
@@ -1020,12 +1020,24 @@ body::after{content:none!important}
 @media(prefers-reduced-motion:reduce){.clear-streak{animation-duration:.12s!important}}
 </style>
 <style>
-/* v4.0.5: ensure scoreboard text fits on narrow iPhones */
+/* v4.0.6: ensure scoreboard text fits on narrow iPhones */
 .hud{min-width:0!important}
 .scorehero{min-width:0!important;overflow:hidden!important}
 .scorevalue{min-width:0!important;max-width:100%!important;white-space:nowrap!important;letter-spacing:-.025em!important;transform-origin:center center!important}
 </style>
-</head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0.5 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div style="font-size:52px">💎</div><h2>採掘終了！</h2><p>スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
+
+<style>
+/* v4.0.6: score rolls quickly upward, with a restrained impact pulse. */
+.scorevalue.score-roll-pop{animation:scoreRollPulse .54s cubic-bezier(.17,.88,.32,1) both!important}
+@keyframes scoreRollPulse{
+  0%{filter:brightness(1);transform:scale(1)}
+  20%{filter:brightness(1.48) drop-shadow(0 0 8px #ffd969);transform:scale(1.045)}
+  60%{filter:brightness(1.15);transform:scale(1.015)}
+  100%{filter:brightness(1);transform:scale(1)}
+}
+@media(prefers-reduced-motion:reduce){.scorevalue.score-roll-pop{animation:none!important}}
+</style>
+</head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0.6 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div style="font-size:52px">💎</div><h2>採掘終了！</h2><p>スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
 (()=>{'use strict';const N=8,KEY='jewel-mine-v35';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
 // Haptics only work in browsers implementing navigator.vibrate (iOS Safari does not).
 function buzz(kind){try{if(typeof navigator.vibrate==='function')navigator.vibrate(kind==='clear'?24:12)}catch(e){}}
@@ -1062,6 +1074,53 @@ function fitScoreToBoard(){
 window.addEventListener('resize',fitScoreToBoard);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitScoreToBoard);
 function scoreTick(points){const score=$('score'),hero=document.querySelector('.scorehero');score.classList.remove('score-tick');void score.offsetWidth;score.classList.add('score-tick');const el=document.createElement('span');el.className='place-points';el.textContent='+'+points.toLocaleString();hero.append(el);setTimeout(()=>el.remove(),850)}
+// Fast, non-blocking score roll-up. The real score is committed immediately;
+// only its presentation is animated. New clears retarget from the current value.
+let scoreDisplayValue=null,scoreAnimFrame=0,scoreAnimToken=0;
+function showScoreNumber(value){
+ const el=$('score');
+ el.textContent=Math.round(value).toLocaleString();
+ fitScoreToBoard();
+}
+function animateScoreTo(target){
+ if(scoreDisplayValue===null){
+   scoreDisplayValue=target;
+   showScoreNumber(target);
+   return;
+ }
+ if(Math.abs(target-scoreDisplayValue)<1){
+   scoreDisplayValue=target;
+   showScoreNumber(target);
+   return;
+ }
+ cancelAnimationFrame(scoreAnimFrame);
+ const token=++scoreAnimToken;
+ const from=scoreDisplayValue,delta=target-from;
+ const start=performance.now();
+ // Large clears should feel energetic, without a long delay.
+ const duration=Math.min(850,Math.max(430,520+Math.log10(Math.max(1,Math.abs(delta)))*55));
+ const el=$('score');
+ el.classList.remove('score-roll-pop');
+ void el.offsetWidth;
+ el.classList.add('score-roll-pop');
+ function frame(now){
+   if(token!==scoreAnimToken)return;
+   const t=Math.min(1,(now-start)/duration);
+   const ease=1-Math.pow(1-t,3.8);
+   scoreDisplayValue=from+delta*ease;
+   showScoreNumber(scoreDisplayValue);
+   if(t<1)scoreAnimFrame=requestAnimationFrame(frame);
+   else {scoreDisplayValue=target;showScoreNumber(target);el.classList.remove('score-roll-pop');}
+ }
+ scoreAnimFrame=requestAnimationFrame(frame);
+}
+function snapScoreTo(target){
+ cancelAnimationFrame(scoreAnimFrame);
+ ++scoreAnimToken;
+ scoreDisplayValue=target;
+ showScoreNumber(target);
+ $('score').classList.remove('score-roll-pop');
+}
 function centerComboOnBoard(){const r=boardEl.getBoundingClientRect();$('toast').style.setProperty('--combo-y',(r.top+r.height/2)+'px')}function buildMeter(){
  const g=$('meterSegs');if(!g||g.childElementCount)return;
  // One circuit of exactly 20 equally spaced lights, starting at top center.
@@ -1164,7 +1223,7 @@ function makePieces(board=null){
  el.innerHTML=sub?`${main}<span class="sub">${sub}</span>`:main;
  el.classList.add('show');clearTimeout(toast.timer);
  toast.timer=setTimeout(()=>el.classList.remove('show'),mode==='combo'?700:mode==='fever'?1000:850);
-}function dims(s){return [Math.max(...s.map(x=>x[0]))+1,Math.max(...s.map(x=>x[1]))+1]}function valid(piece,r,c,b=state.board){return SHAPES[piece.s].every(([x,y])=>r+y<N&&c+x<N&&r+y>=0&&c+x>=0&&b[(r+y)*N+c+x]===null)}function canPlay(){return state.pieces.some(p=>!p.used&&SHAPES[p.s].some(()=>Array.from({length:N*N},(_,i)=>valid(p,Math.floor(i/N),i%N)).some(Boolean)))}function render(){boardEl.innerHTML='';state.board.forEach((v,i)=>{let el=document.createElement('div');el.className='cell'+(v!==null?' filled':'');if(v!==null){el.style.setProperty('--color',COLORS[v]);el.style.setProperty('--edge',EDGES[v])}if(state.gems[i]!==null&&v!==null)el.classList.add('gem-hidden');el.dataset.i=i;boardEl.append(el)});tray.innerHTML='';state.pieces.forEach((p,i)=>{let el=document.createElement('div');el.className='piece'+(selected===i?' sel':'')+(p.used?' used':'');el.dataset.p=i;const shape=SHAPES[p.s], [w,h]=dims(shape);if(p.used){tray.append(el);return;}const mini=document.createElement('div');mini.className='mini';mini.style.setProperty('--cols',w);mini.style.setProperty('--rows',h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){let unit=document.createElement('div');unit.className='unit'+(shape.some(s=>s[0]===x&&s[1]===y)?'':' empty');unit.style.setProperty('--color',COLORS[p.color]);unit.style.setProperty('--edge',EDGES[p.color]);mini.append(unit)}el.append(mini);tray.append(el)});$('score').textContent=state.score.toLocaleString();fitScoreToBoard();$('best').textContent=state.best.toLocaleString();$('rescued').textContent='+'+state.bonus.toLocaleString();renderMeter();const mascot=$('mascot');if(mascot)mascot.textContent='💎';save()}
+}function dims(s){return [Math.max(...s.map(x=>x[0]))+1,Math.max(...s.map(x=>x[1]))+1]}function valid(piece,r,c,b=state.board){return SHAPES[piece.s].every(([x,y])=>r+y<N&&c+x<N&&r+y>=0&&c+x>=0&&b[(r+y)*N+c+x]===null)}function canPlay(){return state.pieces.some(p=>!p.used&&SHAPES[p.s].some(()=>Array.from({length:N*N},(_,i)=>valid(p,Math.floor(i/N),i%N)).some(Boolean)))}function render(){boardEl.innerHTML='';state.board.forEach((v,i)=>{let el=document.createElement('div');el.className='cell'+(v!==null?' filled':'');if(v!==null){el.style.setProperty('--color',COLORS[v]);el.style.setProperty('--edge',EDGES[v])}if(state.gems[i]!==null&&v!==null)el.classList.add('gem-hidden');el.dataset.i=i;boardEl.append(el)});tray.innerHTML='';state.pieces.forEach((p,i)=>{let el=document.createElement('div');el.className='piece'+(selected===i?' sel':'')+(p.used?' used':'');el.dataset.p=i;const shape=SHAPES[p.s], [w,h]=dims(shape);if(p.used){tray.append(el);return;}const mini=document.createElement('div');mini.className='mini';mini.style.setProperty('--cols',w);mini.style.setProperty('--rows',h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){let unit=document.createElement('div');unit.className='unit'+(shape.some(s=>s[0]===x&&s[1]===y)?'':' empty');unit.style.setProperty('--color',COLORS[p.color]);unit.style.setProperty('--edge',EDGES[p.color]);mini.append(unit)}el.append(mini);tray.append(el)});animateScoreTo(state.score);$('best').textContent=state.best.toLocaleString();$('rescued').textContent='+'+state.bonus.toLocaleString();renderMeter();const mascot=$('mascot');if(mascot)mascot.textContent='💎';save()}
 function preview(r,c){boardEl.querySelectorAll('.cell').forEach(el=>el.classList.remove('preview','bad','willclear'));document.querySelector('.boardwrap').classList.remove('readyline');if(selected<0||state.pieces[selected].used){setClearHint(false);return}const p=state.pieces[selected],good=valid(p,r,c);if(good){const simulated=state.board.slice();for(const [x,y] of SHAPES[p.s])simulated[(r+y)*N+c+x]=p.color;const glowing=new Set();for(let k=0;k<N;k++){if(Array.from({length:N},(_,j)=>simulated[k*N+j]).every(v=>v!==null))for(let j=0;j<N;j++)glowing.add(k*N+j);if(Array.from({length:N},(_,j)=>simulated[j*N+k]).every(v=>v!==null))for(let j=0;j<N;j++)glowing.add(j*N+k)}setClearHint(glowing.size>0);if(glowing.size){document.querySelector('.boardwrap').classList.add('readyline');glowing.forEach(i=>boardEl.children[i]?.classList.add('willclear'));$('message').textContent='';}}else{setClearHint(false)}SHAPES[p.s].forEach(([x,y])=>{if(r+y>=0&&c+x>=0&&r+y<N&&c+x<N){const el=boardEl.children[(r+y)*N+c+x];if(el)el.classList.add(good?'preview':'bad')}})}function clearPreview(){setClearHint(false);boardEl.querySelectorAll('.cell').forEach(el=>el.classList.remove('preview','bad','willclear'));document.querySelector('.boardwrap').classList.remove('readyline')}
 const BONUS_TABLE=[
  {id:'quartz',name:'水晶',icon:'💎',points:100,chance:.80},
@@ -1192,7 +1251,7 @@ function rollGem(){
 function ensureSingleGem(){if(state.gems.some(x=>x!==null))return;const occupied=[];for(let i=0;i<64;i++)if(state.board[i]!==null)occupied.push(i);if(occupied.length)state.gems[occupied[Math.floor(Math.random()*occupied.length)]]=rollGem()}
 function collectGems(indices){const found=[];for(const i of indices){const id=state.gems[i];if(id===null)continue;const type=BONUS_TABLE.find(g=>g.id===id);state.gems[i]=null;if(!type)continue;state.finds[id]=(state.finds[id]||0)+1;found.push({type,origin:i})}return found}
 function hasMoves(){return state.pieces.some(p=>!p.used&&Array.from({length:64},(_,i)=>valid(p,Math.floor(i/8),i%8)).some(Boolean))}
-function finishGame(){const total=state.score;state.best=Math.max(state.best,total);$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal()}
+function finishGame(){snapScoreTo(state.score);const total=state.score;state.best=Math.max(state.best,total);$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal()}
 let animationLocked=false;let revealTimers=[];
 function showClearToast(lines,comboChain,totalPoints){centerComboOnBoard();
  const main=`<div class="combo-head"><span class="combo-num">${comboChain}</span><span class="combo-word">COMBO</span></div>`;
@@ -1339,7 +1398,7 @@ function place(r,c){
  const noMoves=!hasMoves();
  playReveals(found,()=>{if(noMoves)finishGame()});
 }
-function reset(){$('burstLayer').replaceChildren();const best=state.best;state=fresh();state.best=best;prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
+function reset(){$('burstLayer').replaceChildren();const best=state.best;state=fresh();state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
 // Pointer drag v0.2: a real floating block follows ABOVE the finger, showing exact placement.
 function dragCellSize(){const c=boardEl.children[0], n=boardEl.children[1];return {size:c.getBoundingClientRect().width,pitch:n.getBoundingClientRect().left-c.getBoundingClientRect().left};}
 function dragPosition(e){if(!drag)return;const d=drag, first=boardEl.children[0].getBoundingClientRect();let left=e.clientX-d.width/2, top=e.clientY-d.lift-d.height/2;d.ghost.style.left=left+'px';d.ghost.style.top=top+'px';let c=Math.round((left-first.left)/d.pitch),r=Math.round((top-first.top)/d.pitch);d.r=r;d.c=c;const good=r>=0&&c>=0&&r<N&&c<N&&valid(state.pieces[d.index],r,c);d.good=good;d.ghost.classList.toggle('invalid',!good);if(r>=-2&&c>=-2&&r<N&&c<N){selected=d.index;preview(r,c);if(!good&&r>=0&&c>=0) $('message').textContent='';else if(good&&!document.querySelector('.boardwrap').classList.contains('readyline'))$('message').textContent='';}else{clearPreview();$('message').textContent='';}}
