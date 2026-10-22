@@ -944,7 +944,7 @@ body::after{content:none!important}
  background:transparent!important;box-shadow:none!important;text-shadow:0 3px 6px #160b08!important}
 </style>
 <style id="v391-notifications">
-/* v3.9.2: small nonblocking jewel pill; no full-size panel */
+/* v4.0: small nonblocking jewel pill; no full-size panel */
 .gem-bonus-pop{
   position:fixed!important;left:50%!important;top:32%!important;
   transform:translate(-50%,-50%)!important;
@@ -968,14 +968,14 @@ body::after{content:none!important}
 .toast.combo .sub{display:none!important}
 </style>
 <style>
-/* v3.9.2: dedicated celebratory FEVER word, no obstructing panel */
+/* v4.0: dedicated celebratory FEVER word, no obstructing panel */
 .toast.fever-notice{
   top:43%!important;left:50%!important;
   transform:translate(-50%,-50%)!important;
   padding:0!important;background:transparent!important;border:0!important;
   border-radius:0!important;box-shadow:none!important;
   width:max-content!important;max-width:96vw!important;
-  font-size:clamp(58px,17vw,92px)!important;
+  font-size:55.2px!important;
   line-height:1.1!important;letter-spacing:1px!important;font-weight:1000!important;
   background-image:linear-gradient(95deg,#ff3e73 0%,#ffb833 18%,#fff451 35%,#56ef82 53%,#4ee2ff 70%,#957aff 85%,#ff4dcf 100%)!important;
   background-clip:text!important;-webkit-background-clip:text!important;
@@ -986,8 +986,22 @@ body::after{content:none!important}
 }
 .tray .piece.used{opacity:1!important;filter:none!important}
 .tray .piece.used .mini{display:none!important}
+@media (max-width:390px){.toast.fever-notice{font-size:48px!important}}
 </style>
-</head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v3.9.2 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div style="font-size:52px">💎</div><h2>採掘終了！</h2><p>スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>宝石ボーナス <strong id="bonusfinal">+0</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
+
+<style>
+/* v4.0: solid, individually colored FEVER letters */
+.toast.fever-notice{background:none!important;-webkit-text-fill-color:initial!important;color:#fff!important;}
+.toast.fever-notice .fever-letters{display:flex;gap:.015em;white-space:nowrap;line-height:1.12;}
+.toast.fever-notice .fever-letters b{font:inherit;font-weight:1000;-webkit-text-fill-color:currentColor!important;
+ -webkit-text-stroke:1.3px #fff!important;text-shadow:0 3px 1px #27172e,0 5px 9px #000c!important}
+.toast.fever-notice .fever-letters b:nth-child(1){color:#ff3970!important}
+.toast.fever-notice .fever-letters b:nth-child(2){color:#ffad23!important}
+.toast.fever-notice .fever-letters b:nth-child(3){color:#f8ec30!important}
+.toast.fever-notice .fever-letters b:nth-child(4){color:#39e6a3!important}
+.toast.fever-notice .fever-letters b:nth-child(5){color:#59aaff!important}
+</style>
+</head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div style="font-size:52px">💎</div><h2>採掘終了！</h2><p>スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
 (()=>{'use strict';const N=8,KEY='jewel-mine-v35';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
 // Haptics only work in browsers implementing navigator.vibrate (iOS Safari does not).
 function buzz(kind){try{if(typeof navigator.vibrate==='function')navigator.vibrate(kind==='clear'?24:12)}catch(e){}}
@@ -1008,8 +1022,8 @@ function centerComboOnBoard(){const r=boardEl.getBoundingClientRect();$('toast')
   led.style.left=(x*100)+'%';led.style.top=(y*100)+'%';led.style.setProperty('--rainbow-color',['#ff4c78','#ff9546','#ffe44a','#6be978','#42d9f3','#638cff','#c27aff'][i%7]);g.appendChild(led);
  }
 }
-function renderMeter(){buildMeter();const meter=$('feverMeter');const segs=[...document.querySelectorAll('#meterSegs .meter-light')];const activeCount=state.feverTurns>0?20:Math.max(0,Math.min(20,state.feverProgress));segs.forEach((el,i)=>el.classList.toggle('active',i<activeCount));meter.classList.toggle('fevering',state.feverTurns>0);document.body.classList.toggle('fever',state.feverTurns>0);const rule=$('ruleText');if(rule){rule.textContent=state.feverTurns>0?`FEVER TIME ×2　残り ${state.feverTurns} 手`:`コンボでレア宝石率UP！・ライン得点 ×${(1+state.totalLines*0.01).toFixed(2)}`;}}
-const fresh=()=>({gems:Array(64).fill(null),board:Array(64).fill(null),pieces:makePieces(),score:0,best:0,rescued:0,bonus:0,finds:{},turn:0,comboChain:0,comboRemain:0,feverProgress:0,feverTurns:0,totalLines:0});const clone=o=>JSON.parse(JSON.stringify(o));const PIECE_POOL=SHAPES.flatMap((shape,i)=>{
+function renderMeter(){buildMeter();const meter=$('feverMeter');const segs=[...document.querySelectorAll('#meterSegs .meter-light')];const activeCount=state.feverTurns>0?20:Math.max(0,Math.min(20,state.feverProgress*4));segs.forEach((el,i)=>el.classList.toggle('active',i<activeCount));meter.classList.toggle('fevering',state.feverTurns>0);document.body.classList.toggle('fever',state.feverTurns>0);const rule=$('ruleText');if(rule){rule.textContent=state.feverTurns>0?`FEVER TIME ×2　残り ${state.feverTurns} 手`:`💎 ${state.feverProgress}/5 でFEVER！・ライン得点 ×${(1+state.totalLines*0.01).toFixed(2)}`;}}
+const fresh=()=>({gems:Array(64).fill(null),board:Array(64).fill(null),pieces:makePieces(),score:0,best:0,rescued:0,bonus:0,finds:{},turn:0,comboChain:0,comboRemain:0,feverProgress:0,feverTurns:0,gemFeverVersion:1,totalLines:0});const clone=o=>JSON.parse(JSON.stringify(o));const PIECE_POOL=SHAPES.flatMap((shape,i)=>{
  // Keep shape IDs stable for old save files. Hide the hard U-shaped piece and staircase.
  if(i===27||i===29)return [];
  const n=shape.length;
@@ -1087,12 +1101,12 @@ function makePieces(board=null){
  for(const c of candidates.slice(0,10))if(routeExists(board,c.pieces))return c.pieces;
  // Small rescue pieces are the last resort, not the default draw.
  return Array.from({length:3},()=>({s:Math.random()<.5?0:1,color:Math.floor(Math.random()*COLORS.length),used:false}));
-}try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mine-v227')||localStorage.getItem('jewel-mine-v226')||localStorage.getItem('jewel-mine-v225')||localStorage.getItem('jewel-mine-v224')||localStorage.getItem('jewel-mine-v223')||localStorage.getItem('jewel-mine-v222')||localStorage.getItem('jewel-mine-v221')||localStorage.getItem('jewel-mine-v220')||localStorage.getItem('jewel-mine-v219')||localStorage.getItem('jewel-mine-v218')||localStorage.getItem('jewel-mine-v217')||localStorage.getItem('jewel-mine-v216')||localStorage.getItem('jewel-mine-v215')||localStorage.getItem('jewel-mine-v214')||localStorage.getItem('jewel-mine-v213')||localStorage.getItem('jewel-mine-v212')||localStorage.getItem('jewel-mine-v211')||localStorage.getItem('jewel-mine-v210')||localStorage.getItem('jewel-mine-v29')||localStorage.getItem('jewel-mine-v28')||localStorage.getItem('jewel-mine-v27')||localStorage.getItem('jewel-mine-v26')||localStorage.getItem('jewel-mine-v25')||localStorage.getItem('jewel-mine-v24')||localStorage.getItem('jewel-mine-v23')||localStorage.getItem('jewel-mine-v22')||localStorage.getItem('jewel-mine-v21')||localStorage.getItem('jewel-mine-v20')||localStorage.getItem('animal-block-v20')||localStorage.getItem('animal-block-v19')||localStorage.getItem('animal-block-v18')||localStorage.getItem('animal-block-v17')||localStorage.getItem('animal-block-v16')||localStorage.getItem('animal-block-v15')||localStorage.getItem('animal-block-v14')||localStorage.getItem('animal-block-v13')||localStorage.getItem('animal-block-v12')||localStorage.getItem('animal-block-v11')||localStorage.getItem('animal-block-v10')||localStorage.getItem('animal-block-v09')||'null');if(x&&Array.isArray(x.board)&&x.board.length===64&&Array.isArray(x.pieces)&&x.pieces.length===3)state=x;else state=fresh()}catch(e){state=fresh()}state.bonus=Number.isFinite(state.bonus)?state.bonus:0;state.finds=state.finds||{};state.gems=Array.isArray(state.gems)&&state.gems.length===64?state.gems:Array(64).fill(null);let retainedGem=false;state.gems=state.gems.map((gem,i)=>{if(gem===null||state.board[i]===null||retainedGem)return null;retainedGem=true;return gem});delete state.animalAt;state.feverProgress=Number.isFinite(state.feverProgress)?state.feverProgress:0;state.feverTurns=Number.isFinite(state.feverTurns)?state.feverTurns:0;state.totalLines=Number.isFinite(state.totalLines)?state.totalLines:0;state.pieces.forEach(p=>{if((p.s===27||p.s===29)&&!p.used)p.s=5});const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};function toast(main,sub='',mode='normal'){
+}try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mine-v227')||localStorage.getItem('jewel-mine-v226')||localStorage.getItem('jewel-mine-v225')||localStorage.getItem('jewel-mine-v224')||localStorage.getItem('jewel-mine-v223')||localStorage.getItem('jewel-mine-v222')||localStorage.getItem('jewel-mine-v221')||localStorage.getItem('jewel-mine-v220')||localStorage.getItem('jewel-mine-v219')||localStorage.getItem('jewel-mine-v218')||localStorage.getItem('jewel-mine-v217')||localStorage.getItem('jewel-mine-v216')||localStorage.getItem('jewel-mine-v215')||localStorage.getItem('jewel-mine-v214')||localStorage.getItem('jewel-mine-v213')||localStorage.getItem('jewel-mine-v212')||localStorage.getItem('jewel-mine-v211')||localStorage.getItem('jewel-mine-v210')||localStorage.getItem('jewel-mine-v29')||localStorage.getItem('jewel-mine-v28')||localStorage.getItem('jewel-mine-v27')||localStorage.getItem('jewel-mine-v26')||localStorage.getItem('jewel-mine-v25')||localStorage.getItem('jewel-mine-v24')||localStorage.getItem('jewel-mine-v23')||localStorage.getItem('jewel-mine-v22')||localStorage.getItem('jewel-mine-v21')||localStorage.getItem('jewel-mine-v20')||localStorage.getItem('animal-block-v20')||localStorage.getItem('animal-block-v19')||localStorage.getItem('animal-block-v18')||localStorage.getItem('animal-block-v17')||localStorage.getItem('animal-block-v16')||localStorage.getItem('animal-block-v15')||localStorage.getItem('animal-block-v14')||localStorage.getItem('animal-block-v13')||localStorage.getItem('animal-block-v12')||localStorage.getItem('animal-block-v11')||localStorage.getItem('animal-block-v10')||localStorage.getItem('animal-block-v09')||'null');if(x&&Array.isArray(x.board)&&x.board.length===64&&Array.isArray(x.pieces)&&x.pieces.length===3)state=x;else state=fresh()}catch(e){state=fresh()}state.bonus=Number.isFinite(state.bonus)?state.bonus:0;state.finds=state.finds||{};state.gems=Array.isArray(state.gems)&&state.gems.length===64?state.gems:Array(64).fill(null);let retainedGem=false;state.gems=state.gems.map((gem,i)=>{if(gem===null||state.board[i]===null||retainedGem)return null;retainedGem=true;return gem});delete state.animalAt;state.feverProgress=Number.isFinite(state.feverProgress)?state.feverProgress:0;state.feverTurns=Number.isFinite(state.feverTurns)?state.feverTurns:0;state.totalLines=Number.isFinite(state.totalLines)?state.totalLines:0;if(state.gemFeverVersion!==1){state.feverProgress=0;state.bonus=0;state.gemFeverVersion=1;}state.pieces.forEach(p=>{if((p.s===27||p.s===29)&&!p.used)p.s=5});const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};function toast(main,sub='',mode='normal'){
  const el=$('toast');
  el.className='toast'+(mode==='combo'?' combo':mode==='fever'?' fever-notice':'');
  el.innerHTML=sub?`${main}<span class="sub">${sub}</span>`:main;
  el.classList.add('show');clearTimeout(toast.timer);
- toast.timer=setTimeout(()=>el.classList.remove('show'),mode==='combo'?700:850);
+ toast.timer=setTimeout(()=>el.classList.remove('show'),mode==='combo'?700:mode==='fever'?1000:850);
 }function dims(s){return [Math.max(...s.map(x=>x[0]))+1,Math.max(...s.map(x=>x[1]))+1]}function valid(piece,r,c,b=state.board){return SHAPES[piece.s].every(([x,y])=>r+y<N&&c+x<N&&r+y>=0&&c+x>=0&&b[(r+y)*N+c+x]===null)}function canPlay(){return state.pieces.some(p=>!p.used&&SHAPES[p.s].some(()=>Array.from({length:N*N},(_,i)=>valid(p,Math.floor(i/N),i%N)).some(Boolean)))}function render(){boardEl.innerHTML='';state.board.forEach((v,i)=>{let el=document.createElement('div');el.className='cell'+(v!==null?' filled':'');if(v!==null){el.style.setProperty('--color',COLORS[v]);el.style.setProperty('--edge',EDGES[v])}if(state.gems[i]!==null&&v!==null)el.classList.add('gem-hidden');el.dataset.i=i;boardEl.append(el)});tray.innerHTML='';state.pieces.forEach((p,i)=>{let el=document.createElement('div');el.className='piece'+(selected===i?' sel':'')+(p.used?' used':'');el.dataset.p=i;const shape=SHAPES[p.s], [w,h]=dims(shape);if(p.used){tray.append(el);return;}const mini=document.createElement('div');mini.className='mini';mini.style.setProperty('--cols',w);mini.style.setProperty('--rows',h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){let unit=document.createElement('div');unit.className='unit'+(shape.some(s=>s[0]===x&&s[1]===y)?'':' empty');unit.style.setProperty('--color',COLORS[p.color]);unit.style.setProperty('--edge',EDGES[p.color]);mini.append(unit)}el.append(mini);tray.append(el)});$('score').textContent=state.score.toLocaleString();$('best').textContent=state.best.toLocaleString();$('rescued').textContent='+'+state.bonus.toLocaleString();renderMeter();const mascot=$('mascot');if(mascot)mascot.textContent='💎';save()}
 function preview(r,c){boardEl.querySelectorAll('.cell').forEach(el=>el.classList.remove('preview','bad','willclear'));document.querySelector('.boardwrap').classList.remove('readyline');if(selected<0||state.pieces[selected].used){setClearHint(false);return}const p=state.pieces[selected],good=valid(p,r,c);if(good){const simulated=state.board.slice();for(const [x,y] of SHAPES[p.s])simulated[(r+y)*N+c+x]=p.color;const glowing=new Set();for(let k=0;k<N;k++){if(Array.from({length:N},(_,j)=>simulated[k*N+j]).every(v=>v!==null))for(let j=0;j<N;j++)glowing.add(k*N+j);if(Array.from({length:N},(_,j)=>simulated[j*N+k]).every(v=>v!==null))for(let j=0;j<N;j++)glowing.add(j*N+k)}setClearHint(glowing.size>0);if(glowing.size){document.querySelector('.boardwrap').classList.add('readyline');glowing.forEach(i=>boardEl.children[i]?.classList.add('willclear'));$('message').textContent='';}}else{setClearHint(false)}SHAPES[p.s].forEach(([x,y])=>{if(r+y>=0&&c+x>=0&&r+y<N&&c+x<N){const el=boardEl.children[(r+y)*N+c+x];if(el)el.classList.add(good?'preview':'bad')}})}function clearPreview(){setClearHint(false);boardEl.querySelectorAll('.cell').forEach(el=>el.classList.remove('preview','bad','willclear'));document.querySelector('.boardwrap').classList.remove('readyline')}
 const BONUS_TABLE=[
@@ -1119,9 +1133,9 @@ function rollGem(){
  return BONUS_TABLE[BONUS_TABLE.length-1].id;
 }
 function ensureSingleGem(){if(state.gems.some(x=>x!==null))return;const occupied=[];for(let i=0;i<64;i++)if(state.board[i]!==null)occupied.push(i);if(occupied.length)state.gems[occupied[Math.floor(Math.random()*occupied.length)]]=rollGem()}
-function collectGems(indices){const found=[];for(const i of indices){const id=state.gems[i];if(id===null)continue;const type=BONUS_TABLE.find(g=>g.id===id);state.gems[i]=null;if(!type)continue;state.bonus+=type.points;state.finds[id]=(state.finds[id]||0)+1;found.push({type,origin:i})}return found}
+function collectGems(indices){const found=[];for(const i of indices){const id=state.gems[i];if(id===null)continue;const type=BONUS_TABLE.find(g=>g.id===id);state.gems[i]=null;if(!type)continue;state.finds[id]=(state.finds[id]||0)+1;found.push({type,origin:i})}return found}
 function hasMoves(){return state.pieces.some(p=>!p.used&&Array.from({length:64},(_,i)=>valid(p,Math.floor(i/8),i%8)).some(Boolean))}
-function finishGame(){const total=state.score+state.bonus;state.best=Math.max(state.best,total);$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='+'+state.bonus.toLocaleString();const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal()}
+function finishGame(){const total=state.score;state.best=Math.max(state.best,total);$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal()}
 let animationLocked=false;let revealTimers=[];
 function showClearToast(lines,comboChain,totalPoints){centerComboOnBoard();
  const main=`<div class="combo-head"><span class="combo-num">${comboChain}</span><span class="combo-word">COMBO</span></div>`;
@@ -1133,8 +1147,8 @@ function animateRescue(found){
  document.querySelector('.gem-bonus-pop')?.remove();
  const pop=document.createElement('div');pop.className='gem-bonus-pop';
  const icon=document.createElement('div');icon.className='gem-bonus-icon';icon.textContent=type.icon;
- const name=document.createElement('div');name.className='gem-bonus-title';name.textContent=type.name+'！';
- const points=document.createElement('div');points.className='gem-bonus-points';points.textContent='+'+(type.points*(state.feverTurns>0?2:1)).toLocaleString();
+ const name=document.createElement('div');name.className='gem-bonus-title';name.textContent='回収';
+ const points=document.createElement('div');points.className='gem-bonus-points';points.textContent='💎 '+state.feverProgress+'/5';
  pop.append(icon,name,points);document.body.appendChild(pop);
 
  const timer=setTimeout(()=>pop.remove(),650);revealTimers.push(timer);
@@ -1209,8 +1223,6 @@ function place(r,c){
    const clearCells=[...new Set(Array.from({length:64},(_,i)=>i).filter(i=>rows.includes(Math.floor(i/N))||cols.includes(i%N)))];
    burstClearedCells(clearCells);
    found.push(...collectGems(clearCells));
-   if(found.length)animateRescue(found[0]);
-   for(const gem of found){ state.bonus += gem.type.points*(feverMultiplier-1); }
    for(const idx of clearCells) state.board[idx]=null;
    // +0.1% per cleared line, stacking for the current run without a cap.
    // The line score scales; jewel awards, placement points and all-clear bonus do not.
@@ -1221,12 +1233,17 @@ function place(r,c){
    const fullClear = state.board.every(v=>v===null);
    const fullClearBonus = (fullClear ? 1000 : 0)*feverMultiplier;
    state.score += clearScore + comboBonus + fullClearBonus;
-   state.feverProgress += lines;
-   while(state.feverProgress>=20){state.feverProgress-=20;state.feverTurns+=5;justTriggeredFever=true}
-   const comboTotal = placementPoints + clearScore + comboBonus + fullClearBonus + found.reduce((sum,x)=>sum+x.type.points*feverMultiplier,0);
+   // Every recovered gem advances the FEVER gauge by one, regardless of rarity.
+   // Gems recovered during FEVER count toward the next activation, but do not restart FEVER.
+   state.feverProgress += found.length;
+   if(found.length)animateRescue(found[0]);
+   if(!feverWasActive && state.feverProgress>=5){
+     state.feverProgress-=5;state.feverTurns=5;justTriggeredFever=true;
+   }
+   const comboTotal = placementPoints + clearScore + comboBonus + fullClearBonus + 0;
    showClearToast(lines,state.comboChain,comboTotal);
    if(fullClear) setTimeout(()=>toast('ALL CLEAR!','+1,000'),justTriggeredFever?1800:850);
-   if(justTriggeredFever) setTimeout(()=>toast('FEVER','','fever'),760);
+   if(justTriggeredFever) setTimeout(()=>toast('<span class="fever-letters"><b>F</b><b>E</b><b>V</b><b>E</b><b>R</b></span>','','fever'),760);
  }else{
    scoreTick(placementPoints);
    if(state.comboRemain>0){
@@ -1236,7 +1253,13 @@ function place(r,c){
  }
  ensureSingleGem();
  state.turn++;
- if(feverWasActive && state.feverTurns>0) state.feverTurns -= 1;
+ if(feverWasActive && state.feverTurns>0){
+   state.feverTurns -= 1;
+   if(state.feverTurns===0 && state.feverProgress>=5){
+     state.feverProgress-=5;state.feverTurns=5;justTriggeredFever=true;
+     setTimeout(()=>toast('<span class="fever-letters"><b>F</b><b>E</b><b>V</b><b>E</b><b>R</b></span>','','fever'),760);
+   }
+ }
  if(state.pieces.every(x=>x.used))state.pieces=makePieces(state.board);
  selected=-1;
  $('message').textContent='';
