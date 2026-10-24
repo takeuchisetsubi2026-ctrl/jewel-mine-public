@@ -975,7 +975,7 @@ body::after{content:none!important}
   padding:0!important;background:transparent!important;border:0!important;
   border-radius:0!important;box-shadow:none!important;
   width:max-content!important;max-width:96vw!important;
-  font-size:55.2px!important;
+  font-size:min(82.8px,24vw)!important;
   line-height:1.1!important;letter-spacing:1px!important;font-weight:1000!important;
   background-image:linear-gradient(95deg,#ff3e73 0%,#ffb833 18%,#fff451 35%,#56ef82 53%,#4ee2ff 70%,#957aff 85%,#ff4dcf 100%)!important;
   background-clip:text!important;-webkit-background-clip:text!important;
@@ -986,7 +986,7 @@ body::after{content:none!important}
 }
 .tray .piece.used{opacity:1!important;filter:none!important}
 .tray .piece.used .mini{display:none!important}
-@media (max-width:390px){.toast.fever-notice{font-size:48px!important}}
+@media (max-width:390px){.toast.fever-notice{font-size:min(72px,24vw)!important}}
 </style>
 
 <style>
@@ -1104,20 +1104,21 @@ function scoreTick(points){const score=$('score'),hero=document.querySelector('.
 // Fast, non-blocking score roll-up. The real score is committed immediately;
 // only its presentation is animated. New clears retarget from the current value.
 let scoreDisplayValue=null,scoreAnimFrame=0,scoreAnimToken=0;
-function showScoreNumber(value){
+function showScoreNumber(value,fit=false){
  const el=$('score');
- el.textContent=Math.round(value).toLocaleString();
- fitScoreToBoard();
+ const text=Math.round(value).toLocaleString();
+ if(el.textContent!==text)el.textContent=text;
+ if(fit)fitScoreToBoard();
 }
 function animateScoreTo(target){
  if(scoreDisplayValue===null){
    scoreDisplayValue=target;
-   showScoreNumber(target);
+   showScoreNumber(target,true);
    return;
  }
  if(Math.abs(target-scoreDisplayValue)<1){
    scoreDisplayValue=target;
-   showScoreNumber(target);
+   showScoreNumber(target,true);
    return;
  }
  cancelAnimationFrame(scoreAnimFrame);
@@ -1127,6 +1128,9 @@ function animateScoreTo(target){
  // Large clears should feel energetic, without a long delay.
  const duration=Math.min(850,Math.max(430,520+Math.log10(Math.max(1,Math.abs(delta)))*55));
  const el=$('score');
+ // Fit the final value once instead of forcing layout every animation frame.
+ showScoreNumber(target,true);
+ showScoreNumber(from);
  el.classList.remove('score-roll-pop');
  void el.offsetWidth;
  el.classList.add('score-roll-pop');
@@ -1137,7 +1141,7 @@ function animateScoreTo(target){
    scoreDisplayValue=from+delta*ease;
    showScoreNumber(scoreDisplayValue);
    if(t<1)scoreAnimFrame=requestAnimationFrame(frame);
-   else {scoreDisplayValue=target;showScoreNumber(target);el.classList.remove('score-roll-pop');}
+   else {scoreDisplayValue=target;showScoreNumber(target,true);el.classList.remove('score-roll-pop');}
  }
  scoreAnimFrame=requestAnimationFrame(frame);
 }
@@ -1145,7 +1149,7 @@ function snapScoreTo(target){
  cancelAnimationFrame(scoreAnimFrame);
  ++scoreAnimToken;
  scoreDisplayValue=target;
- showScoreNumber(target);
+ showScoreNumber(target,true);
  $('score').classList.remove('score-roll-pop');
 }
 function centerComboOnBoard(){const r=boardEl.getBoundingClientRect();$('toast').style.setProperty('--combo-y',(r.top+r.height/2)+'px')}function buildMeter(){
@@ -1249,8 +1253,8 @@ function makePieces(board=null){
  el.className='toast'+(mode==='combo'?' combo':mode==='fever'?' fever-notice':'');
  el.innerHTML=sub?`${main}<span class="sub">${sub}</span>`:main;
  el.classList.add('show');clearTimeout(toast.timer);
- toast.timer=setTimeout(()=>el.classList.remove('show'),mode==='combo'?700:mode==='fever'?1000:850);
-}function dims(s){return [Math.max(...s.map(x=>x[0]))+1,Math.max(...s.map(x=>x[1]))+1]}function valid(piece,r,c,b=state.board){return SHAPES[piece.s].every(([x,y])=>r+y<N&&c+x<N&&r+y>=0&&c+x>=0&&b[(r+y)*N+c+x]===null)}function canPlay(){return state.pieces.some(p=>!p.used&&SHAPES[p.s].some(()=>Array.from({length:N*N},(_,i)=>valid(p,Math.floor(i/N),i%N)).some(Boolean)))}function render(){boardEl.innerHTML='';state.board.forEach((v,i)=>{let el=document.createElement('div');el.className='cell'+(v!==null?' filled':'');if(v!==null){el.style.setProperty('--color',COLORS[v]);el.style.setProperty('--edge',EDGES[v])}if(state.gems[i]!==null&&v!==null)el.classList.add('gem-hidden');el.dataset.i=i;boardEl.append(el)});tray.innerHTML='';state.pieces.forEach((p,i)=>{let el=document.createElement('div');el.className='piece'+(selected===i?' sel':'')+(p.used?' used':'');el.dataset.p=i;const shape=SHAPES[p.s], [w,h]=dims(shape);if(p.used){tray.append(el);return;}const mini=document.createElement('div');mini.className='mini';mini.style.setProperty('--cols',w);mini.style.setProperty('--rows',h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){let unit=document.createElement('div');unit.className='unit'+(shape.some(s=>s[0]===x&&s[1]===y)?'':' empty');unit.style.setProperty('--color',COLORS[p.color]);unit.style.setProperty('--edge',EDGES[p.color]);mini.append(unit)}el.append(mini);tray.append(el)});animateScoreTo(state.score);$('best').textContent=state.best.toLocaleString();$('rescued').textContent='+'+state.bonus.toLocaleString();renderMeter();const mascot=$('mascot');if(mascot)mascot.textContent='💎';save()}
+ toast.timer=setTimeout(()=>el.classList.remove('show'),mode==='combo'?700:mode==='fever'?1250:850);
+}function dims(s){return [Math.max(...s.map(x=>x[0]))+1,Math.max(...s.map(x=>x[1]))+1]}function valid(piece,r,c,b=state.board){return SHAPES[piece.s].every(([x,y])=>r+y<N&&c+x<N&&r+y>=0&&c+x>=0&&b[(r+y)*N+c+x]===null)}function canPlay(){return state.pieces.some(p=>!p.used&&SHAPES[p.s].some(()=>Array.from({length:N*N},(_,i)=>valid(p,Math.floor(i/N),i%N)).some(Boolean)))}function render(){state.board.forEach((v,i)=>{let el=boardEl.children[i];if(!el){el=document.createElement('div');el.dataset.i=i;boardEl.append(el)}el.className='cell'+(v!==null?' filled':'');if(v!==null){el.style.setProperty('--color',COLORS[v]);el.style.setProperty('--edge',EDGES[v])}if(state.gems[i]!==null&&v!==null)el.classList.add('gem-hidden');});tray.innerHTML='';state.pieces.forEach((p,i)=>{let el=document.createElement('div');el.className='piece'+(selected===i?' sel':'')+(p.used?' used':'');el.dataset.p=i;const shape=SHAPES[p.s], [w,h]=dims(shape);if(p.used){tray.append(el);return;}const mini=document.createElement('div');mini.className='mini';mini.style.setProperty('--cols',w);mini.style.setProperty('--rows',h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){let unit=document.createElement('div');unit.className='unit'+(shape.some(s=>s[0]===x&&s[1]===y)?'':' empty');unit.style.setProperty('--color',COLORS[p.color]);unit.style.setProperty('--edge',EDGES[p.color]);mini.append(unit)}el.append(mini);tray.append(el)});animateScoreTo(state.score);$('best').textContent=state.best.toLocaleString();$('rescued').textContent='+'+state.bonus.toLocaleString();renderMeter();const mascot=$('mascot');if(mascot)mascot.textContent='💎';save()}
 function preview(r,c){boardEl.querySelectorAll('.cell').forEach(el=>el.classList.remove('preview','bad','willclear'));document.querySelector('.boardwrap').classList.remove('readyline');if(selected<0||state.pieces[selected].used){setClearHint(false);return}const p=state.pieces[selected],good=valid(p,r,c);if(good){const simulated=state.board.slice();for(const [x,y] of SHAPES[p.s])simulated[(r+y)*N+c+x]=p.color;const glowing=new Set();for(let k=0;k<N;k++){if(Array.from({length:N},(_,j)=>simulated[k*N+j]).every(v=>v!==null))for(let j=0;j<N;j++)glowing.add(k*N+j);if(Array.from({length:N},(_,j)=>simulated[j*N+k]).every(v=>v!==null))for(let j=0;j<N;j++)glowing.add(j*N+k)}setClearHint(glowing.size>0);if(glowing.size){document.querySelector('.boardwrap').classList.add('readyline');glowing.forEach(i=>boardEl.children[i]?.classList.add('willclear'));$('message').textContent='';}}else{setClearHint(false)}SHAPES[p.s].forEach(([x,y])=>{if(r+y>=0&&c+x>=0&&r+y<N&&c+x<N){const el=boardEl.children[(r+y)*N+c+x];if(el)el.classList.add(good?'preview':'bad')}})}function clearPreview(){setClearHint(false);boardEl.querySelectorAll('.cell').forEach(el=>el.classList.remove('preview','bad','willclear'));document.querySelector('.boardwrap').classList.remove('readyline')}
 const BONUS_TABLE=[
  {id:'quartz',name:'水晶',icon:'💎',points:100,chance:.80},
@@ -1327,12 +1331,16 @@ function burstClearedCells(indices){
  const burst=document.createElement('div');
  burst.className='clear-fx-group';
  const frag=document.createDocumentFragment();
- const sampled=indices.length>32?indices.filter((_,i)=>i%2===0):indices;
+ // Bound each burst to 16 evenly distributed cells and two overlapping groups.
+ while(layer.childElementCount>=2)layer.firstElementChild.remove();
+ const count=Math.min(16,indices.length);
+ const sampled=Array.from({length:count},(_,i)=>indices[Math.floor(i*indices.length/count)]);
+ // Read all geometry before creating or attaching effect nodes.
+ const rects=sampled.map(idx=>boardEl.children[idx]?.getBoundingClientRect());
  const multi=indices.length>=16;
  let sx=0,sy=0,n=0;
- for(const idx of sampled){
-  const tile=boardEl.children[idx];if(!tile)continue;
-  const rect=tile.getBoundingClientRect();
+ for(let i=0;i<sampled.length;i++){
+  const idx=sampled[i],rect=rects[i];if(!rect)continue;
   const color=COLORS[state.board[idx]]||'#eab45c';
   const edge=EDGES[state.board[idx]]||'#8c5d36';
   const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
@@ -1341,11 +1349,11 @@ function burstClearedCells(indices){
   const flash=document.createElement('i');flash.className='burst-flash clear-hotflash';
   flash.style.left=cx+'px';flash.style.top=cy+'px';
   frag.appendChild(flash);
-  for(let k=0;k<9;k++){
+  for(let k=0;k<5;k++){
    const bit=document.createElement('i');
-   const angle=(k/9)*Math.PI*2+((idx*13)%17)*.21;
+   const angle=(k/5)*Math.PI*2+((idx*13)%17)*.21;
    const distance=(multi?44:34)+((idx*11+k*19)%50);
-   const spark=k>=5;
+   const spark=k>=3;
    const size=spark?Math.max(3,rect.width*.09):Math.max(5,rect.width*(k%2?.19:.28));
    bit.className='burst-bit'+(spark?' burst-spark':' clear-shard');
    bit.style.left=(cx-size/2)+'px';bit.style.top=(cy-size/2)+'px';
@@ -1420,7 +1428,7 @@ function place(r,c){
    }
    const comboTotal = placementPoints + clearScore + comboBonus + fullClearBonus + 0;
    showClearToast(lines,state.comboChain,comboTotal);
-   if(fullClear) setTimeout(()=>toast('ALL CLEAR!','+1,000'),justTriggeredFever?1800:850);
+   if(fullClear) setTimeout(()=>toast('ALL CLEAR!','+1,000'),justTriggeredFever?2110:850);
    if(justTriggeredFever) setTimeout(()=>toast('<span class="fever-letters"><b>F</b><b>E</b><b>V</b><b>E</b><b>R</b></span>','','fever'),760);
  }else{
    scoreTick(placementPoints);
