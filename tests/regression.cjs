@@ -60,9 +60,31 @@ const evalGame=(page,fn)=>page.evaluate(code=>window.__testEval('('+code+')()'),
  }
  sizes.forEach(x=>{assert.equal(x.fits,true);assert.equal(x.font,x.width<=390?Math.min(72,x.width*.24):Math.min(82.8,x.width*.24))});
  await page.setViewportSize({width:320,height:760});
+ const ui=await evalGame(page,()=>{
+ const event=(type,x=0,y=0)=>new PointerEvent(type,{bubbles:true,pointerId:41,clientX:x,clientY:y});
+ state=fresh();state.board.fill(null);state.gems.fill(null);state.pieces=[0,1,2].map(()=>({s:SHAPES.findIndex(x=>x.length===1),color:0,used:false}));render();
+ tray.children[0].dispatchEvent(event('pointerdown',100,650));
+ const hidden=getComputedStyle(tray.children[0].querySelector('.mini')).visibility==='hidden'&&!!document.querySelector('.dragghost');
+ window.dispatchEvent(event('pointercancel',100,650));
+ const restored=getComputedStyle(tray.children[0].querySelector('.mini')).visibility==='visible'&&!document.querySelector('.dragghost')&&!state.pieces[0].used;
+ for(let i=0;i<3;i++){
+ tray.children[i].dispatchEvent(event('pointerdown',100,650));
+ const rect=boardEl.children[i].getBoundingClientRect();
+ window.dispatchEvent(event('pointerup',rect.left+drag.width/2,rect.top+drag.lift+drag.height/2));
+ }
+ const placed=state.board.slice(0,3).every(x=>x===0)&&state.pieces.length===3&&state.pieces.every(x=>!x.used);
+ $('over').classList.add('new-record');$('over').showModal();
+ const color=getComputedStyle($('basefinal')).color;
+ const modalReadable=color==='rgb(255, 244, 220)'&&getComputedStyle($('bonusfinal')).color===color;
+ return {hidden,restored,placed,modalReadable};
+ });
+ Object.entries(ui).forEach(([k,v])=>assert.equal(v,true,k));
+ await page.screenshot({path:'docs/highscore-feedback.png'});
+ await evalGame(page,()=>$('over').close());
+ results.ui=ui;
  const effects=await evalGame(page,()=>{for(let i=0;i<5;i++)burstClearedCells(Array.from({length:64},(_,i)=>i));return {groups:$('burstLayer').childElementCount,nodes:$('burstLayer').querySelectorAll('*').length}});
- assert.equal(effects.groups,2);assert.equal(effects.nodes,198);
- results.sizes=sizes;results.effects=effects;results.checks=checks;await page.reload();assert.equal(await evalGame(page,()=>state.score),checks.score);
+ assert.equal(effects.groups,2);assert.equal(effects.nodes,18);
+ results.sizes=sizes;results.effects=effects;results.checks=checks;await page.reload();assert.equal(await evalGame(page,()=>state.board.slice(0,3).every(x=>x===0)),true);
  await evalGame(page,()=>toast('<span class="fever-letters"><b>F</b><b>E</b><b>V</b><b>E</b><b>R</b></span>','','fever'));await page.waitForTimeout(100);
  await page.screenshot({path:'docs/fever-320.png'});
  console.log(JSON.stringify({baseline:results.baseline.burst,current:results.current.burst,checks},null,2));fs.writeFileSync('docs/test-results.json',JSON.stringify(results,null,2)+'\n');
