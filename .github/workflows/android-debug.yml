@@ -1,0 +1,63 @@
+name: Android debug APK
+on:
+  push:
+    branches-ignore: [main]
+    paths-ignore: ['docs/**', 'AGENTS.md', 'README.md']
+  pull_request:
+    paths-ignore: ['docs/**', 'AGENTS.md', 'README.md']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: android-debug-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.0'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - run: npm ci
+      - run: npm run build:web
+      - run: npx playwright install --with-deps chrome
+      - run: npm test
+      - run: npx cap sync android
+      - run: npm run check
+      - name: Build debug APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+      - name: Verify packaged game and APK signature
+        run: |
+          python3 - <<'PY'
+          import pathlib, zipfile
+          apk = pathlib.Path('android/app/build/outputs/apk/debug/app-debug.apk')
+          assert apk.is_file() and apk.stat().st_size > 0
+          with zipfile.ZipFile(apk) as z:
+              assert z.read('assets/public/index.html') == pathlib.Path('index.html').read_bytes()
+          PY
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs android/app/build/outputs/apk/debug/app-debug.apk
+          sha256sum android/app/build/outputs/apk/debug/app-debug.apk > android/app/build/outputs/apk/debug/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jewel-mine-test-debug-${{ github.run_number }}
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/debug/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 30
+      - name: Download instructions
+        run: echo 'APK is in the Artifacts section of this workflow run. Extract the ZIP on Android and open app-debug.apk.' >> "$GITHUB_STEP_SUMMARY"

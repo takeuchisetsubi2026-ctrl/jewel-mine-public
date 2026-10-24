@@ -1,0 +1,22 @@
+{
+  "name": "jewel-mine-android-test",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:web": "node scripts/build-web.cjs",
+    "check": "node scripts/check-assets.cjs",
+    "test": "node tests/regression.cjs",
+    "sync:android": "npm run build:web && cap sync android"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.4.3",
+    "@capacitor/core": "8.4.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.4.3",
+    "playwright": "1.64.1"
+  }
+}
