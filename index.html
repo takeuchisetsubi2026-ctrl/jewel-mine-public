@@ -1010,14 +1010,9 @@ body::after{content:none!important}
 <style>
 /* v4.0.7: brighter mine-break effects without obscuring the board */
 .clear-fx-group{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-.clear-shard{clip-path:polygon(8% 0,95% 17%,80% 90%,25% 100%,0 42%)}
 .burst-bit{animation-duration:.78s!important;box-shadow:0 0 6px var(--burst-color),inset 0 1px 2px #fff9!important}
 .burst-spark{background:#fff5ae!important;box-shadow:0 0 7px 3px #ffeb7b,0 0 14px #ffae3b!important}
 .clear-hotflash{width:48px!important;height:48px!important;background:radial-gradient(circle,#fff 0%,#fff9b8 18%,#ffd54bbd 39%,transparent 72%)!important;animation-duration:.4s!important}
-.clear-shock{width:75px!important;height:75px!important;border:5px solid #fff7c8!important;box-shadow:0 0 24px #ffcf6e,0 0 40px #fff3aa!important;animation-duration:.63s!important}
-.clear-streak{position:fixed;pointer-events:none;width:min(70vw,380px);height:13px;transform:translate(-50%,-50%) rotate(-18deg);border-radius:50%;background:linear-gradient(90deg,transparent,#ffe89e 25%,#fff 50%,#ffe89e 75%,transparent);filter:drop-shadow(0 0 12px #ffc23c);animation:clearStreak .42s ease-out both}
-@keyframes clearStreak{0%{opacity:0;transform:translate(-50%,-50%) rotate(-18deg) scaleX(.2)}25%{opacity:.95}100%{opacity:0;transform:translate(-50%,-50%) rotate(-18deg) scaleX(1.3)}}
-@media(prefers-reduced-motion:reduce){.clear-streak{animation-duration:.12s!important}}
 </style>
 <style>
 /* v4.0.7: ensure scoreboard text fits on narrow iPhones */
@@ -1064,7 +1059,14 @@ body::after{content:none!important}
 @keyframes recordConfetti{0%{opacity:0;transform:translateY(-20px) rotate(0)}8%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(520px) rotate(650deg)}}
 @media(prefers-reduced-motion:reduce){#over .record-confetti{animation:none!important}#over .record-crown,#over .record-title{animation:none!important}}
 </style>
-</head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0.7 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
+<style>
+/* Android feedback: hide only the source miniature, keep its tray slot. */
+.tray .piece.drag-source .mini{visibility:hidden!important}
+#over.new-record .bonus-result,#over.new-record .bonus-result strong,
+#over.new-record .bonus-result #foundfinal{color:#fff4dc!important;text-shadow:0 1px 2px #000;font-weight:800}
+#over.new-record .bonus-result{background:#24182f!important}
+#over.new-record>p{color:#fff4dc!important}
+</style></head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0.7 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
 (()=>{'use strict';const N=8,KEY='jewel-mine-v35';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
 // Haptics only work in browsers implementing navigator.vibrate (iOS Safari does not).
 function buzz(kind){try{if(typeof navigator.vibrate==='function')navigator.vibrate(kind==='clear'?24:12)}catch(e){}}
@@ -1327,58 +1329,17 @@ function playReveals(found,done){
 }
 function burstClearedCells(indices){
  const layer=$('burstLayer');if(!indices.length)return;
- // Keep previous explosions alive when the next line clears quickly.
- const burst=document.createElement('div');
- burst.className='clear-fx-group';
- const frag=document.createDocumentFragment();
- // Bound each burst to 16 evenly distributed cells and two overlapping groups.
  while(layer.childElementCount>=2)layer.firstElementChild.remove();
- const count=Math.min(16,indices.length);
- const sampled=Array.from({length:count},(_,i)=>indices[Math.floor(i*indices.length/count)]);
- // Read all geometry before creating or attaching effect nodes.
- const rects=sampled.map(idx=>boardEl.children[idx]?.getBoundingClientRect());
- const multi=indices.length>=16;
- let sx=0,sy=0,n=0;
- for(let i=0;i<sampled.length;i++){
-  const idx=sampled[i],rect=rects[i];if(!rect)continue;
-  const color=COLORS[state.board[idx]]||'#eab45c';
-  const edge=EDGES[state.board[idx]]||'#8c5d36';
-  const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
-  sx+=cx;sy+=cy;n++;
-  // A short white-hot flash followed by coloured shards and golden sparks.
+ const count=Math.min(8,indices.length);
+ const rects=Array.from({length:count},(_,i)=>boardEl.children[indices[Math.floor(i*indices.length/count)]]?.getBoundingClientRect());
+ const burst=document.createElement('div');burst.className='clear-fx-group';
+ for(const rect of rects){
+  if(!rect)continue;
   const flash=document.createElement('i');flash.className='burst-flash clear-hotflash';
-  flash.style.left=cx+'px';flash.style.top=cy+'px';
-  frag.appendChild(flash);
-  for(let k=0;k<5;k++){
-   const bit=document.createElement('i');
-   const angle=(k/5)*Math.PI*2+((idx*13)%17)*.21;
-   const distance=(multi?44:34)+((idx*11+k*19)%50);
-   const spark=k>=3;
-   const size=spark?Math.max(3,rect.width*.09):Math.max(5,rect.width*(k%2?.19:.28));
-   bit.className='burst-bit'+(spark?' burst-spark':' clear-shard');
-   bit.style.left=(cx-size/2)+'px';bit.style.top=(cy-size/2)+'px';
-   bit.style.width=size+'px';bit.style.height=size+'px';
-   bit.style.setProperty('--burst-color',spark?'#fff6bb':k%3===0?edge:color);
-   bit.style.setProperty('--tx',(Math.cos(angle)*distance)+'px');
-   bit.style.setProperty('--ty',(Math.sin(angle)*distance+16)+'px');
-   bit.style.setProperty('--rotation',((k%2?1:-1)*(150+k*31))+'deg');
-   bit.style.animationDelay=(k%3*22)+'ms';
-   frag.appendChild(bit);
-  }
+  flash.style.left=(rect.left+rect.width/2)+'px';flash.style.top=(rect.top+rect.height/2)+'px';
+  burst.appendChild(flash);
  }
- if(n){
-  const shock=document.createElement('i');shock.className='burst-shock clear-shock';
-  shock.style.left=(sx/n)+'px';shock.style.top=(sy/n)+'px';
-  frag.appendChild(shock);
-  // Multi-line clears get a brief diagonal streak of light.
-  if(multi){
-   const streak=document.createElement('i');streak.className='clear-streak';
-   streak.style.left=(sx/n)+'px';streak.style.top=(sy/n)+'px';
-   frag.appendChild(streak);
-  }
- }
- burst.appendChild(frag);layer.appendChild(burst);
- setTimeout(()=>burst.remove(),950);
+ layer.appendChild(burst);setTimeout(()=>burst.remove(),450);
 }
 function place(r,c){
  if(animationLocked)return;
@@ -1457,8 +1418,8 @@ function reset(){$('burstLayer').replaceChildren();const best=state.best;state=f
 // Pointer drag v0.2: a real floating block follows ABOVE the finger, showing exact placement.
 function dragCellSize(){const c=boardEl.children[0], n=boardEl.children[1];return {size:c.getBoundingClientRect().width,pitch:n.getBoundingClientRect().left-c.getBoundingClientRect().left};}
 function dragPosition(e){if(!drag)return;const d=drag, first=boardEl.children[0].getBoundingClientRect();let left=e.clientX-d.width/2, top=e.clientY-d.lift-d.height/2;d.ghost.style.left=left+'px';d.ghost.style.top=top+'px';let c=Math.round((left-first.left)/d.pitch),r=Math.round((top-first.top)/d.pitch);d.r=r;d.c=c;const good=r>=0&&c>=0&&r<N&&c<N&&valid(state.pieces[d.index],r,c);d.good=good;d.ghost.classList.toggle('invalid',!good);if(r>=-2&&c>=-2&&r<N&&c<N){selected=d.index;preview(r,c);if(!good&&r>=0&&c>=0) $('message').textContent='';else if(good&&!document.querySelector('.boardwrap').classList.contains('readyline'))$('message').textContent='';}else{clearPreview();$('message').textContent='';}}
-function endDrag(e,cancel=false){if(!drag||e.pointerId!==drag.id)return;dragPosition(e);const d=drag;drag=null;clearPreview();document.querySelector('.boardwrap').classList.remove('dragactive');d.ghost.remove();suppressTap=true;setTimeout(()=>suppressTap=false,350);if(!cancel&&d.good&&valid(state.pieces[d.index],d.r,d.c)){selected=d.index;place(d.r,d.c)}else{selected=d.index;render();$('message').textContent='';}}
-tray.addEventListener('pointerdown',e=>{const el=e.target.closest('.piece');if(!el||drag||animationLocked)return;const i=Number(el.dataset.p);if(state.pieces[i].used)return;e.preventDefault();buzz('pick');selected=i;render();const p=state.pieces[i],shape=SHAPES[p.s], [w,h]=dims(shape), {size,pitch}=dragCellSize();const ghost=document.createElement('div');ghost.className='dragghost';ghost.style.setProperty('--cell',size+'px');ghost.style.gridTemplateColumns=`repeat(${w},${size}px)`;ghost.style.gridTemplateRows=`repeat(${h},${size}px)`;ghost.style.gap=(pitch-size)+'px';ghost.style.width=(w*size+(w-1)*(pitch-size))+'px';ghost.style.height=(h*size+(h-1)*(pitch-size))+'px';for(let y=0;y<h;y++)for(let x=0;x<w;x++){let u=document.createElement('div');const on=shape.some(q=>q[0]===x&&q[1]===y);u.className='unit'+(on?'':' empty');if(on){u.style.setProperty('--color',COLORS[p.color]);u.style.setProperty('--edge',EDGES[p.color])}ghost.appendChild(u)}document.body.appendChild(ghost);drag={id:e.pointerId,index:i,ghost,pitch,width:parseFloat(ghost.style.width),height:parseFloat(ghost.style.height),lift:(h*size+(h-1)*(pitch-size))/2+size*3.9,r:-1,c:-1,good:false};document.querySelector('.boardwrap').classList.add('dragactive');dragPosition(e);});
+function endDrag(e,cancel=false){if(!drag||e.pointerId!==drag.id)return;dragPosition(e);const d=drag;drag=null;clearPreview();document.querySelector('.boardwrap').classList.remove('dragactive');d.ghost.remove();tray.children[d.index]?.classList.remove('drag-source');suppressTap=true;setTimeout(()=>suppressTap=false,350);if(!cancel&&d.good&&valid(state.pieces[d.index],d.r,d.c)){selected=d.index;place(d.r,d.c)}else{selected=d.index;render();$('message').textContent='';}}
+tray.addEventListener('pointerdown',e=>{const el=e.target.closest('.piece');if(!el||drag||animationLocked)return;const i=Number(el.dataset.p);if(state.pieces[i].used)return;e.preventDefault();buzz('pick');selected=i;render();const p=state.pieces[i],shape=SHAPES[p.s], [w,h]=dims(shape), {size,pitch}=dragCellSize();const ghost=document.createElement('div');ghost.className='dragghost';ghost.style.setProperty('--cell',size+'px');ghost.style.gridTemplateColumns=`repeat(${w},${size}px)`;ghost.style.gridTemplateRows=`repeat(${h},${size}px)`;ghost.style.gap=(pitch-size)+'px';ghost.style.width=(w*size+(w-1)*(pitch-size))+'px';ghost.style.height=(h*size+(h-1)*(pitch-size))+'px';for(let y=0;y<h;y++)for(let x=0;x<w;x++){let u=document.createElement('div');const on=shape.some(q=>q[0]===x&&q[1]===y);u.className='unit'+(on?'':' empty');if(on){u.style.setProperty('--color',COLORS[p.color]);u.style.setProperty('--edge',EDGES[p.color])}ghost.appendChild(u)}document.body.appendChild(ghost);tray.children[i].classList.add('drag-source');drag={id:e.pointerId,index:i,ghost,pitch,width:parseFloat(ghost.style.width),height:parseFloat(ghost.style.height),lift:(h*size+(h-1)*(pitch-size))/2+size*3.9,r:-1,c:-1,good:false};document.querySelector('.boardwrap').classList.add('dragactive');dragPosition(e);});
 window.addEventListener('pointermove',e=>{if(drag&&drag.id===e.pointerId){e.preventDefault();dragPosition(e)}},{passive:false});
 window.addEventListener('pointerup',e=>endDrag(e));window.addEventListener('pointercancel',e=>endDrag(e,true));
 // Tap-to-select remains usable if dragging is difficult.
