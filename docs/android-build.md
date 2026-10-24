@@ -46,3 +46,12 @@ workflow_dispatchも定義済み。ただしGitHubは通常デフォルトブラ
 実機テストは未実施。APKビルド成功と実機での滑らかさは別の確認事項。
 
 公式資料: https://capacitorjs.com/docs/getting-started 、https://capacitorjs.com/docs/android 、https://github.com/actions/upload-artifact
+
+## 初回確認済みAPK
+
+2026-10-24にActions実行40089260086が成功（コード38aca3e）。
+APKダウンロード（GitHubログインが必要）:
+https://github.com/wild-uncle/jewel-mine-public/actions/runs/40089260086/artifacts/12557783498
+
+成果物名: jewel-mine-test-debug-2。有効期限: 2026-11-23 11:18 UTC。APKとSHA256SUMS.txtを含むZIP。
+ビルドログと証跡: docs/reports/2026-10-24-android-build-evidence.json。

@@ -1,0 +1,164 @@
+{
+  "run_url": "https://github.com/wild-uncle/jewel-mine-public/actions/runs/40089260086",
+  "commit": "38aca3e4a664bdabbab7bfb4ff37852862d634ca",
+  "artifact": {
+    "id": 12557783498,
+    "name": "jewel-mine-test-debug-2",
+    "size_in_bytes": 4284343,
+    "url": "https://api.github.com/repos/wild-uncle/jewel-mine-public/actions/artifacts/12557783498",
+    "archive_download_url": "https://api.github.com/repos/wild-uncle/jewel-mine-public/actions/artifacts/12557783498/zip",
+    "expired": false,
+    "created_at": "2026-10-24T11:18:55Z",
+    "expires_at": "2026-11-23T11:18:53Z",
+    "updated_at": "2026-10-24T11:18:55Z",
+    "digest": "sha256:0955f2273666b09eec61a0a6eca175f2ccadfcab9af814e6a923c27aa731276f",
+    "workflow_run": {
+      "id": 40089260086,
+      "repository_id": 1427905883,
+      "head_repository_id": 1427905883,
+      "head_branch": "build/android-debug-apk",
+      "head_sha": "38aca3e4a664bdabbab7bfb4ff37852862d634ca"
+    }
+  },
+  "jobs": [
+    {
+      "id": 120858392474,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40089260086,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run android-actions/setup-android@v3",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run sdkmanager \"platforms;android-36\" \"build-tools;36.0.0\"",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Run npm ci",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Run npm run build:web",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Run npx playwright install --with-deps chrome",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Run npm test",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Run npx cap sync android",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Run npm run check",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Build debug APK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        },
+        {
+          "name": "Verify packaged game and APK signature",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        },
+        {
+          "name": "Download instructions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30
+        },
+        {
+          "name": "Post Run actions/setup-node@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 32
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 33
+        }
+      ]
+    }
+  ],
+  "local": {
+    "build": "SUCCESS",
+    "jdk": "21.0.11",
+    "gradle": "8.14.3",
+    "apkBytes": 4644762,
+    "apkSha256": "228aa9ff2f15200091a11a824526c3ed497980aaa92658157a22049a707d7285"
+  },
+  "certificateSha256": "adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029",
+  "deviceTesting": "NOT PERFORMED"
+}
