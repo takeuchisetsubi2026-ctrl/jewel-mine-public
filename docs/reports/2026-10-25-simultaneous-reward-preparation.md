@@ -45,6 +45,8 @@ CI：成功。回帰テスト、Androidビルド、署名・同梱HTML検証、A
 ## 4. Android APK
 
 準備実装のAndroidデバッグAPKビルドは成功。ただし通常プレイに新倍率は出ないため、完成版APKとして扱わない。
+準備版Artifact（jewel-mine-test-debug-11）：
+https://github.com/wild-uncle/jewel-mine-public/actions/runs/40155092719/artifacts/12583783704
 アプリID・既存テスト署名・保存形式・得点計算・ピース生成比率は変更していない。旧アプリのデータ削除はしていない。
 
 ## 5. 未完了と理由
