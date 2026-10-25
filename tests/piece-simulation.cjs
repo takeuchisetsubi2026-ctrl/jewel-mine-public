@@ -1,9 +1,9 @@
 // Occupancy-only comparison. No gems/FEVER/score progression; modes fixed per cohort.
-const fs=require('fs'),{engine:g,rng,oldGenerator}=require('./piece-test-helpers.cjs');
+const fs=require('fs'),{engine:g,shapes,rng,oldGenerator}=require('./piece-test-helpers.cjs');
 const seeds=Array.from({length:Number(process.env.SIM_SEEDS||12)},(_,i)=>20261025+i*97),cap=200;
-function initial(kind,seed){const b=Array(64).fill(null),random=rng(seed^0xaabbccdd);const order=Array.from({length:64},(_,i)=>i);for(let i=63;i>0;i--){const j=Math.floor(random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}for(const i of order.slice(0,kind==='empty'?0:kind==='medium'?20:36))b[i]=0;return b}
+function initial(kind,seed){const b=Array(64).fill(null),random=rng(seed^0xaabbccdd);const order=Array.from({length:64},(_,i)=>i);for(let i=63;i>0;i--){const j=Math.floor(random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}for(const i of order.slice(0,kind==='empty'?0:kind==='medium'?20:36))b[i]=0;const full=[];for(let k=0;k<8;k++){if(Array.from({length:8},(_,j)=>b[k*8+j]).every(v=>v!==null))for(let j=0;j<8;j++)full.push(k*8+j);if(Array.from({length:8},(_,j)=>b[j*8+k]).every(v=>v!==null))for(let j=0;j<8;j++)full.push(j*8+k)}for(const i of full)b[i]=null;return b}
 function quantile(a,q){const b=a.slice().sort((x,y)=>x-y);return b[Math.floor((b.length-1)*q)]||0}
-const out={model:'occupancy-only; fixed mode; no gems/FEVER; deterministic one-step greedy player, not a human; capped games are right-censored',seeds,cap,results:{}};
+const out={model:'occupancy-only; fixed mode; no gems/FEVER; deterministic one-step greedy player (clears, then near-lines and area), not a human; pre-completed initial lines removed; capped games are right-censored',seeds,cap,results:{}};
 for(const mode of ['joy','challenge'])for(const version of ['old','new']){
  const games=[],categories={square4:0,rectangle6:0,square9:0,bar:0,other:0},generatedTimes=[];
  for(const kind of ['empty','medium','dense'])for(const seed of seeds){
@@ -13,7 +13,7 @@ for(const mode of ['joy','challenge'])for(const version of ['old','new']){
    if(!pieces.length){const t=performance.now();const ids=version==='old'?old(board).map(p=>p.s):g.generate(board,mode==='joy'?0:800,1000,random).ids;generatedTimes.push(performance.now()-t);pieces=ids.map(id=>({id}));for(const id of ids){categories[g.category(id)]++;if(['square4','rectangle6','square9'].includes(g.category(id)))generatedLarge++}}
    let best=null;
    for(let i=0;i<pieces.length;i++)for(const p of g.masks[pieces[i].id])if(g.fits(b,p)){
-    const next=g.apply(b,p),value=next.lines*1000+(next.allClear?10000:0)+g.near(next)*.15+g.masks[pieces[i].id].length*.001+tie()*.01;
+    const next=g.apply(b,p),value=next.lines*1000+(next.allClear?10000:0)+g.near(next)*.15+shapes[pieces[i].id].length*.1+tie()*.01;
     if(!best||value>best.value)best={i,p,next,value};
    }
    if(!best){strandedLarge=pieces.filter(p=>['square4','rectangle6','square9'].includes(g.category(p.id))).length;break}
