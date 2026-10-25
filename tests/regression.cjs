@@ -36,7 +36,8 @@ const evalGame=(page,fn)=>page.evaluate(code=>window.__testEval('('+code+')()'),
  });
  assert.deepEqual(errors,[]);await page.close();
  }
- assert.deepEqual(results.current.scenarios,results.baseline.scenarios);
+ // Scores intentionally change; exact new arithmetic is verified by reward-scoring.cjs.
+ assert.deepEqual(results.current.scenarios.map(({score,...rest})=>rest),results.baseline.scenarios.map(({score,...rest})=>rest));
  assert.equal(results.current.scenarios.find(x=>x.name==='trigger').feverTurns,5);
  const page=await browser.newPage({viewport:{width:320,height:760}});await page.goto(`http://127.0.0.1:${server.address().port}/current`);
  await evalGame(page,()=>{state.score=12345;render()});

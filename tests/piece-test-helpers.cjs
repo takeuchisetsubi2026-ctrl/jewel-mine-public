@@ -12,3 +12,7 @@ function oldGenerator(random){
  return vm.runInNewContext('const SHAPES='+JSON.stringify(oldShapes)+",N=8,COLORS=Array(6);function dims(s){return [Math.max(...s.map(x=>x[0]))+1,Math.max(...s.map(x=>x[1]))+1]}"+code+';makePieces',{Math:math});
 }
 module.exports={source,shapes,engine,rng,oldGenerator};
+
+function loadEngine(ref){const text=cp.execFileSync('git',['show',ref+':index.html'],{encoding:'utf8',maxBuffer:4e6});const shapeList=JSON.parse(text.match(/const SHAPES=(\[.*?\]);const COLORS=/)[1]);const code=text.split('// BEGIN SCORE ADAPTIVE GENERATOR')[1].split('// END SCORE ADAPTIVE GENERATOR')[0];return vm.runInNewContext('const SHAPES='+JSON.stringify(shapeList)+';'+code+';pieceGenerator')}
+const calculateLineReward=vm.runInNewContext(source.split('// BEGIN LINE REWARD')[1].split('// END LINE REWARD')[0]+';calculateLineReward');
+module.exports.loadEngine=loadEngine;module.exports.calculateLineReward=calculateLineReward;

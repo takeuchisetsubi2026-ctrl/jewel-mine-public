@@ -1078,6 +1078,11 @@ body::after{content:none!important}
 .reward-multiplier{display:block;font-size:clamp(68px,20vw,110px);line-height:1.06;font-weight:1000;font-variant-numeric:tabular-nums;-webkit-text-stroke:1px #34142a}
 .reward-points{display:block;margin-top:4px;color:#fff9e7;font-size:clamp(22px,7vw,32px);font-weight:900;font-variant-numeric:tabular-nums}
 </style>
+<style>
+/* Keep the jewel visible without repainting a pulse throughout ordinary idle. */
+body:not(.fever) .cell.gem-hidden,body:not(.fever) .cell.gem-hidden::after,.cell.willclear{animation:none!important}
+html.app-background *,html.app-background *::before,html.app-background *::after{animation-play-state:paused!important;transition:none!important}
+</style>
 </head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0.7 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div id="simultaneousReward" class="simultaneous-reward" hidden aria-live="polite" aria-atomic="true"><i class="reward-glow" aria-hidden="true"></i><strong class="reward-multiplier"></strong><span class="reward-points"></span></div><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
 (()=>{'use strict';const N=8,KEY='jewel-mine-v35';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]],[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
 // Haptics only work in browsers implementing navigator.vibrate (iOS Safari does not).
@@ -1114,10 +1119,28 @@ function fitScoreToBoard(){
 }
 window.addEventListener('resize',fitScoreToBoard);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitScoreToBoard);
-function scoreTick(points){const score=$('score'),hero=document.querySelector('.scorehero');score.classList.remove('score-tick');void score.offsetWidth;score.classList.add('score-tick');const el=document.createElement('span');el.className='place-points';el.textContent='+'+points.toLocaleString();hero.append(el);setTimeout(()=>el.remove(),850)}
+// Cosmetic timers are bounded and cancelled when the document is hidden.
+const cosmeticTimers=new Set(),cosmeticKeys=new Map();let pendingFeverNotice=false;
+function cosmeticTimeout(fn,delay,key=null){
+ if(key&&cosmeticKeys.has(key)){const old=cosmeticKeys.get(key);clearTimeout(old);cosmeticTimers.delete(old)}
+ const id=setTimeout(()=>{cosmeticTimers.delete(id);if(key)cosmeticKeys.delete(key);fn()},delay);
+ cosmeticTimers.add(id);if(key)cosmeticKeys.set(key,id);return id;
+}
+function scheduleFeverNotice(){
+ pendingFeverNotice=true;
+ cosmeticTimeout(()=>{if(document.hidden)return;pendingFeverNotice=false;toast('<span class="fever-letters"><b>F</b><b>E</b><b>V</b><b>E</b><b>R</b></span>','','fever')},760,'fever');
+}
+function scoreTick(points){
+ if(document.hidden)return;
+ const score=$('score'),hero=document.querySelector('.scorehero');
+ hero.querySelector('.place-points')?.remove();
+ score.getAnimations().forEach(a=>a.cancel());
+ score.animate([{transform:'scale(1)'},{transform:'scale(1.08)',offset:.25},{transform:'scale(1)'}],{duration:350});
+ const el=document.createElement('span');el.className='place-points';el.textContent='+'+points.toLocaleString();hero.append(el);cosmeticTimeout(()=>el.remove(),850,'placement');
+}
 // Fast, non-blocking score roll-up. The real score is committed immediately;
 // only its presentation is animated. New clears retarget from the current value.
-let scoreDisplayValue=null,scoreAnimFrame=0,scoreAnimToken=0;
+let scoreDisplayValue=null,scoreAnimFrame=0,scoreAnimToken=0,scoreAnimTarget=null;
 function showScoreNumber(value,fit=false){
  const el=$('score');
  const text=Math.round(value).toLocaleString();
@@ -1125,6 +1148,8 @@ function showScoreNumber(value,fit=false){
  if(fit)fitScoreToBoard();
 }
 function animateScoreTo(target){
+ if(document.hidden){cancelAnimationFrame(scoreAnimFrame);scoreAnimFrame=0;++scoreAnimToken;scoreAnimTarget=null;scoreDisplayValue=target;showScoreNumber(target);return}
+ if(scoreAnimFrame&&scoreAnimTarget===target)return;
  if(scoreDisplayValue===null){
    scoreDisplayValue=target;
    showScoreNumber(target,true);
@@ -1132,10 +1157,11 @@ function animateScoreTo(target){
  }
  if(Math.abs(target-scoreDisplayValue)<1){
    scoreDisplayValue=target;
-   showScoreNumber(target,true);
+   showScoreNumber(target);
    return;
  }
  cancelAnimationFrame(scoreAnimFrame);
+ scoreAnimTarget=target;
  const token=++scoreAnimToken;
  const from=scoreDisplayValue,delta=target-from;
  const start=performance.now();
@@ -1145,9 +1171,8 @@ function animateScoreTo(target){
  // Fit the final value once instead of forcing layout every animation frame.
  showScoreNumber(target,true);
  showScoreNumber(from);
- el.classList.remove('score-roll-pop');
- void el.offsetWidth;
- el.classList.add('score-roll-pop');
+ el.getAnimations().forEach(a=>a.cancel());
+ el.animate([{transform:'scale(1)'},{transform:'scale(1.04)',offset:.25},{transform:'scale(1)'}],{duration:540,easing:'ease-out'});
  function frame(now){
    if(token!==scoreAnimToken)return;
    const t=Math.min(1,(now-start)/duration);
@@ -1155,15 +1180,15 @@ function animateScoreTo(target){
    scoreDisplayValue=from+delta*ease;
    showScoreNumber(scoreDisplayValue);
    if(t<1)scoreAnimFrame=requestAnimationFrame(frame);
-   else {scoreDisplayValue=target;showScoreNumber(target,true);el.classList.remove('score-roll-pop');}
+   else {scoreAnimFrame=0;scoreAnimTarget=null;scoreDisplayValue=target;showScoreNumber(target,true);}
  }
  scoreAnimFrame=requestAnimationFrame(frame);
 }
 function snapScoreTo(target){
- cancelAnimationFrame(scoreAnimFrame);
+ cancelAnimationFrame(scoreAnimFrame);scoreAnimFrame=0;scoreAnimTarget=null;
  ++scoreAnimToken;
  scoreDisplayValue=target;
- showScoreNumber(target,true);
+ showScoreNumber(target,!document.hidden);
  $('score').classList.remove('score-roll-pop');
 }
 function centerComboOnBoard(){const r=boardEl.getBoundingClientRect();$('toast').style.setProperty('--combo-y',(r.top+r.height/2)+'px')}function buildMeter(){
@@ -1180,16 +1205,28 @@ function centerComboOnBoard(){const r=boardEl.getBoundingClientRect();$('toast')
   led.style.left=(x*100)+'%';led.style.top=(y*100)+'%';led.style.setProperty('--rainbow-color',['#ff4c78','#ff9546','#ffe44a','#6be978','#42d9f3','#638cff','#c27aff'][i%7]);g.appendChild(led);
  }
 }
-function renderMeter(){buildMeter();const meter=$('feverMeter');const segs=[...document.querySelectorAll('#meterSegs .meter-light')];const activeCount=state.feverTurns>0?20:Math.max(0,Math.min(20,state.feverProgress*4));segs.forEach((el,i)=>el.classList.toggle('active',i<activeCount));meter.classList.toggle('fevering',state.feverTurns>0);document.body.classList.toggle('fever',state.feverTurns>0);const rule=$('ruleText');if(rule){rule.textContent=state.feverTurns>0?`FEVER TIME ×2　残り ${state.feverTurns} 手`:`💎 ${state.feverProgress}/5 でFEVER！・ライン得点 ×${(1+state.totalLines*0.01).toFixed(2)}`;}}
+function renderMeter(){buildMeter();const meter=$('feverMeter');const segs=[...document.querySelectorAll('#meterSegs .meter-light')];const activeCount=state.feverTurns>0?20:Math.max(0,Math.min(20,state.feverProgress*4));segs.forEach((el,i)=>el.classList.toggle('active',i<activeCount));meter.classList.toggle('fevering',state.feverTurns>0);document.body.classList.toggle('fever',state.feverTurns>0);const rule=$('ruleText');if(rule){rule.textContent=state.feverTurns>0?`FEVER TIME ×2　残り ${state.feverTurns} 手`:`💎 ${state.feverProgress}/5 でFEVER！・ライン得点 ×${(1+state.totalLines*0.05).toFixed(2)}`;}}
+// BEGIN LINE REWARD
+function calculateLineReward(lines,previousLines,comboChain,feverActive){
+ const simultaneousMultiplier=lines;
+ const cumulativeMultiplier=1+.05*previousLines;
+ const feverMultiplier=feverActive?2:1;
+ const basePoints=lines*300+Math.max(0,lines-1)*150;
+ // The existing combo is additive, not a multiplier of base points.
+ const comboPoints=Math.max(0,comboChain-1)*100*lines;
+ const lineEventPoints=Math.round((basePoints*simultaneousMultiplier*cumulativeMultiplier+comboPoints)*feverMultiplier);
+ return {basePoints,simultaneousMultiplier,cumulativeMultiplier,comboPoints,feverMultiplier,lineEventPoints};
+}
+// END LINE REWARD
 // BEGIN SCORE ADAPTIVE GENERATOR
 // Pure occupancy model. Existing shape IDs are append-only for save compatibility.
 function createPieceGenerator(shapes){
  const config={
-  weights:{joy:{square4:25,rectangle6:25,square9:20,bar:25,other:5},challenge:{square4:18,rectangle6:17,square9:13,bar:42,other:10}},
+  weights:{joy:{square4:29,rectangle6:25,square9:12,bar:29,other:5},challenge:{square4:20,rectangle6:17,square9:8,bar:45,other:10}},
   threshold:.8,firstBest:10000,bar4Share:.5,
-  randomCandidates:8,beamWidth:8,constructiveCandidates:2,
+  randomCandidates:8,beamWidth:6,constructiveCandidates:2,
   // Selection is probabilistic even among verified full routes.
-  temperature:{joy:28,challenge:48},largeSetCandidates:1,mixedSetCandidates:1
+  temperature:{joy:24,challenge:40},largeSetCandidates:1,largeSetChance:{joy:.15,challenge:.08},mixedSetCandidates:1
  };
  const excluded=new Set([27,29]);
  const category=id=>{
@@ -1235,11 +1272,36 @@ function createPieceGenerator(shapes){
   return {lo,hi,lines:count,allClear:count>0&&lo===0&&hi===0};
  }
  function near(b){let value=0;for(const l of lines){const n=pop(b.lo&l.lo)+pop(b.hi&l.hi);value+=n>=5?(n-4)*(n-4):0}return value}
+ function space(b){
+  const cells=decode(b),seen=new Uint8Array(64);let largest=0,empty=0;
+  for(let i=0;i<64;i++){
+   if(cells[i]!==null)continue;empty++;
+   if(seen[i])continue;const queue=[i];seen[i]=1;
+   for(let j=0;j<queue.length;j++){
+    const c=queue[j],adj=[];if(c%8)adj.push(c-1);if(c%8<7)adj.push(c+1);if(c>=8)adj.push(c-8);if(c<56)adj.push(c+8);
+    for(const n of adj)if(!seen[n]&&cells[n]===null){seen[n]=1;queue.push(n)}
+   }largest=Math.max(largest,queue.length);
+  }return {empty,largest};
+ }
+ function blockedLargePairs(board,ids){
+  const b=Array.isArray(board)?encode(board):board;let blocked=0;
+  const large=ids.filter(id=>category(id)==='rectangle6'||category(id)==='square9');
+  for(let i=0;i<large.length;i++)for(let j=i+1;j<large.length;j++){
+   let found=false;
+   for(const [a,c] of [[large[i],large[j]],[large[j],large[i]]]){
+    if(found)break;
+    for(const p of masks[a])if(fits(b,p)){
+     const next=apply(b,p);if(masks[c].some(q=>fits(next,q))){found=true;break}
+    }
+   }if(!found)blocked++;
+  }return blocked;
+ }
  const orders=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
  function evaluate(board,ids,{beamWidth=config.beamWidth,witness=[]}={}){
   const start=Array.isArray(board)?encode(board):board;
   let best=null,partial=null,visited=0,pruned=false;
-  const completeOrders=[];
+  const completeOrders=[],regionCache=new Map();
+  const freeSpace=b=>{const key=b.lo+':'+b.hi;if(!regionCache.has(key))regionCache.set(key,space(b));return regionCache.get(key)};
   for(const order of orders){
    let frontier=[{...start,lines:0,multi:0,barLines:0,allClear:false,path:[],rank:0}];
    for(const index of order){
@@ -1259,6 +1321,7 @@ function createPieceGenerator(shapes){
     if(!frontier.length)break;
    }
    const full=frontier.filter(n=>n.path.length===3);
+   for(const node of full){const free=freeSpace(node);node.rank+=free.largest*.3+free.empty*.1}
    if(full.length){completeOrders.push(order.join(''));for(const node of full)if(!best||(node.allClear&&!best.allClear)||node.allClear===best.allClear&&node.rank>best.rank)best=node}
   }
   // A constructive route is independently replayed; never infer feasibility from area.
@@ -1273,14 +1336,14 @@ function createPieceGenerator(shapes){
    const rank=(allClear?200:0)+total*28+multi*14+barLines*8+near(b)*.15;
    if(path.length===3){if(!completeOrders.includes(path.map(p=>p.index).join('')))completeOrders.push(path.map(p=>p.index).join(''));if(!best||(allClear&&!best.allClear)||allClear===best.allClear&&rank>best.rank)best={...b,lines:total,multi,barLines,allClear,path,rank}}
   }
-  const route=best||partial;
-  return {complete:!!best,allClear:!!route?.allClear,lines:route?.lines||0,multi:route?.multi||0,barLines:route?.barLines||0,placed:route?.path.length||0,path:route?.path||[],completeOrders,ordersConsidered:6,visited,exhaustive:!pruned};
+  const route=best||partial,free=freeSpace(route||start);
+  return {endEmpty:free.empty,endLargestRegion:free.largest,complete:!!best,allClear:!!route?.allClear,lines:route?.lines||0,multi:route?.multi||0,barLines:route?.barLines||0,placed:route?.path.length||0,path:route?.path||[],completeOrders,ordersConsidered:6,visited,exhaustive:!pruned};
  }
  function generate(board,score,best,rng=Math.random){
-  const which=mode(score,best),sets=[];
+  const which=mode(score,best),sets=[],initial=encode(board),occupancy=(pop(initial.lo)+pop(initial.hi))/64;
   for(let i=0;i<config.randomCandidates;i++)sets.push(Array.from({length:3},()=>draw(which,rng)));
   // Explicit candidates are board-corrected opportunities, not part of the base draw ratios.
-  for(let i=0;i<config.largeSetCandidates;i++)sets.push([choose(groups.square9,rng),choose(groups.square9,rng),choose(groups.rectangle6,rng)]);
+  for(let i=0;i<config.largeSetCandidates;i++)if(rng()<config.largeSetChance[which])sets.push([choose(groups.square9,rng),choose(groups.square9,rng),choose(groups.rectangle6,rng)]);
   for(let i=0;i<config.mixedSetCandidates;i++)sets.push([choose(groups.square4,rng),choose(groups.rectangle6,rng),drawBar(rng)]);
   const planned=[];
   for(let i=0;i<config.constructiveCandidates;i++){
@@ -1309,7 +1372,8 @@ function createPieceGenerator(shapes){
   const pool=full.length?full:evaluated;
   const values=pool.map(c=>{
    const e=c.evaluation,large=c.ids.filter(id=>['square4','rectangle6','square9'].includes(category(id))).length;
-   return e.placed*30+e.completeOrders.length*(which==='joy'?5:2)-c.ids.filter(id=>shapes[id].length>=4&&!masks[id].some(p=>fits(encode(board),p))).length*(which==='joy'?12:6)+e.lines*(which==='joy'?20:12)+e.multi*12+e.barLines*8+(e.allClear?45:0)+(e.lines&&c.ids.some(id=>category(id)==='bar')?large*(which==='joy'?8:3):0);
+   const blocked=blockedLargePairs(initial,c.ids),nines=c.ids.filter(id=>category(id)==='square9').length;
+   return -blocked*(occupancy>.55?60:25)-Math.max(0,nines-1)*24+e.endLargestRegion*(occupancy>.55?1.1:.25)+e.endEmpty*(occupancy>.55?.6:.15)+e.placed*30+e.completeOrders.length*(which==='joy'?5:2)-c.ids.filter(id=>shapes[id].length>=4&&!masks[id].some(p=>fits(encode(board),p))).length*(which==='joy'?12:6)+e.lines*(which==='joy'?20:12)+e.multi*12+e.barLines*8+(e.allClear?45:0)+(e.lines&&c.ids.some(id=>category(id)==='bar')?large*(which==='joy'?8:3):0);
   });
   const max=Math.max(...values),weights=values.map(v=>Math.exp((v-max)/config.temperature[which]));
   let ticket=rng()*weights.reduce((a,b)=>a+b,0),chosen=pool[pool.length-1];
@@ -1317,7 +1381,7 @@ function createPieceGenerator(shapes){
   return {...chosen,mode:which,candidates:evaluated.length,verifiedFullCandidates:full.length};
  }
  function drawBar(rng){const length=rng()<config.bar4Share?4:5,horizontal=rng()<.5;return choose(groups.bar.filter(id=>shapes[id].length===length&&(Math.max(...shapes[id].map(p=>p[1]))===0)===horizontal),rng)}
- return {config,groups,category,mode,draw,generate,evaluate,encode,decode,masks,fits,apply,near};
+ return {config,groups,category,mode,draw,generate,evaluate,encode,decode,masks,fits,apply,near,space,blockedLargePairs};
 }
 const pieceGenerator=createPieceGenerator(SHAPES);
 // END SCORE ADAPTIVE GENERATOR
@@ -1327,6 +1391,7 @@ function makePieces(board=null,context=state){
  return result.ids.map(s=>({s,color:Math.floor(Math.random()*COLORS.length),used:false}));
 }
 try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mine-v227')||localStorage.getItem('jewel-mine-v226')||localStorage.getItem('jewel-mine-v225')||localStorage.getItem('jewel-mine-v224')||localStorage.getItem('jewel-mine-v223')||localStorage.getItem('jewel-mine-v222')||localStorage.getItem('jewel-mine-v221')||localStorage.getItem('jewel-mine-v220')||localStorage.getItem('jewel-mine-v219')||localStorage.getItem('jewel-mine-v218')||localStorage.getItem('jewel-mine-v217')||localStorage.getItem('jewel-mine-v216')||localStorage.getItem('jewel-mine-v215')||localStorage.getItem('jewel-mine-v214')||localStorage.getItem('jewel-mine-v213')||localStorage.getItem('jewel-mine-v212')||localStorage.getItem('jewel-mine-v211')||localStorage.getItem('jewel-mine-v210')||localStorage.getItem('jewel-mine-v29')||localStorage.getItem('jewel-mine-v28')||localStorage.getItem('jewel-mine-v27')||localStorage.getItem('jewel-mine-v26')||localStorage.getItem('jewel-mine-v25')||localStorage.getItem('jewel-mine-v24')||localStorage.getItem('jewel-mine-v23')||localStorage.getItem('jewel-mine-v22')||localStorage.getItem('jewel-mine-v21')||localStorage.getItem('jewel-mine-v20')||localStorage.getItem('animal-block-v20')||localStorage.getItem('animal-block-v19')||localStorage.getItem('animal-block-v18')||localStorage.getItem('animal-block-v17')||localStorage.getItem('animal-block-v16')||localStorage.getItem('animal-block-v15')||localStorage.getItem('animal-block-v14')||localStorage.getItem('animal-block-v13')||localStorage.getItem('animal-block-v12')||localStorage.getItem('animal-block-v11')||localStorage.getItem('animal-block-v10')||localStorage.getItem('animal-block-v09')||'null');if(x&&Array.isArray(x.board)&&x.board.length===64&&Array.isArray(x.pieces)&&x.pieces.length===3)state=x;else state=fresh()}catch(e){state=fresh()}state.sessionBest=Number.isFinite(state.sessionBest)&&state.sessionBest>=0?state.sessionBest:Math.max(0,Number(state.best)||0);state.bonus=Number.isFinite(state.bonus)?state.bonus:0;state.finds=state.finds||{};state.gems=Array.isArray(state.gems)&&state.gems.length===64?state.gems:Array(64).fill(null);let retainedGem=false;state.gems=state.gems.map((gem,i)=>{if(gem===null||state.board[i]===null||retainedGem)return null;retainedGem=true;return gem});delete state.animalAt;state.feverProgress=Number.isFinite(state.feverProgress)?state.feverProgress:0;state.feverTurns=Number.isFinite(state.feverTurns)?state.feverTurns:0;state.totalLines=Number.isFinite(state.totalLines)?state.totalLines:0;if(state.gemFeverVersion!==1){state.feverProgress=0;state.bonus=0;state.gemFeverVersion=1;}state.pieces.forEach(p=>{if((p.s===27||p.s===29)&&!p.used)p.s=5});const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};function toast(main,sub='',mode='normal'){
+ if(document.hidden){if(mode==='fever')pendingFeverNotice=true;return}
  const el=$('toast');
  el.className='toast'+(mode==='combo'?' combo':mode==='fever'?' fever-notice':'');
  el.innerHTML=sub?`${main}<span class="sub">${sub}</span>`:main;
@@ -1411,13 +1476,35 @@ function showSimultaneousReward(lines,lineEventPoints){
  const animation=simultaneousAnimation;
  animation.onfinish=()=>{if(simultaneousAnimation===animation)stopSimultaneousReward()};
 }
-document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSimultaneousReward()});
-function showClearToast(lines,comboChain,totalPoints){centerComboOnBoard();
+const backgroundAnimations=new Set();
+function syncVisibility(){
+ document.documentElement.classList.toggle('app-background',document.hidden);
+ if(document.hidden){
+  stopSimultaneousReward();
+  cosmeticTimers.forEach(clearTimeout);cosmeticTimers.clear();cosmeticKeys.clear();
+  clearTimeout(toast.timer);$('toast').classList.remove('show');
+  $('burstLayer').replaceChildren();document.querySelector('.gem-bonus-pop')?.remove();document.querySelector('.place-points')?.remove();document.querySelector('.boardwrap').classList.remove('haptic-clear');
+  cancelAnimationFrame(scoreAnimFrame);scoreAnimFrame=0;++scoreAnimToken;scoreAnimTarget=null;scoreDisplayValue=state.score;showScoreNumber(state.score);
+  $('score').getAnimations().forEach(a=>a.cancel());
+  if(drag)endDrag({pointerId:drag.id,clientX:drag.lastX,clientY:drag.lastY},true);
+  for(const animation of document.getAnimations())if(animation.playState==='running'){animation.pause();backgroundAnimations.add(animation)}
+ }else{
+  for(const animation of backgroundAnimations)if(animation.playState==='paused')animation.play();backgroundAnimations.clear();
+  showScoreNumber(state.score,true);
+  if(pendingFeverNotice&&state.feverTurns>0)toast('<span class="fever-letters"><b>F</b><b>E</b><b>V</b><b>E</b><b>R</b></span>','','fever');
+  pendingFeverNotice=false;
+ }
+}
+document.addEventListener('visibilitychange',syncVisibility);
+function showClearToast(lines,comboChain,lineEventPoints){
+ if(lines>=2){clearTimeout(toast.timer);$('toast').classList.remove('show');showSimultaneousReward(lines,lineEventPoints);return}
+ stopSimultaneousReward();centerComboOnBoard();
  const main=`<div class="combo-head"><span class="combo-num">${comboChain}</span><span class="combo-word">COMBO</span></div>`;
  toast(main,'','combo');
 }
 // Non-blocking, brief jewel reward. Players may immediately move the next piece.
 function animateRescue(found){
+ if(document.hidden)return;
  const type=found.type;
  document.querySelector('.gem-bonus-pop')?.remove();
  const pop=document.createElement('div');pop.className='gem-bonus-pop';
@@ -1426,7 +1513,7 @@ function animateRescue(found){
  const points=document.createElement('div');points.className='gem-bonus-points';points.textContent='💎 '+state.feverProgress+'/5';
  pop.append(icon,name,points);document.body.appendChild(pop);
 
- const timer=setTimeout(()=>pop.remove(),650);revealTimers.push(timer);
+ cosmeticTimeout(()=>pop.remove(),650,'gem');
 }
 function playReveals(found,done){
  animationLocked=false;
@@ -1434,8 +1521,8 @@ function playReveals(found,done){
  else done();
 }
 function burstClearedCells(indices){
- const layer=$('burstLayer');if(!indices.length)return;
- while(layer.childElementCount>=2)layer.firstElementChild.remove();
+ const layer=$('burstLayer');if(!indices.length||document.hidden)return;
+ while(layer.childElementCount>=2){const old=layer.firstElementChild;clearTimeout(old.cosmeticTimer);cosmeticTimers.delete(old.cosmeticTimer);old.remove()}
  const count=Math.min(8,indices.length);
  const rects=Array.from({length:count},(_,i)=>boardEl.children[indices[Math.floor(i*indices.length/count)]]?.getBoundingClientRect());
  const burst=document.createElement('div');burst.className='clear-fx-group';
@@ -1445,7 +1532,7 @@ function burstClearedCells(indices){
   flash.style.left=(rect.left+rect.width/2)+'px';flash.style.top=(rect.top+rect.height/2)+'px';
   burst.appendChild(flash);
  }
- layer.appendChild(burst);setTimeout(()=>burst.remove(),450);
+ layer.appendChild(burst);burst.cosmeticTimer=cosmeticTimeout(()=>burst.remove(),450);
 }
 function place(r,c){
  if(animationLocked)return;
@@ -1466,10 +1553,9 @@ function place(r,c){
  const feverMultiplier = feverWasActive ? 2 : 1;
  const placementPoints=targets.length*10*feverMultiplier;state.score+=placementPoints;
  const found=[];
- let comboBonus=0;
  let justTriggeredFever=false;
  if(lines){
-   buzz('clear');document.querySelector('.boardwrap').classList.add('haptic-clear');setTimeout(()=>document.querySelector('.boardwrap').classList.remove('haptic-clear'),190);
+   buzz('clear');document.querySelector('.boardwrap').classList.add('haptic-clear');cosmeticTimeout(()=>document.querySelector('.boardwrap').classList.remove('haptic-clear'),190,'haptic');
    if(state.comboRemain>0) state.comboChain += 1;
    else state.comboChain = 1;
    state.comboRemain = 3;
@@ -1477,15 +1563,12 @@ function place(r,c){
    burstClearedCells(clearCells);
    found.push(...collectGems(clearCells));
    for(const idx of clearCells) state.board[idx]=null;
-   // +0.1% per cleared line, stacking for the current run without a cap.
-   // The line score scales; jewel awards, placement points and all-clear bonus do not.
+   // Start-of-event L; simultaneous and cumulative factors affect base points only.
+   const reward=calculateLineReward(lines,state.totalLines,state.comboChain,feverWasActive);
+   const fullClear=state.board.every(v=>v===null);
+   const fullClearBonus=(fullClear?1000:0)*feverMultiplier;
+   state.score+=reward.lineEventPoints+fullClearBonus;
    state.totalLines+=lines;
-   const lineMultiplier=1+state.totalLines*0.01;
-   const clearScore = Math.round((lines*300 + Math.max(0,lines-1)*150)*lineMultiplier*feverMultiplier);
-   comboBonus = (state.comboChain>1 ? (state.comboChain-1)*100*lines : 0)*feverMultiplier;
-   const fullClear = state.board.every(v=>v===null);
-   const fullClearBonus = (fullClear ? 1000 : 0)*feverMultiplier;
-   state.score += clearScore + comboBonus + fullClearBonus;
    // Every recovered gem advances the FEVER gauge by one, regardless of rarity.
    // Gems recovered during FEVER count toward the next activation, but do not restart FEVER.
    state.feverProgress += found.length;
@@ -1493,10 +1576,9 @@ function place(r,c){
    if(!feverWasActive && state.feverProgress>=5){
      state.feverProgress-=5;state.feverTurns=5;justTriggeredFever=true;
    }
-   const comboTotal = placementPoints + clearScore + comboBonus + fullClearBonus + 0;
-   showClearToast(lines,state.comboChain,comboTotal);
-   if(fullClear) setTimeout(()=>toast('ALL CLEAR!','+1,000'),justTriggeredFever?2110:850);
-   if(justTriggeredFever) setTimeout(()=>toast('<span class="fever-letters"><b>F</b><b>E</b><b>V</b><b>E</b><b>R</b></span>','','fever'),760);
+   showClearToast(lines,state.comboChain,reward.lineEventPoints);
+   if(fullClear) cosmeticTimeout(()=>toast('ALL CLEAR!','+'+fullClearBonus.toLocaleString()),justTriggeredFever?2110:850,'all-clear');
+   if(justTriggeredFever) scheduleFeverNotice();
  }else{
    scoreTick(placementPoints);
    if(state.comboRemain>0){
@@ -1510,7 +1592,7 @@ function place(r,c){
    state.feverTurns -= 1;
    if(state.feverTurns===0 && state.feverProgress>=5){
      state.feverProgress-=5;state.feverTurns=5;justTriggeredFever=true;
-     setTimeout(()=>toast('<span class="fever-letters"><b>F</b><b>E</b><b>V</b><b>E</b><b>R</b></span>','','fever'),760);
+     scheduleFeverNotice();
    }
  }
  if(state.pieces.every(x=>x.used))state.pieces=makePieces(state.board);
@@ -1520,15 +1602,27 @@ function place(r,c){
  const noMoves=!hasMoves();
  playReveals(found,()=>{if(noMoves)finishGame()});
 }
-function reset(){stopSimultaneousReward();$('burstLayer').replaceChildren();const best=state.best;state=fresh(best);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
+function reset(){stopSimultaneousReward();cosmeticTimers.forEach(clearTimeout);cosmeticTimers.clear();cosmeticKeys.clear();pendingFeverNotice=false;$('burstLayer').replaceChildren();const best=state.best;state=fresh(best);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
 // Pointer drag v0.2: a real floating block follows ABOVE the finger, showing exact placement.
 function dragCellSize(){const c=boardEl.children[0], n=boardEl.children[1];return {size:c.getBoundingClientRect().width,pitch:n.getBoundingClientRect().left-c.getBoundingClientRect().left};}
-function dragPosition(e){if(!drag)return;const d=drag, first=boardEl.children[0].getBoundingClientRect();let left=e.clientX-d.width/2, top=e.clientY-d.lift-d.height/2;d.ghost.style.left=left+'px';d.ghost.style.top=top+'px';let c=Math.round((left-first.left)/d.pitch),r=Math.round((top-first.top)/d.pitch);d.r=r;d.c=c;const good=r>=0&&c>=0&&r<N&&c<N&&valid(state.pieces[d.index],r,c);d.good=good;d.ghost.classList.toggle('invalid',!good);if(r>=-2&&c>=-2&&r<N&&c<N){selected=d.index;preview(r,c);if(!good&&r>=0&&c>=0) $('message').textContent='';else if(good&&!document.querySelector('.boardwrap').classList.contains('readyline'))$('message').textContent='';}else{clearPreview();$('message').textContent='';}}
+function dragPosition(e){
+ if(!drag)return;const d=drag;d.lastX=e.clientX;d.lastY=e.clientY;
+ const first=d.boardOrigin,left=e.clientX-d.width/2,top=e.clientY-d.lift-d.height/2;
+ d.ghost.style.transform=`translate3d(${left}px,${top}px,0)`;
+ const c=Math.round((left-first.left)/d.pitch),r=Math.round((top-first.top)/d.pitch);
+ const good=r>=0&&c>=0&&r<N&&c<N&&valid(state.pieces[d.index],r,c);
+ d.r=r;d.c=c;d.good=good;
+ const key=r+':'+c+':'+good;if(d.previewKey===key)return;d.previewKey=key;
+ d.ghost.classList.toggle('invalid',!good);
+ if(r>=-2&&c>=-2&&r<N&&c<N){selected=d.index;preview(r,c);$('message').textContent=''}else{clearPreview();$('message').textContent=''}
+}
+function refreshDragOrigin(){if(drag)drag.boardOrigin=boardEl.children[0].getBoundingClientRect()}
+window.addEventListener('resize',refreshDragOrigin);window.addEventListener('scroll',refreshDragOrigin,{passive:true});
 function endDrag(e,cancel=false){if(!drag||e.pointerId!==drag.id)return;dragPosition(e);const d=drag;drag=null;clearPreview();document.querySelector('.boardwrap').classList.remove('dragactive');d.ghost.remove();tray.children[d.index]?.classList.remove('drag-source');suppressTap=true;setTimeout(()=>suppressTap=false,350);if(!cancel&&d.good&&valid(state.pieces[d.index],d.r,d.c)){selected=d.index;place(d.r,d.c)}else{selected=d.index;render();$('message').textContent='';}}
-tray.addEventListener('pointerdown',e=>{const el=e.target.closest('.piece');if(!el||drag||animationLocked)return;const i=Number(el.dataset.p);if(state.pieces[i].used)return;e.preventDefault();buzz('pick');selected=i;render();const p=state.pieces[i],shape=SHAPES[p.s], [w,h]=dims(shape), {size,pitch}=dragCellSize();const ghost=document.createElement('div');ghost.className='dragghost';ghost.style.setProperty('--cell',size+'px');ghost.style.gridTemplateColumns=`repeat(${w},${size}px)`;ghost.style.gridTemplateRows=`repeat(${h},${size}px)`;ghost.style.gap=(pitch-size)+'px';ghost.style.width=(w*size+(w-1)*(pitch-size))+'px';ghost.style.height=(h*size+(h-1)*(pitch-size))+'px';for(let y=0;y<h;y++)for(let x=0;x<w;x++){let u=document.createElement('div');const on=shape.some(q=>q[0]===x&&q[1]===y);u.className='unit'+(on?'':' empty');if(on){u.style.setProperty('--color',COLORS[p.color]);u.style.setProperty('--edge',EDGES[p.color])}ghost.appendChild(u)}document.body.appendChild(ghost);tray.children[i].classList.add('drag-source');drag={id:e.pointerId,index:i,ghost,pitch,width:parseFloat(ghost.style.width),height:parseFloat(ghost.style.height),lift:(h*size+(h-1)*(pitch-size))/2+size*3.9,r:-1,c:-1,good:false};document.querySelector('.boardwrap').classList.add('dragactive');dragPosition(e);});
+tray.addEventListener('pointerdown',e=>{const el=e.target.closest('.piece');if(!el||drag||animationLocked)return;const i=Number(el.dataset.p);if(state.pieces[i].used)return;e.preventDefault();buzz('pick');selected=i;render();const p=state.pieces[i],shape=SHAPES[p.s], [w,h]=dims(shape), {size,pitch}=dragCellSize();const ghost=document.createElement('div');ghost.className='dragghost';ghost.style.left='0';ghost.style.top='0';ghost.style.willChange='transform';ghost.style.setProperty('--cell',size+'px');ghost.style.gridTemplateColumns=`repeat(${w},${size}px)`;ghost.style.gridTemplateRows=`repeat(${h},${size}px)`;ghost.style.gap=(pitch-size)+'px';ghost.style.width=(w*size+(w-1)*(pitch-size))+'px';ghost.style.height=(h*size+(h-1)*(pitch-size))+'px';for(let y=0;y<h;y++)for(let x=0;x<w;x++){let u=document.createElement('div');const on=shape.some(q=>q[0]===x&&q[1]===y);u.className='unit'+(on?'':' empty');if(on){u.style.setProperty('--color',COLORS[p.color]);u.style.setProperty('--edge',EDGES[p.color])}ghost.appendChild(u)}document.body.appendChild(ghost);tray.children[i].classList.add('drag-source');drag={id:e.pointerId,index:i,ghost,pitch,boardOrigin:boardEl.children[0].getBoundingClientRect(),width:parseFloat(ghost.style.width),height:parseFloat(ghost.style.height),lift:(h*size+(h-1)*(pitch-size))/2+size*3.9,r:-1,c:-1,good:false};document.querySelector('.boardwrap').classList.add('dragactive');dragPosition(e);});
 window.addEventListener('pointermove',e=>{if(drag&&drag.id===e.pointerId){e.preventDefault();dragPosition(e)}},{passive:false});
 window.addEventListener('pointerup',e=>endDrag(e));window.addEventListener('pointercancel',e=>endDrag(e,true));
 // Tap-to-select remains usable if dragging is difficult.
 tray.addEventListener('click',e=>{if(suppressTap)return;const el=e.target.closest('.piece');if(!el)return;const i=Number(el.dataset.p);if(state.pieces[i].used)return;buzz('pick');selected=i;render();});
-$('restart').addEventListener('click',()=>{if(!animationLocked)$('resetConfirm').showModal()});$('resetNo').addEventListener('click',()=>$('resetConfirm').close());$('resetYes').addEventListener('click',()=>{$('resetConfirm').close();reset()});$('again').addEventListener('click',reset);render();if(!canPlay())finishGame()
+$('restart').addEventListener('click',()=>{if(!animationLocked)$('resetConfirm').showModal()});$('resetNo').addEventListener('click',()=>$('resetConfirm').close());$('resetYes').addEventListener('click',()=>{$('resetConfirm').close();reset()});$('again').addEventListener('click',reset);render();if(!canPlay())finishGame();if(document.hidden)syncVisibility()
 })();</script></body></html>

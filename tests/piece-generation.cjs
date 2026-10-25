@@ -2,7 +2,9 @@ const assert=require('assert/strict'),fs=require('fs');
 const {shapes,engine:g,rng}=require('./piece-test-helpers.cjs');
 const empty=()=>Array(64).fill(null);
 assert.equal(g.mode(7999,10000),'joy');assert.equal(g.mode(8000,10000),'challenge');assert.equal(g.mode(20000,10000),'challenge');assert.equal(g.mode(0,0),'joy');
-assert.equal(g.config.bar4Share,.5);
+assert.equal(g.config.bar4Share,.5);assert.equal(g.config.weights.joy.square9,12);assert.equal(g.config.weights.challenge.square9,8);assert.equal(shapes[13].length,9);assert.equal(shapes[33].length,6);
+const pockets=Array(64).fill(0);for(let r=0;r<3;r++)for(let c=0;c<3;c++)pockets[r*8+c]=null;for(const [r,c] of [[0,7],[1,7],[2,7],[3,0],[4,1],[5,2],[3,3],[4,4],[5,5],[6,6],[7,7]])pockets[r*8+c]=null;assert.equal(g.blockedLargePairs(pockets,[13,13,33]),3);
+const free=Array(64).fill(0);for(const i of [0,1,8,9,63])free[i]=null;assert.deepEqual({...g.space(g.encode(free))},{empty:5,largest:4});
 assert.deepEqual(Array.from(g.groups.rectangle6),[12,33]);
 for(const ids of Object.values(g.groups))assert(ids.every(i=>i!==27&&i!==29));
 for(let i=0;i<33;i++)assert(shapes[i]);
@@ -27,12 +29,12 @@ const scarceResult=g.evaluate(scarce,[13,0,5],{beamWidth:Infinity});assert(scarc
 for(let seed=0;seed<24;seed++){const random=rng(seed),board=empty().map(()=>random()<.45?0:null),candidate=g.generate(board,0,10000,random);verify(board,candidate.ids,candidate.evaluation);assert(candidate.evaluation.complete);assert(candidate.ids.every(id=>id!==27&&id!==29))}
 const stats={};
 for(const mode of ['joy','challenge']){
- const random=rng(mode==='joy'?20261025:20261026),count=100000,counts={square4:0,rectangle6:0,square9:0,bar:0,other:0},bar={horizontal:0,vertical:0,four:0,five:0},seen=new Set();
- for(let i=0;i<count;i++){const id=g.draw(mode,random);seen.add(id);const cat=g.category(id);counts[cat]++;if(cat==='bar'){bar[Math.max(...shapes[id].map(p=>p[1]))===0?'horizontal':'vertical']++;bar[shapes[id].length===4?'four':'five']++}}
+ const random=rng(mode==='joy'?20261025:20261026),count=100000,counts={square4:0,rectangle6:0,square9:0,bar:0,other:0},bar={horizontal:0,vertical:0,four:0,five:0},shapeCounts={},seen=new Set();
+ for(let i=0;i<count;i++){const id=g.draw(mode,random);seen.add(id);shapeCounts[id]=(shapeCounts[id]||0)+1;const cat=g.category(id);counts[cat]++;if(cat==='bar'){bar[Math.max(...shapes[id].map(p=>p[1]))===0?'horizontal':'vertical']++;bar[shapes[id].length===4?'four':'five']++}}
  const rows=Object.fromEntries(Object.entries(counts).map(([k,n])=>{const actual=n/count*100,target=g.config.weights[mode][k];assert(Math.abs(actual-target)<.65);return [k,{count:n,targetPercent:target,actualPercent:actual,errorPercentagePoints:actual-target}]}));
- for(const id of [5,12,13,33,9,23,24,25])assert(seen.has(id));assert(!seen.has(27)&&!seen.has(29));assert(Math.abs(bar.horizontal/(bar.horizontal+bar.vertical)-.5)<.02);stats[mode]={count,rows,bar};
+ for(const id of [5,12,13,33,9,23,24,25])assert(seen.has(id));assert(!seen.has(27)&&!seen.has(29));assert(Math.abs(bar.horizontal/(bar.horizontal+bar.vertical)-.5)<.02);stats[mode]={count,rows,bar,shapeCounts};
 }
 // Base drawing and corrected selection consume injected RNG only and are repeatable.
 const a=g.generate(empty(),0,10000,rng(42)),b=g.generate(empty(),0,10000,rng(42));assert.deepEqual(a,b);verify(empty(),a.ids,a.evaluation);
-fs.mkdirSync('docs/reports',{recursive:true});fs.writeFileSync('docs/reports/piece-base-statistics.json',JSON.stringify({seed:'20261025/20261026',stats,checks:{independentTransitionTrials:1000,allOrders:6,areaOnlyFalsePositive:false,retiredIds:[27,29],deterministic:true}},null,2)+'\n');
+fs.mkdirSync('docs/reports',{recursive:true});fs.writeFileSync('docs/reports/reward-base-statistics.json',JSON.stringify({seed:'20261025/20261026',stats,checks:{independentTransitionTrials:1000,allOrders:6,areaOnlyFalsePositive:false,retiredIds:[27,29],deterministic:true}},null,2)+'\n');
 console.log('Piece functional + 200000 base draws: PASS');

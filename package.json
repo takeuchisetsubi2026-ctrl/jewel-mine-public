@@ -5,9 +5,12 @@
   "scripts": {
     "build:web": "node scripts/build-web.cjs",
     "check": "node scripts/check-assets.cjs",
-    "test": "node tests/piece-generation.cjs && node tests/regression.cjs && node tests/piece-browser.cjs && node tests/simultaneous-reward.cjs",
+    "test": "node tests/piece-generation.cjs && node tests/regression.cjs && node tests/piece-browser.cjs && node tests/simultaneous-reward.cjs && node tests/reward-scoring.cjs && node tests/reward-integration.cjs",
     "sync:android": "npm run build:web && cap sync android",
-    "test:simulation": "node tests/piece-simulation.cjs"
+    "test:simulation": "node tests/piece-simulation.cjs",
+    "test:reward-simulation": "node tests/reward-simulation.cjs",
+    "test:generation-benchmark": "node tests/reward-generation-benchmark.cjs",
+    "test:power": "node tests/reward-power.cjs"
   },
   "engines": {
     "node": ">=22"
