@@ -51,6 +51,11 @@ jobs:
           print('Unsigned AAB archive verified (no JAR signing certificate blocks).')
           print('Not upload-ready: Play signing and identity checks still required.')
           PY
+      - name: Verify application ID inside AAB manifest
+        run: |
+          python3 scripts/verify-aab-package.py \
+            android/app/build/outputs/bundle/release/app-release.aab \
+            com.takeuchisetsubi.jewelmine
       - uses: actions/upload-artifact@v4
         with:
           name: play-aab-unsigned-not-for-upload
