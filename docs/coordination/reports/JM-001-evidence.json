@@ -55,5 +55,11 @@
     "feature/reward-balance-battery": "1ac50c0ef3f230552935dac261422aeebac5cc72",
     "feature/score-versioning-difficulty": "d513c89a95d0bfc382ef2e5257720e66df9142e6",
     "coordination/single-task-queue-20261025": "cc6bbf17092a45ae8d79b382d0b2a8cef1cc6e9f"
+  },
+  "coordinationRefresh": {
+    "head": "318fe33daa6f6766e9fa95841bcd3b5440385be2",
+    "reason": "concurrent source updates detected at final verification; preserved in investigation branch",
+    "jm002Status": "IMPLEMENTED IN PR #5; DEVICE TEST PENDING",
+    "communicationPing": "preserved without execution; outside JM-001"
   }
 }

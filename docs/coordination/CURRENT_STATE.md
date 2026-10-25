@@ -1,42 +1,54 @@
 # Jewel Mine — verified baseline and open questions
-Updated: 2026-10-25 (Japan time)
+Updated: 2026-10-25 UTC
 
 Repository: wild-uncle/jewel-mine-public
 
-- PR #1: fix/android-feedback-ui (earlier Android feedback). The head commit 8b598c808cdf3e17a7952575965129bee22b7033 is an ancestor of feature/score-versioning-difficulty, per GitHub compare.
+## GitHub status
+- PR #1: fix/android-feedback-ui.
 - PR #2: feature/score-adaptive-piece-generation.
 - PR #3: feature/reward-balance-battery.
-- PR #4: feature/score-versioning-difficulty; draft, open when checked.
-- PR #4 implementation: 298c901aa71af1bd0751685d1657ca53aa69d882.
-- PR #4 report: d513c89a95d0bfc382ef2e5257720e66df9142e6.
-- Report: docs/reports/2026-10-25-score-versioning-difficulty.md.
-- Android test APK for PR #4: https://github.com/wild-uncle/jewel-mine-public/actions/runs/40161734949/artifacts/12585894845
-- Build reported as successful; on-device update, save restoration, heat and battery have NOT been verified.
+- PR #4: feature/score-versioning-difficulty, implementation 298c901aa71af1bd0751685d1657ca53aa69d882, report d513c89a95d0bfc382ef2e5257720e66df9142e6.
+- PR #5: feature/apk-build-identity, draft/open when checked. Source build commit 2b489f1809e8f0588556fb52db7ebcfa2c92528f; PR head may have later report commits.
+- PR #6: coordination/single-task-queue-20261025, this documentation proposal.
+- No existing PR or main should be merged or changed without owner approval.
 
-### Implemented according to report
-- New score rule ID line-v2-20261025 and separate save namespace jewel-mine-v36-score-rules.
-- Old saves preserved read-only; separate legacy/unknown, new-rule and reference bests.
-- New games: old-formula-equivalent progression for the 80% difficulty switch (B, trial).
-- Resumed unversioned games: existing progression and generation behavior.
-- Piece generation evaluation modified experimentally; not proven better in human play.
-- FEVER, multiplier display, drag and idle power work inherited, not to be reimplemented.
+## Inheritance audit (PR #5 report)
+PR #1, #2 and #3 heads are ancestors of PR #4. Older separate commit 87dde26 is not an ancestor; its key UX features were implemented independently in PR #1. Earlier effect implementation was intentionally replaced. No missing gameplay feature was found in the inspected Git history and archived APK. Do not cherry-pick old features wholesale.
 
-### Android versions are NOT yet identified
-Two separately installed Android icons are observed, showing v4.0.7 and v4.0.8. The user believes v4.0.7 may have newer behavior. Screen labels alone do not prove source commit, app ID, signing identity, save namespace, or versionCode. Preserve both until traced.
+## Game and save state
+- PR #4 new score rule line-v2-20261025, separate save namespace jewel-mine-v36-score-rules and score-records ledger.
+- Existing/unknown-origin records preserved; no retroactive score conversion.
+- New games use old-formula-equivalent difficulty progression (B) experimentally. Resumed unversioned games retain prior behavior.
+- Score, FEVER, drag, battery work inherited; PR #5 reports identical gameplay JS/CSS to PR #4.
+- Device-level saved-state migration, responsiveness, battery and heat still unverified.
 
-### Open decisions
-1. Map each installed Android app to its package ID, build source, signature and save scope.
-2. Confirm update-install and save recovery on device without uninstall or data clear.
-3. Retain unknown-provenance best as an explicitly provisional B-mode baseline; no retroactive conversion.
-4. Compare B-mode and piece-generation candidate with larger tests and human feedback.
-5. Only then prioritize non-destructive recovery UI and separate best-score details.
+## PR #5 numbered APK candidate (GitHub evidence, NOT device-verified)
+- Label: 09 ジュエルマイン; footer TEST 09 / v4.0.9 / actual build SHA.
+- Package: com.wilduncle.jewelmine.codextest.
+- Android versionName: 4.0.9; versionCode: 9000271.
+- Signing certificate SHA-256: adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029.
+- CI: https://github.com/wild-uncle/jewel-mine-public/actions/runs/40170315521
+- APK artifact: https://github.com/wild-uncle/jewel-mine-public/actions/runs/40170315521/artifacts/12589722990
+- Release record: https://github.com/wild-uncle/jewel-mine-public/actions/runs/40170315521/artifacts/12588963945
+- Report: docs/reports/2026-10-25-apk-identity-and-thread-audit.md on PR #5 branch.
+- CI reported label/version/source/signature and regression checks successful. No real-device update yet.
 
-### JM-001 investigation update — 2026-10-25 UTC
+## Unknown installed apps
+User has two separately visible app icons labeled v4.0.7 and v4.0.8. Their actual package IDs, signing identity, versionCode, build source and saved-data scope remain unverified. v4.0.8 source could not be mapped from repository history. Two icons do NOT by themselves prove distinct package IDs; browser/PWA/profile explanations remain possible.
 
-- Owner explicitly designated the current main Codex thread; no automatic task polling/execution is installed.
-- Task source: coordination/single-task-queue-20261025 @ cc6bbf17092a45ae8d79b382d0b2a8cef1cc6e9f.
-- JM-001 report: [reports/JM-001.md](reports/JM-001.md); status REVIEW, installed-app mapping still unknown.
-- Work branch: investigation/jm-001-apk-identities; investigation PR #7. These updates exist on that work branch, not merged into PR #6 or main.
-- Provenance clarification: debug-25 API head is 298c901, but checkout used PR merge SHA 10e89ca24314a541883fd31e545bf9c41862a82d. The complete tracked-file tree equals 298c901. See report/evidence for the distinction.
-- Standard app ID codextest plus existing public test certificate is a recommendation, not owner approval or device identification. Neither old app has been installed over, removed or cleared by this investigation.
-- Existing draft PR #5 contains pre-queue build-identity work; untouched here. It is not an approved JM-002 completion. JM-002 and later tasks remain blocked/waiting as recorded.
+Preserve both. Before installing TEST09, identify intended update target from Android app info / read-only APK inspection. If installation offers a new app instead of an expected update, or refuses update, stop. Do not uninstall or clear data.
+
+## Next decisions
+1. Read-only device identification and safe TEST09 update path.
+2. Owner confirms device saved-game restoration and usability.
+3. B-mode and piece-generation candidate evaluation with larger sample and real feedback.
+4. Non-destructive recovery UI and separate best details after approval.
+
+## JM-001 additional evidence — main Codex investigation PR #7
+
+- Main Codex thread designated explicitly by the owner on 2026-10-25; no automatic polling or task execution installed.
+- Investigation branch: investigation/jm-001-apk-identities; report [reports/JM-001.md](reports/JM-001.md). Status REVIEW for repository evidence; device mapping still PARTIAL and awaiting owner information.
+- Source initially cc6bbf1, refreshed against coordination commit 318fe33daa6f6766e9fa95841bcd3b5440385be2 after concurrent shared-queue updates. Those updates, including PR5 implemented/device-pending status, are retained.
+- Provenance clarification: debug-25 API head is 298c901, but checkout used PR merge SHA 10e89ca24314a541883fd31e545bf9c41862a82d. Both complete trees equal 9c6066be679c605762404c92101d628ae3d864d4.
+- New report/evidence only; no new APK, installation, game/save/app-ID/signing changes or next-task implementation.
+- New communication-ping document was preserved without executing it; it is not part of the manually started JM-001 task.
