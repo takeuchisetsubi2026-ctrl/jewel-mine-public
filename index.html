@@ -1084,7 +1084,7 @@ body:not(.fever) .cell.gem-hidden,body:not(.fever) .cell.gem-hidden::after,.cell
 html.app-background *,html.app-background *::before,html.app-background *::after{animation-play-state:paused!important;transition:none!important}
 </style>
 </head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0.7 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div id="simultaneousReward" class="simultaneous-reward" hidden aria-live="polite" aria-atomic="true"><i class="reward-glow" aria-hidden="true"></i><strong class="reward-multiplier"></strong><span class="reward-points"></span></div><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
-(()=>{'use strict';const N=8,KEY='jewel-mine-v35';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]],[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
+(()=>{'use strict';const N=8,KEY='jewel-mine-v36-score-rules';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]],[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
 // Haptics only work in browsers implementing navigator.vibrate (iOS Safari does not).
 function buzz(kind){try{if(typeof navigator.vibrate==='function')navigator.vibrate(kind==='clear'?24:12)}catch(e){}}
 let clearHintActive=false;
@@ -1218,6 +1218,75 @@ function calculateLineReward(lines,previousLines,comboChain,feverActive){
  return {basePoints,simultaneousMultiplier,cumulativeMultiplier,comboPoints,feverMultiplier,lineEventPoints};
 }
 // END LINE REWARD
+// BEGIN SCORE VERSIONING
+const SCORE_RULE_V1='line-v1-pr2';
+const SCORE_RULE_V2='line-v2-20261025',SCORE_RULE_UNKNOWN='unversioned',SCORE_RULE_MIXED='mixed-unknown+line-v2';
+const SCORE_RECORD_KEY='jewel-mine-score-records-v1';
+const nonnegative=value=>Number.isFinite(value)&&value>=0?value:0;
+function mergeScoreRecords(...records){
+ const out={schema:1,legacyEquivalentRuleId:SCORE_RULE_V1,legacyBest:0,legacyEquivalentBest:0,v2Best:0,allBest:0,legacyProvenance:'none'};
+ for(const record of records){
+  if(!record||typeof record!=='object')continue;
+  for(const key of ['legacyBest','legacyEquivalentBest','v2Best','allBest'])out[key]=Math.max(out[key],nonnegative(record[key]));
+  if(record.legacyBest>0)out.legacyProvenance='unversioned-unknown';
+ }
+ out.allBest=Math.max(out.allBest,out.legacyBest,out.v2Best);return out;
+}
+function newScoreRun(best,records,fallback=10000){
+ const scoreRecords=mergeScoreRecords(records,{allBest:best});
+ const reference=Math.max(scoreRecords.legacyBest,scoreRecords.legacyEquivalentBest)||fallback;
+ return {scoreRuleId:SCORE_RULE_V2,scoreProvenance:'exact-v2',scoreRecords,
+  legacyProgress:0,legacyProgressRuleId:SCORE_RULE_V1,legacyProgressExact:true,sessionV2Best:scoreRecords.v2Best,
+  difficultyPolicy:'legacy-events',difficultyReference:reference,
+  difficultyReferenceSource:scoreRecords.legacyBest>=scoreRecords.legacyEquivalentBest&&scoreRecords.legacyBest>0?'unclassified-legacy-record':scoreRecords.legacyEquivalentBest>0?'exact-legacy-equivalent-record':'fallback',
+  challengeLatched:false};
+}
+function hydrateScoreRun(s,ledger,counterKnown=true,fallback=10000){
+ s.scoreRecords=mergeScoreRecords(ledger,s.scoreRecords,{allBest:s.best});
+ if(!s.scoreRuleId){
+  s.scoreRecords=mergeScoreRecords(s.scoreRecords,{legacyBest:s.best});
+  s.scoreRuleId=SCORE_RULE_UNKNOWN;s.scoreProvenance='unknown-prefix';
+  s.migrationPrefix={score:s.score,totalLines:counterKnown?s.totalLines:null,rule:'unversioned-unknown'};
+  s.legacyProgress=null;s.legacyProgressRuleId=SCORE_RULE_V1;s.legacyProgressExact=false;s.legacyProgressSinceMigration=counterKnown?0:null;s.v2ScoreSinceMigration=0;
+  s.difficultyPolicy='resume-display-unknown';s.difficultyReference=s.sessionBest>0?s.sessionBest:fallback;
+  s.difficultyReferenceSource='unversioned-session';s.sessionV2Best=null;
+ }
+ if(s.scoreRuleId!==SCORE_RULE_V2||s.scoreProvenance!=='exact-v2'||!Number.isFinite(s.legacyProgress)||s.legacyProgress<0||s.legacyProgressExact!==true){
+  s.legacyProgress=null;s.legacyProgressExact=false;
+  s.difficultyPolicy='resume-display-unknown';
+ }
+ if(!Number.isFinite(s.difficultyReference)||s.difficultyReference<=0){s.difficultyReference=s.sessionBest>0?s.sessionBest:fallback;s.difficultyPolicy='resume-display-unknown'}
+ if(typeof s.challengeLatched!=='boolean')s.challengeLatched=s.score>=s.difficultyReference*.8;
+ s.best=Math.max(nonnegative(s.best),s.scoreRecords.allBest);
+ return s;
+}
+function difficultyDecision(s,policy=s.difficultyPolicy,fallback=10000){
+ let reference,progress;
+ if(policy==='legacy-events'&&s.legacyProgressExact===true&&Number.isFinite(s.legacyProgress)){reference=s.difficultyReference;progress=s.legacyProgress}
+ else if(policy==='new-record'&&Number.isFinite(s.sessionV2Best)){reference=s.sessionV2Best||fallback;progress=s.score}
+ else {policy='resume-display-unknown';reference=s.difficultyPolicy==='resume-display-unknown'?s.difficultyReference:s.sessionBest;progress=s.score}
+ reference=reference>0?reference:fallback;
+ return {policy,reference,progress,mode:s.challengeLatched||progress>=reference*.8?'challenge':'joy'};
+}
+function legacyEventReward({cells,lines,previousLines,comboChain,feverActive,fullClear}){
+ const f=feverActive?2:1;
+ return cells*10*f+(lines?Math.round((lines*300+Math.max(0,lines-1)*150)*(1+.01*(previousLines+lines))*f)+Math.max(0,comboChain-1)*100*lines*f:0)+(fullClear?1000*f:0);
+}
+function advanceScoreRun(s,event,displayDelta){
+ const oldDelta=legacyEventReward(event);
+ if(s.legacyProgressExact===true&&Number.isFinite(s.legacyProgress))s.legacyProgress+=oldDelta;
+ else if(Number.isFinite(s.legacyProgressSinceMigration))s.legacyProgressSinceMigration+=oldDelta;
+ if(s.scoreRuleId===SCORE_RULE_UNKNOWN||s.scoreRuleId===SCORE_RULE_MIXED){s.scoreRuleId=SCORE_RULE_MIXED;s.scoreProvenance='mixed-unknown-prefix';s.v2ScoreSinceMigration=nonnegative(s.v2ScoreSinceMigration)+displayDelta}
+ return oldDelta;
+}
+function finishScoreRun(s){
+ s.scoreRecords=mergeScoreRecords(s.scoreRecords,{allBest:s.best});
+ if(s.scoreRuleId===SCORE_RULE_V2&&s.scoreProvenance==='exact-v2'){
+  s.scoreRecords.v2Best=Math.max(s.scoreRecords.v2Best,s.score);
+  if(s.legacyProgressExact&&Number.isFinite(s.legacyProgress))s.scoreRecords.legacyEquivalentBest=Math.max(s.scoreRecords.legacyEquivalentBest,s.legacyProgress);
+ }
+}
+// END SCORE VERSIONING
 // BEGIN SCORE ADAPTIVE GENERATOR
 // Pure occupancy model. Existing shape IDs are append-only for save compatibility.
 function createPieceGenerator(shapes){
@@ -1300,9 +1369,11 @@ function createPieceGenerator(shapes){
  function evaluate(board,ids,{beamWidth=config.beamWidth,witness=[]}={}){
   const start=Array.isArray(board)?encode(board):board;
   let best=null,partial=null,visited=0,pruned=false;
-  const completeOrders=[],regionCache=new Map();
+  const completeOrders=[],regionCache=new Map(),orderMemo=new Map();
   const freeSpace=b=>{const key=b.lo+':'+b.hi;if(!regionCache.has(key))regionCache.set(key,space(b));return regionCache.get(key)};
   for(const order of orders){
+   const symmetryKey=order.map(index=>ids[index]).join(':');
+   if(orderMemo.has(symmetryKey)){if(orderMemo.get(symmetryKey))completeOrders.push(order.join(''));continue}
    let frontier=[{...start,lines:0,multi:0,barLines:0,allClear:false,path:[],rank:0}];
    for(const index of order){
     const id=ids[index],next=new Map();
@@ -1320,7 +1391,7 @@ function createPieceGenerator(shapes){
     frontier=sorted.slice(0,beamWidth);
     if(!frontier.length)break;
    }
-   const full=frontier.filter(n=>n.path.length===3);
+   const full=frontier.filter(n=>n.path.length===3);orderMemo.set(symmetryKey,full.length>0);
    for(const node of full){const free=freeSpace(node);node.rank+=free.largest*.3+free.empty*.1}
    if(full.length){completeOrders.push(order.join(''));for(const node of full)if(!best||(node.allClear&&!best.allClear)||node.allClear===best.allClear&&node.rank>best.rank)best=node}
   }
@@ -1337,10 +1408,10 @@ function createPieceGenerator(shapes){
    if(path.length===3){if(!completeOrders.includes(path.map(p=>p.index).join('')))completeOrders.push(path.map(p=>p.index).join(''));if(!best||(allClear&&!best.allClear)||allClear===best.allClear&&rank>best.rank)best={...b,lines:total,multi,barLines,allClear,path,rank}}
   }
   const route=best||partial,free=freeSpace(route||start);
-  return {endEmpty:free.empty,endLargestRegion:free.largest,complete:!!best,allClear:!!route?.allClear,lines:route?.lines||0,multi:route?.multi||0,barLines:route?.barLines||0,placed:route?.path.length||0,path:route?.path||[],completeOrders,ordersConsidered:6,visited,exhaustive:!pruned};
+  return {endLo:(route||start).lo,endHi:(route||start).hi,endEmpty:free.empty,endLargestRegion:free.largest,complete:!!best,allClear:!!route?.allClear,lines:route?.lines||0,multi:route?.multi||0,barLines:route?.barLines||0,placed:route?.path.length||0,path:route?.path||[],completeOrders,ordersConsidered:6,symmetrySkipped:6-orderMemo.size,visited,exhaustive:!pruned};
  }
- function generate(board,score,best,rng=Math.random){
-  const which=mode(score,best),sets=[],initial=encode(board),occupancy=(pop(initial.lo)+pop(initial.hi))/64;
+ function generate(board,score,best,rng=Math.random,forcedMode=null){
+  const which=forcedMode||mode(score,best),sets=[],initial=encode(board),occupancy=(pop(initial.lo)+pop(initial.hi))/64;
   for(let i=0;i<config.randomCandidates;i++)sets.push(Array.from({length:3},()=>draw(which,rng)));
   // Explicit candidates are board-corrected opportunities, not part of the base draw ratios.
   for(let i=0;i<config.largeSetCandidates;i++)if(rng()<config.largeSetChance[which])sets.push([choose(groups.square9,rng),choose(groups.square9,rng),choose(groups.rectangle6,rng)]);
@@ -1373,7 +1444,8 @@ function createPieceGenerator(shapes){
   const values=pool.map(c=>{
    const e=c.evaluation,large=c.ids.filter(id=>['square4','rectangle6','square9'].includes(category(id))).length;
    const blocked=blockedLargePairs(initial,c.ids),nines=c.ids.filter(id=>category(id)==='square9').length;
-   return -blocked*(occupancy>.55?60:25)-Math.max(0,nines-1)*24+e.endLargestRegion*(occupancy>.55?1.1:.25)+e.endEmpty*(occupancy>.55?.6:.15)+e.placed*30+e.completeOrders.length*(which==='joy'?5:2)-c.ids.filter(id=>shapes[id].length>=4&&!masks[id].some(p=>fits(encode(board),p))).length*(which==='joy'?12:6)+e.lines*(which==='joy'?20:12)+e.multi*12+e.barLines*8+(e.allClear?45:0)+(e.lines&&c.ids.some(id=>category(id)==='bar')?large*(which==='joy'?8:3):0);
+   const terminal={lo:e.endLo,hi:e.endHi},futureFamilies=['square4','rectangle6','bar'].filter(k=>groups[k].some(id=>masks[id].some(p=>fits(terminal,p)))).length;
+   return e.path.filter(p=>p.lines>=3).length*28+futureFamilies*futureFamilies*4-blocked*(occupancy>.55?60:25)-Math.max(0,nines-1)*24+e.endLargestRegion*(occupancy>.55?1.1:.25)+e.endEmpty*(occupancy>.55?.6:.15)+e.placed*30+e.completeOrders.length*(which==='joy'?5:2)-c.ids.filter(id=>shapes[id].length>=4&&!masks[id].some(p=>fits(encode(board),p))).length*(which==='joy'?12:6)+e.lines*(which==='joy'?20:12)+e.multi*12+e.barLines*8+(e.allClear?65:0)+(e.lines&&c.ids.some(id=>category(id)==='bar')?large*(which==='joy'?8:3):0);
   });
   const max=Math.max(...values),weights=values.map(v=>Math.exp((v-max)/config.temperature[which]));
   let ticket=rng()*weights.reduce((a,b)=>a+b,0),chosen=pool[pool.length-1];
@@ -1385,12 +1457,42 @@ function createPieceGenerator(shapes){
 }
 const pieceGenerator=createPieceGenerator(SHAPES);
 // END SCORE ADAPTIVE GENERATOR
-const fresh=(best=0)=>({gems:Array(64).fill(null),board:Array(64).fill(null),pieces:makePieces(null,{score:0,sessionBest:best}),score:0,best,sessionBest:best,rescued:0,bonus:0,finds:{},turn:0,comboChain:0,comboRemain:0,feverProgress:0,feverTurns:0,gemFeverVersion:1,totalLines:0});const clone=o=>JSON.parse(JSON.stringify(o));
+let scorePersistenceBlocked=false,recordWritesBlocked=false,lastSavedState=null,lastSavedRecords=null;
+function validScoreRecordShape(data){return data&&typeof data==='object'&&!Array.isArray(data)&&data.schema===1&&(data.legacyEquivalentRuleId===undefined||data.legacyEquivalentRuleId===SCORE_RULE_V1)&&['legacyBest','legacyEquivalentBest','v2Best','allBest'].every(k=>data[k]===undefined||Number.isFinite(data[k])&&data[k]>=0)}
+function readScoreRecords(){try{const raw=localStorage.getItem(SCORE_RECORD_KEY);if(!raw)return mergeScoreRecords();const data=JSON.parse(raw);if(!validScoreRecordShape(data)){recordWritesBlocked=true;return data&&data.schema===1?mergeScoreRecords(data):mergeScoreRecords()}lastSavedRecords=raw;return mergeScoreRecords(data)}catch(e){recordWritesBlocked=true;return mergeScoreRecords()}}
+function readArchivedBest(){try{const old=JSON.parse(localStorage.getItem('jewel-mine-v35')||'null');return old?mergeScoreRecords({legacyBest:nonnegative(old.best),allBest:nonnegative(old.best)}):mergeScoreRecords()}catch(e){return mergeScoreRecords()}}
+const persistedScoreRecords=mergeScoreRecords(readScoreRecords(),readArchivedBest());let knownScoreRecords=persistedScoreRecords;
+function fresh(best=0,records=null){
+ const next={gems:Array(64).fill(null),board:Array(64).fill(null),pieces:[],score:0,best,sessionBest:best,rescued:0,bonus:0,finds:{},turn:0,comboChain:0,comboRemain:0,feverProgress:0,feverTurns:0,gemFeverVersion:1,totalLines:0,
+  ...newScoreRun(best,records||{legacyBest:best,allBest:best},pieceGenerator.config.firstBest)};
+ next.pieces=makePieces(null,next);return next;
+}
+const clone=o=>JSON.parse(JSON.stringify(o));
 function makePieces(board=null,context=state){
- const result=pieceGenerator.generate(board||Array(64).fill(null),context?.score||0,context?.sessionBest??context?.best??0);
+ const decision=difficultyDecision(context,context.difficultyPolicy,pieceGenerator.config.firstBest);
+ context.challengeLatched=decision.mode==='challenge';
+ const result=pieceGenerator.generate(board||Array(64).fill(null),decision.progress,decision.reference,Math.random,decision.mode);
  return result.ids.map(s=>({s,color:Math.floor(Math.random()*COLORS.length),used:false}));
 }
-try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mine-v227')||localStorage.getItem('jewel-mine-v226')||localStorage.getItem('jewel-mine-v225')||localStorage.getItem('jewel-mine-v224')||localStorage.getItem('jewel-mine-v223')||localStorage.getItem('jewel-mine-v222')||localStorage.getItem('jewel-mine-v221')||localStorage.getItem('jewel-mine-v220')||localStorage.getItem('jewel-mine-v219')||localStorage.getItem('jewel-mine-v218')||localStorage.getItem('jewel-mine-v217')||localStorage.getItem('jewel-mine-v216')||localStorage.getItem('jewel-mine-v215')||localStorage.getItem('jewel-mine-v214')||localStorage.getItem('jewel-mine-v213')||localStorage.getItem('jewel-mine-v212')||localStorage.getItem('jewel-mine-v211')||localStorage.getItem('jewel-mine-v210')||localStorage.getItem('jewel-mine-v29')||localStorage.getItem('jewel-mine-v28')||localStorage.getItem('jewel-mine-v27')||localStorage.getItem('jewel-mine-v26')||localStorage.getItem('jewel-mine-v25')||localStorage.getItem('jewel-mine-v24')||localStorage.getItem('jewel-mine-v23')||localStorage.getItem('jewel-mine-v22')||localStorage.getItem('jewel-mine-v21')||localStorage.getItem('jewel-mine-v20')||localStorage.getItem('animal-block-v20')||localStorage.getItem('animal-block-v19')||localStorage.getItem('animal-block-v18')||localStorage.getItem('animal-block-v17')||localStorage.getItem('animal-block-v16')||localStorage.getItem('animal-block-v15')||localStorage.getItem('animal-block-v14')||localStorage.getItem('animal-block-v13')||localStorage.getItem('animal-block-v12')||localStorage.getItem('animal-block-v11')||localStorage.getItem('animal-block-v10')||localStorage.getItem('animal-block-v09')||'null');if(x&&Array.isArray(x.board)&&x.board.length===64&&Array.isArray(x.pieces)&&x.pieces.length===3)state=x;else state=fresh()}catch(e){state=fresh()}state.sessionBest=Number.isFinite(state.sessionBest)&&state.sessionBest>=0?state.sessionBest:Math.max(0,Number(state.best)||0);state.bonus=Number.isFinite(state.bonus)?state.bonus:0;state.finds=state.finds||{};state.gems=Array.isArray(state.gems)&&state.gems.length===64?state.gems:Array(64).fill(null);let retainedGem=false;state.gems=state.gems.map((gem,i)=>{if(gem===null||state.board[i]===null||retainedGem)return null;retainedGem=true;return gem});delete state.animalAt;state.feverProgress=Number.isFinite(state.feverProgress)?state.feverProgress:0;state.feverTurns=Number.isFinite(state.feverTurns)?state.feverTurns:0;state.totalLines=Number.isFinite(state.totalLines)?state.totalLines:0;if(state.gemFeverVersion!==1){state.feverProgress=0;state.bonus=0;state.gemFeverVersion=1;}state.pieces.forEach(p=>{if((p.s===27||p.s===29)&&!p.used)p.s=5});const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};function toast(main,sub='',mode='normal'){
+function validScoreSnapshot(x){return x&&Array.isArray(x.board)&&x.board.length===64&&x.board.every(v=>v===null||Number.isInteger(v)&&v>=0&&v<COLORS.length)&&Array.isArray(x.pieces)&&x.pieces.length===3&&x.pieces.every(p=>p&&Number.isInteger(p.s)&&p.s>=0&&p.s<SHAPES.length&&Number.isInteger(p.color)&&p.color>=0&&p.color<COLORS.length&&typeof p.used==='boolean')&&Number.isFinite(x.score)&&x.score>=0&&Number.isFinite(x.best)&&x.best>=0}
+function validVersionedMetadata(x){
+ if(!x.scoreRuleId)return true;
+ if(x.scoreRuleId===SCORE_RULE_V2)return x.scoreProvenance==='exact-v2'&&x.legacyProgressExact===true&&Number.isFinite(x.legacyProgress)&&x.legacyProgress>=0&&x.legacyProgressRuleId===SCORE_RULE_V1&&Number.isInteger(x.totalLines)&&x.totalLines>=0&&Number.isFinite(x.difficultyReference)&&x.difficultyReference>0&&Number.isFinite(x.sessionV2Best)&&x.sessionV2Best>=0&&typeof x.challengeLatched==='boolean';
+ if(x.scoreRuleId===SCORE_RULE_UNKNOWN||x.scoreRuleId===SCORE_RULE_MIXED)return x.migrationPrefix&&Number.isFinite(x.migrationPrefix.score)&&x.legacyProgress===null&&x.legacyProgressExact===false;
+ return false;
+}
+let loadedCounterKnown=true;
+try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mine-v35')||localStorage.getItem('jewel-mine-v227')||localStorage.getItem('jewel-mine-v226')||localStorage.getItem('jewel-mine-v225')||localStorage.getItem('jewel-mine-v224')||localStorage.getItem('jewel-mine-v223')||localStorage.getItem('jewel-mine-v222')||localStorage.getItem('jewel-mine-v221')||localStorage.getItem('jewel-mine-v220')||localStorage.getItem('jewel-mine-v219')||localStorage.getItem('jewel-mine-v218')||localStorage.getItem('jewel-mine-v217')||localStorage.getItem('jewel-mine-v216')||localStorage.getItem('jewel-mine-v215')||localStorage.getItem('jewel-mine-v214')||localStorage.getItem('jewel-mine-v213')||localStorage.getItem('jewel-mine-v212')||localStorage.getItem('jewel-mine-v211')||localStorage.getItem('jewel-mine-v210')||localStorage.getItem('jewel-mine-v29')||localStorage.getItem('jewel-mine-v28')||localStorage.getItem('jewel-mine-v27')||localStorage.getItem('jewel-mine-v26')||localStorage.getItem('jewel-mine-v25')||localStorage.getItem('jewel-mine-v24')||localStorage.getItem('jewel-mine-v23')||localStorage.getItem('jewel-mine-v22')||localStorage.getItem('jewel-mine-v21')||localStorage.getItem('jewel-mine-v20')||localStorage.getItem('animal-block-v20')||localStorage.getItem('animal-block-v19')||localStorage.getItem('animal-block-v18')||localStorage.getItem('animal-block-v17')||localStorage.getItem('animal-block-v16')||localStorage.getItem('animal-block-v15')||localStorage.getItem('animal-block-v14')||localStorage.getItem('animal-block-v13')||localStorage.getItem('animal-block-v12')||localStorage.getItem('animal-block-v11')||localStorage.getItem('animal-block-v10')||localStorage.getItem('animal-block-v09')||'null');if(validScoreSnapshot(x)){state=x;loadedCounterKnown=Number.isInteger(x.totalLines)&&x.totalLines>=0;if(!validVersionedMetadata(x)||x.scoreRecords&&!validScoreRecordShape(x.scoreRecords)||x.legacyProgressRuleId&&x.legacyProgressRuleId!==SCORE_RULE_V1)scorePersistenceBlocked=true}else {if(x!==null)scorePersistenceBlocked=true;state=fresh(persistedScoreRecords.allBest,persistedScoreRecords)}}catch(e){scorePersistenceBlocked=true;state=fresh(persistedScoreRecords.allBest,persistedScoreRecords)}state.sessionBest=Number.isFinite(state.sessionBest)&&state.sessionBest>=0?state.sessionBest:Math.max(0,Number(state.best)||0);state.bonus=Number.isFinite(state.bonus)?state.bonus:0;state.finds=state.finds||{};state.gems=Array.isArray(state.gems)&&state.gems.length===64?state.gems:Array(64).fill(null);let retainedGem=false;state.gems=state.gems.map((gem,i)=>{if(gem===null||state.board[i]===null||retainedGem)return null;retainedGem=true;return gem});delete state.animalAt;state.feverProgress=Number.isFinite(state.feverProgress)?state.feverProgress:0;state.feverTurns=Number.isFinite(state.feverTurns)?state.feverTurns:0;state.totalLines=Number.isFinite(state.totalLines)?state.totalLines:0;if(state.gemFeverVersion!==1){state.feverProgress=0;state.bonus=0;state.gemFeverVersion=1;}state.pieces.forEach(p=>{if((p.s===27||p.s===29)&&!p.used)p.s=5});if(!scorePersistenceBlocked)hydrateScoreRun(state,persistedScoreRecords,loadedCounterKnown,pieceGenerator.config.firstBest);
+const save=()=>{
+ if(scorePersistenceBlocked)return false;
+ state.scoreRecords=mergeScoreRecords(knownScoreRecords,state.scoreRecords,{allBest:state.best});knownScoreRecords=state.scoreRecords;
+ try{
+  const game=JSON.stringify(state),records=JSON.stringify(state.scoreRecords);
+  if(game!==lastSavedState){localStorage.setItem(KEY,game);lastSavedState=game}
+  if(!recordWritesBlocked&&records!==lastSavedRecords){localStorage.setItem(SCORE_RECORD_KEY,records);lastSavedRecords=records}
+  return true;
+ }catch(e){return false}
+};function toast(main,sub='',mode='normal'){
  if(document.hidden){if(mode==='fever')pendingFeverNotice=true;return}
  const el=$('toast');
  if(mode!=='fever'&&el.classList.contains('fever-notice')&&el.classList.contains('show'))return;
@@ -1398,7 +1500,7 @@ try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mi
  el.innerHTML=sub?`${main}<span class="sub">${sub}</span>`:main;
  el.classList.add('show');clearTimeout(toast.timer);
  toast.timer=setTimeout(()=>el.classList.remove('show'),mode==='combo'?700:mode==='fever'?1250:850);
-}function dims(s){return [Math.max(...s.map(x=>x[0]))+1,Math.max(...s.map(x=>x[1]))+1]}function valid(piece,r,c,b=state.board){return SHAPES[piece.s].every(([x,y])=>r+y<N&&c+x<N&&r+y>=0&&c+x>=0&&b[(r+y)*N+c+x]===null)}function canPlay(){return state.pieces.some(p=>!p.used&&SHAPES[p.s].some(()=>Array.from({length:N*N},(_,i)=>valid(p,Math.floor(i/N),i%N)).some(Boolean)))}function render(){state.board.forEach((v,i)=>{let el=boardEl.children[i];if(!el){el=document.createElement('div');el.dataset.i=i;boardEl.append(el)}el.className='cell'+(v!==null?' filled':'');if(v!==null){el.style.setProperty('--color',COLORS[v]);el.style.setProperty('--edge',EDGES[v])}if(state.gems[i]!==null&&v!==null)el.classList.add('gem-hidden');});tray.innerHTML='';state.pieces.forEach((p,i)=>{let el=document.createElement('div');el.className='piece'+(selected===i?' sel':'')+(p.used?' used':'');el.dataset.p=i;const shape=SHAPES[p.s], [w,h]=dims(shape);if(p.used){tray.append(el);return;}const mini=document.createElement('div');mini.className='mini';mini.style.setProperty('--cols',w);mini.style.setProperty('--rows',h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){let unit=document.createElement('div');unit.className='unit'+(shape.some(s=>s[0]===x&&s[1]===y)?'':' empty');unit.style.setProperty('--color',COLORS[p.color]);unit.style.setProperty('--edge',EDGES[p.color]);mini.append(unit)}el.append(mini);tray.append(el)});animateScoreTo(state.score);$('best').textContent=state.best.toLocaleString();$('rescued').textContent='+'+state.bonus.toLocaleString();renderMeter();const mascot=$('mascot');if(mascot)mascot.textContent='💎';save()}
+}function dims(s){return [Math.max(...s.map(x=>x[0]))+1,Math.max(...s.map(x=>x[1]))+1]}function valid(piece,r,c,b=state.board){return SHAPES[piece.s].every(([x,y])=>r+y<N&&c+x<N&&r+y>=0&&c+x>=0&&b[(r+y)*N+c+x]===null)}function canPlay(){return state.pieces.some(p=>!p.used&&SHAPES[p.s].some(()=>Array.from({length:N*N},(_,i)=>valid(p,Math.floor(i/N),i%N)).some(Boolean)))}function render(){state.board.forEach((v,i)=>{let el=boardEl.children[i];if(!el){el=document.createElement('div');el.dataset.i=i;boardEl.append(el)}el.className='cell'+(v!==null?' filled':'');if(v!==null){el.style.setProperty('--color',COLORS[v]);el.style.setProperty('--edge',EDGES[v])}if(state.gems[i]!==null&&v!==null)el.classList.add('gem-hidden');});tray.innerHTML='';state.pieces.forEach((p,i)=>{let el=document.createElement('div');el.className='piece'+(selected===i?' sel':'')+(p.used?' used':'');el.dataset.p=i;const shape=SHAPES[p.s], [w,h]=dims(shape);if(p.used){tray.append(el);return;}const mini=document.createElement('div');mini.className='mini';mini.style.setProperty('--cols',w);mini.style.setProperty('--rows',h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){let unit=document.createElement('div');unit.className='unit'+(shape.some(s=>s[0]===x&&s[1]===y)?'':' empty');unit.style.setProperty('--color',COLORS[p.color]);unit.style.setProperty('--edge',EDGES[p.color]);mini.append(unit)}el.append(mini);tray.append(el)});animateScoreTo(state.score);$('best').textContent=state.best.toLocaleString();const records=state.scoreRecords||mergeScoreRecords();$('best').title=`全記録 BEST ${state.best}／旧未分類 ${records.legacyBest}／新ルール ${records.v2Best}`;$('best').setAttribute('aria-label',$('best').title);$('rescued').textContent='+'+state.bonus.toLocaleString();renderMeter();const mascot=$('mascot');if(mascot)mascot.textContent='💎';save()}
 function preview(r,c){boardEl.querySelectorAll('.cell').forEach(el=>el.classList.remove('preview','bad','willclear'));document.querySelector('.boardwrap').classList.remove('readyline');if(selected<0||state.pieces[selected].used){setClearHint(false);return}const p=state.pieces[selected],good=valid(p,r,c);if(good){const simulated=state.board.slice();for(const [x,y] of SHAPES[p.s])simulated[(r+y)*N+c+x]=p.color;const glowing=new Set();for(let k=0;k<N;k++){if(Array.from({length:N},(_,j)=>simulated[k*N+j]).every(v=>v!==null))for(let j=0;j<N;j++)glowing.add(k*N+j);if(Array.from({length:N},(_,j)=>simulated[j*N+k]).every(v=>v!==null))for(let j=0;j<N;j++)glowing.add(j*N+k)}setClearHint(glowing.size>0);if(glowing.size){document.querySelector('.boardwrap').classList.add('readyline');glowing.forEach(i=>boardEl.children[i]?.classList.add('willclear'));$('message').textContent='';}}else{setClearHint(false)}SHAPES[p.s].forEach(([x,y])=>{if(r+y>=0&&c+x>=0&&r+y<N&&c+x<N){const el=boardEl.children[(r+y)*N+c+x];if(el)el.classList.add(good?'preview':'bad')}})}function clearPreview(){setClearHint(false);boardEl.querySelectorAll('.cell').forEach(el=>el.classList.remove('preview','bad','willclear'));document.querySelector('.boardwrap').classList.remove('readyline')}
 const BONUS_TABLE=[
  {id:'quartz',name:'水晶',icon:'💎',points:100,chance:.80},
@@ -1427,10 +1529,11 @@ function ensureSingleGem(){if(state.gems.some(x=>x!==null))return;const occupied
 function collectGems(indices){const found=[];for(const i of indices){const id=state.gems[i];if(id===null)continue;const type=BONUS_TABLE.find(g=>g.id===id);state.gems[i]=null;if(!type)continue;state.finds[id]=(state.finds[id]||0)+1;found.push({type,origin:i})}return found}
 function hasMoves(){return state.pieces.some(p=>!p.used&&Array.from({length:64},(_,i)=>valid(p,Math.floor(i/8),i%8)).some(Boolean))}
 function finishGame(){
+ if(scorePersistenceBlocked)return;
  snapScoreTo(state.score);
  const total=state.score;
  const isRecord=total>state.best;
- state.best=Math.max(state.best,total);
+ state.best=Math.max(state.best,total);finishScoreRun(state);
  const over=$('over');
  over.classList.toggle('new-record',isRecord);
  const burst=$('recordBurst');burst.replaceChildren();
@@ -1538,10 +1641,12 @@ function burstClearedCells(indices){
  layer.appendChild(burst);burst.cosmeticTimer=cosmeticTimeout(()=>burst.remove(),450);
 }
 function place(r,c){
+ if(scorePersistenceBlocked){toast('保存データの復元確認が必要です');return}
  if(animationLocked)return;
  if(selected<0){$('message').textContent='';return}
  const p=state.pieces[selected];if(!p||p.used||!valid(p,r,c)){toast('ここには置けない');return}
  prev=clone(state);
+ const scoreBefore=state.score,previousLineTotal=state.totalLines;
  const targets=SHAPES[p.s].map(([x,y])=>(r+y)*N+(c+x));
  if(targets.some(i=>i<0||i>=64||state.board[i]!==null)){toast('ここには置けない');return}
  buzz('place');for(const i of targets)state.board[i]=p.color;
@@ -1589,6 +1694,7 @@ function place(r,c){
      if(state.comboRemain<=0) state.comboChain = 0;
    }
  }
+ advanceScoreRun(state,{cells:targets.length,lines,previousLines:previousLineTotal,comboChain:state.comboChain,feverActive:feverWasActive,fullClear:lines>0&&state.board.every(v=>v===null)},state.score-scoreBefore);
  ensureSingleGem();
  state.turn++;
  if(feverWasActive && state.feverTurns>0){
@@ -1605,7 +1711,7 @@ function place(r,c){
  const noMoves=!hasMoves();
  playReveals(found,()=>{if(noMoves)finishGame()});
 }
-function reset(){stopSimultaneousReward();cosmeticTimers.forEach(clearTimeout);cosmeticTimers.clear();cosmeticKeys.clear();pendingFeverNotice=false;$('burstLayer').replaceChildren();const best=state.best;state=fresh(best);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
+function reset(){if(scorePersistenceBlocked){toast('保存データを保持中です。復元確認が必要です');return}stopSimultaneousReward();cosmeticTimers.forEach(clearTimeout);cosmeticTimers.clear();cosmeticKeys.clear();pendingFeverNotice=false;$('burstLayer').replaceChildren();const best=state.best,records=clone(state.scoreRecords);state=fresh(best,records);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
 // Pointer drag v0.2: a real floating block follows ABOVE the finger, showing exact placement.
 function dragCellSize(){const c=boardEl.children[0], n=boardEl.children[1];return {size:c.getBoundingClientRect().width,pitch:n.getBoundingClientRect().left-c.getBoundingClientRect().left};}
 function dragPosition(e){
@@ -1622,10 +1728,10 @@ function dragPosition(e){
 function refreshDragOrigin(){if(drag)drag.boardOrigin=boardEl.children[0].getBoundingClientRect()}
 window.addEventListener('resize',refreshDragOrigin);window.addEventListener('scroll',refreshDragOrigin,{passive:true});
 function endDrag(e,cancel=false){if(!drag||e.pointerId!==drag.id)return;dragPosition(e);const d=drag;drag=null;clearPreview();document.querySelector('.boardwrap').classList.remove('dragactive');d.ghost.remove();tray.children[d.index]?.classList.remove('drag-source');suppressTap=true;setTimeout(()=>suppressTap=false,350);if(!cancel&&d.good&&valid(state.pieces[d.index],d.r,d.c)){selected=d.index;place(d.r,d.c)}else{selected=d.index;render();$('message').textContent='';}}
-tray.addEventListener('pointerdown',e=>{const el=e.target.closest('.piece');if(!el||drag||animationLocked)return;const i=Number(el.dataset.p);if(state.pieces[i].used)return;e.preventDefault();buzz('pick');selected=i;render();const p=state.pieces[i],shape=SHAPES[p.s], [w,h]=dims(shape), {size,pitch}=dragCellSize();const ghost=document.createElement('div');ghost.className='dragghost';ghost.style.left='0';ghost.style.top='0';ghost.style.willChange='transform';ghost.style.setProperty('--cell',size+'px');ghost.style.gridTemplateColumns=`repeat(${w},${size}px)`;ghost.style.gridTemplateRows=`repeat(${h},${size}px)`;ghost.style.gap=(pitch-size)+'px';ghost.style.width=(w*size+(w-1)*(pitch-size))+'px';ghost.style.height=(h*size+(h-1)*(pitch-size))+'px';for(let y=0;y<h;y++)for(let x=0;x<w;x++){let u=document.createElement('div');const on=shape.some(q=>q[0]===x&&q[1]===y);u.className='unit'+(on?'':' empty');if(on){u.style.setProperty('--color',COLORS[p.color]);u.style.setProperty('--edge',EDGES[p.color])}ghost.appendChild(u)}document.body.appendChild(ghost);tray.children[i].classList.add('drag-source');drag={id:e.pointerId,index:i,ghost,pitch,boardOrigin:boardEl.children[0].getBoundingClientRect(),width:parseFloat(ghost.style.width),height:parseFloat(ghost.style.height),lift:(h*size+(h-1)*(pitch-size))/2+size*3.9,r:-1,c:-1,good:false};document.querySelector('.boardwrap').classList.add('dragactive');dragPosition(e);});
+tray.addEventListener('pointerdown',e=>{const el=e.target.closest('.piece');if(!el||drag||animationLocked||scorePersistenceBlocked)return;const i=Number(el.dataset.p);if(state.pieces[i].used)return;e.preventDefault();buzz('pick');selected=i;render();const p=state.pieces[i],shape=SHAPES[p.s], [w,h]=dims(shape), {size,pitch}=dragCellSize();const ghost=document.createElement('div');ghost.className='dragghost';ghost.style.left='0';ghost.style.top='0';ghost.style.willChange='transform';ghost.style.setProperty('--cell',size+'px');ghost.style.gridTemplateColumns=`repeat(${w},${size}px)`;ghost.style.gridTemplateRows=`repeat(${h},${size}px)`;ghost.style.gap=(pitch-size)+'px';ghost.style.width=(w*size+(w-1)*(pitch-size))+'px';ghost.style.height=(h*size+(h-1)*(pitch-size))+'px';for(let y=0;y<h;y++)for(let x=0;x<w;x++){let u=document.createElement('div');const on=shape.some(q=>q[0]===x&&q[1]===y);u.className='unit'+(on?'':' empty');if(on){u.style.setProperty('--color',COLORS[p.color]);u.style.setProperty('--edge',EDGES[p.color])}ghost.appendChild(u)}document.body.appendChild(ghost);tray.children[i].classList.add('drag-source');drag={id:e.pointerId,index:i,ghost,pitch,boardOrigin:boardEl.children[0].getBoundingClientRect(),width:parseFloat(ghost.style.width),height:parseFloat(ghost.style.height),lift:(h*size+(h-1)*(pitch-size))/2+size*3.9,r:-1,c:-1,good:false};document.querySelector('.boardwrap').classList.add('dragactive');dragPosition(e);});
 window.addEventListener('pointermove',e=>{if(drag&&drag.id===e.pointerId){e.preventDefault();dragPosition(e)}},{passive:false});
 window.addEventListener('pointerup',e=>endDrag(e));window.addEventListener('pointercancel',e=>endDrag(e,true));
 // Tap-to-select remains usable if dragging is difficult.
-tray.addEventListener('click',e=>{if(suppressTap)return;const el=e.target.closest('.piece');if(!el)return;const i=Number(el.dataset.p);if(state.pieces[i].used)return;buzz('pick');selected=i;render();});
-$('restart').addEventListener('click',()=>{if(!animationLocked)$('resetConfirm').showModal()});$('resetNo').addEventListener('click',()=>$('resetConfirm').close());$('resetYes').addEventListener('click',()=>{$('resetConfirm').close();reset()});$('again').addEventListener('click',reset);render();if(!canPlay())finishGame();if(document.hidden)syncVisibility()
+tray.addEventListener('click',e=>{if(suppressTap||scorePersistenceBlocked)return;const el=e.target.closest('.piece');if(!el)return;const i=Number(el.dataset.p);if(state.pieces[i].used)return;buzz('pick');selected=i;render();});
+$('restart').addEventListener('click',()=>{if(!animationLocked)$('resetConfirm').showModal()});$('resetNo').addEventListener('click',()=>$('resetConfirm').close());$('resetYes').addEventListener('click',()=>{$('resetConfirm').close();reset()});$('again').addEventListener('click',reset);render();if(scorePersistenceBlocked)document.querySelector('.footer').textContent='保存データを保持しています（要復元確認）';if(!scorePersistenceBlocked&&!canPlay())finishGame();if(document.hidden)syncVisibility()
 })();</script></body></html>
