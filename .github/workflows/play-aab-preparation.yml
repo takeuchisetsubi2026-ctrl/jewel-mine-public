@@ -1,0 +1,65 @@
+name: Play AAB preparation (unsigned verification only)
+on:
+  push:
+    branches: [feature/play-aab-preparation-20261026]
+    paths:
+      - '.github/workflows/play-aab-preparation.yml'
+      - 'android/app/build.gradle'
+      - 'scripts/verify-aab-package.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unsigned-aab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22.22.0'
+          cache: npm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
+      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - run: npm ci
+      - run: npm run build:web
+      - run: npx cap sync android
+      - name: Validate Play package ID and build unsigned release AAB
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon -PplayApplicationId=com.takeuchisetsubi.jewelmine bundleRelease
+      - name: Verify AAB signature and reject unexpected signing
+        run: |
+          python3 - <<'PY'
+          import pathlib, zipfile
+          p=pathlib.Path('android/app/build/outputs/bundle/release/app-release.aab')
+          assert p.is_file() and p.stat().st_size>0, 'AAB missing'
+          with zipfile.ZipFile(p) as z:
+              assert 'base/manifest/AndroidManifest.xml' in z.namelist()
+          with zipfile.ZipFile(p) as z:
+              signatures=[n for n in z.namelist() if n.upper().startswith('META-INF/') and n.upper().endswith(('.RSA','.DSA','.EC'))]
+          if signatures:
+              print('STOP: AAB contains signing certificate blocks:', len(signatures))
+              raise SystemExit(2)
+          print('Unsigned AAB archive verified (no JAR signing certificate blocks).')
+          print('Not upload-ready: Play signing and identity checks still required.')
+          PY
+      - name: Verify application ID inside AAB manifest
+        run: |
+          python3 scripts/verify-aab-package.py \
+            android/app/build/outputs/bundle/release/app-release.aab \
+            com.takeuchisetsubi.jewelmine
+      - uses: actions/upload-artifact@v4
+        with:
+          name: play-aab-unsigned-not-for-upload
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 7

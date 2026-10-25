@@ -2,11 +2,19 @@ apply plugin: 'com.android.application'
 
 def buildIdentity = new groovy.json.JsonSlurper().parse(file('../../build/identity.json'))
 
+// Play distribution is an opt-in build path. The existing TEST 09 package ID
+// and fixed public debug signing configuration remain unchanged by default.
+def playApplicationId = providers.gradleProperty('playApplicationId').orNull
+if (playApplicationId != null && playApplicationId != 'com.takeuchisetsubi.jewelmine') {
+    throw new GradleException('Unexpected Play application ID')
+}
+
+
 android {
     namespace = "com.wilduncle.jewelmine.codextest"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.wilduncle.jewelmine.codextest"
+        applicationId(playApplicationId ?: "com.wilduncle.jewelmine.codextest")
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode buildIdentity.versionCode as int
