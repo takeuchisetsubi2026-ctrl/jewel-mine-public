@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/play-aab-preparation.yml'
       - 'android/app/build.gradle'
+      - 'scripts/verify-aab-package.py'
   workflow_dispatch:
 permissions:
   contents: read
