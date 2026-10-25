@@ -1410,7 +1410,7 @@ function createPieceGenerator(shapes){
   const route=best||partial,free=freeSpace(route||start);
   return {endLo:(route||start).lo,endHi:(route||start).hi,endEmpty:free.empty,endLargestRegion:free.largest,complete:!!best,allClear:!!route?.allClear,lines:route?.lines||0,multi:route?.multi||0,barLines:route?.barLines||0,placed:route?.path.length||0,path:route?.path||[],completeOrders,ordersConsidered:6,symmetrySkipped:6-orderMemo.size,visited,exhaustive:!pruned};
  }
- function generate(board,score,best,rng=Math.random,forcedMode=null){
+ function generate(board,score,best,rng=Math.random,forcedMode=null,opportunityAware=true){
   const which=forcedMode||mode(score,best),sets=[],initial=encode(board),occupancy=(pop(initial.lo)+pop(initial.hi))/64;
   for(let i=0;i<config.randomCandidates;i++)sets.push(Array.from({length:3},()=>draw(which,rng)));
   // Explicit candidates are board-corrected opportunities, not part of the base draw ratios.
@@ -1444,8 +1444,8 @@ function createPieceGenerator(shapes){
   const values=pool.map(c=>{
    const e=c.evaluation,large=c.ids.filter(id=>['square4','rectangle6','square9'].includes(category(id))).length;
    const blocked=blockedLargePairs(initial,c.ids),nines=c.ids.filter(id=>category(id)==='square9').length;
-   const terminal={lo:e.endLo,hi:e.endHi},futureFamilies=['square4','rectangle6','bar'].filter(k=>groups[k].some(id=>masks[id].some(p=>fits(terminal,p)))).length;
-   return e.path.filter(p=>p.lines>=3).length*28+futureFamilies*futureFamilies*4-blocked*(occupancy>.55?60:25)-Math.max(0,nines-1)*24+e.endLargestRegion*(occupancy>.55?1.1:.25)+e.endEmpty*(occupancy>.55?.6:.15)+e.placed*30+e.completeOrders.length*(which==='joy'?5:2)-c.ids.filter(id=>shapes[id].length>=4&&!masks[id].some(p=>fits(encode(board),p))).length*(which==='joy'?12:6)+e.lines*(which==='joy'?20:12)+e.multi*12+e.barLines*8+(e.allClear?65:0)+(e.lines&&c.ids.some(id=>category(id)==='bar')?large*(which==='joy'?8:3):0);
+   const terminal={lo:e.endLo,hi:e.endHi},futureFamilies=opportunityAware?['square4','rectangle6','bar'].filter(k=>groups[k].some(id=>masks[id].some(p=>fits(terminal,p)))).length:0;
+   return (opportunityAware?e.path.filter(p=>p.lines>=3).length*28:0)+futureFamilies*futureFamilies*4-blocked*(occupancy>.55?60:25)-Math.max(0,nines-1)*24+e.endLargestRegion*(occupancy>.55?1.1:.25)+e.endEmpty*(occupancy>.55?.6:.15)+e.placed*30+e.completeOrders.length*(which==='joy'?5:2)-c.ids.filter(id=>shapes[id].length>=4&&!masks[id].some(p=>fits(encode(board),p))).length*(which==='joy'?12:6)+e.lines*(which==='joy'?20:12)+e.multi*12+e.barLines*8+(e.allClear?(opportunityAware?65:45):0)+(e.lines&&c.ids.some(id=>category(id)==='bar')?large*(which==='joy'?8:3):0);
   });
   const max=Math.max(...values),weights=values.map(v=>Math.exp((v-max)/config.temperature[which]));
   let ticket=rng()*weights.reduce((a,b)=>a+b,0),chosen=pool[pool.length-1];
@@ -1471,7 +1471,7 @@ const clone=o=>JSON.parse(JSON.stringify(o));
 function makePieces(board=null,context=state){
  const decision=difficultyDecision(context,context.difficultyPolicy,pieceGenerator.config.firstBest);
  context.challengeLatched=decision.mode==='challenge';
- const result=pieceGenerator.generate(board||Array(64).fill(null),decision.progress,decision.reference,Math.random,decision.mode);
+ const result=pieceGenerator.generate(board||Array(64).fill(null),decision.progress,decision.reference,Math.random,decision.mode,context.scoreRuleId===SCORE_RULE_V2&&context.scoreProvenance==='exact-v2');
  return result.ids.map(s=>({s,color:Math.floor(Math.random()*COLORS.length),used:false}));
 }
 function validScoreSnapshot(x){return x&&Array.isArray(x.board)&&x.board.length===64&&x.board.every(v=>v===null||Number.isInteger(v)&&v>=0&&v<COLORS.length)&&Array.isArray(x.pieces)&&x.pieces.length===3&&x.pieces.every(p=>p&&Number.isInteger(p.s)&&p.s>=0&&p.s<SHAPES.length&&Number.isInteger(p.color)&&p.color>=0&&p.color<COLORS.length&&typeof p.used==='boolean')&&Number.isFinite(x.score)&&x.score>=0&&Number.isFinite(x.best)&&x.best>=0}
