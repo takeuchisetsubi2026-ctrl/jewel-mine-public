@@ -80,16 +80,16 @@
 push：成功。新ブランチだけへ反映。PR #1のheadは8b598c8のまま確認済み。
 新PR： https://github.com/wild-uncle/jewel-mine-public/pull/2
 base：fix/android-feedback-ui。ドラフト・未マージ。mainへは変更・マージしていない。
-成功CI： https://github.com/wild-uncle/jewel-mine-public/actions/runs/40145999799
-APK対象コミット：66b4aca239b66bb6db983a59ebb82be2812d6f6b。実装本体は96fc045と同じ。
+成功CI： https://github.com/wild-uncle/jewel-mine-public/actions/runs/40146309270
+APK対象コミット：cf6712e1b0f236192890ab2a9198a8e2c258b370。ゲームHTMLは検証済み66b4acaと同一。以後の報告書リンク更新はゲームコード変更を含まない。
 CIで全テスト、Capacitor同期、Androidビルド、同梱HTML照合、署名検証、Artifactアップロードが成功。
 初回の96fc045向けCIは次pushによりキャンセル。成功扱いにしていない。
 
 ## 4. Android APK
 
-Artifact：jewel-mine-test-debug-7
+Artifact：jewel-mine-test-debug-9
 直接取得画面：
-https://github.com/wild-uncle/jewel-mine-public/actions/runs/40145999799/artifacts/12580157747
+https://github.com/wild-uncle/jewel-mine-public/actions/runs/40146309270/artifacts/12580402713
 有効期限：2026年11月24日（UTC）。GitHubへのログインが必要。
 この環境からのArtifactローカルダウンロードは失敗したが、CI上で成果物公開を確認済み。APKをローカル添付したとは報告しない。
 
