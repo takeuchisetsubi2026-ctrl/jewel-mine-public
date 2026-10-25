@@ -6,7 +6,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');const fs=r
  const run=fn=>page.evaluate(s=>window.__testEval('('+s+')()'),fn.toString());
  const result=await run(()=>{
   state=fresh(10000);state.board.fill(null);state.gems.fill(null);state.score=7900;state.best=10000;state.pieces=[0,1,2].map(()=>({s:0,color:0,used:false}));render();
-  const offered=JSON.stringify(state.pieces);state.score=8000;state.best=50000;render();const stable=offered===JSON.stringify(state.pieces)&&state.sessionBest===10000;
+  const offered=JSON.stringify(state.pieces);state.score=8000;state.legacyProgress=8000;state.best=50000;render();const stable=offered===JSON.stringify(state.pieces)&&state.sessionBest===10000;
   const original=pieceGenerator.generate;const modes=[];pieceGenerator.generate=function(...args){const value=original(...args);modes.push(value.mode);return value};
   for(let i=0;i<3;i++){selected=i;place(0,i)}pieceGenerator.generate=original;
   const refill=modes.length===1&&modes[0]==='challenge'&&state.pieces.length===3&&state.pieces.every(p=>!p.used);
