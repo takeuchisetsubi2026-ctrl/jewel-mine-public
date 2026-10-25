@@ -1,0 +1,64 @@
+{
+  "legacySnapshotPreserved": true,
+  "legacyKeyByteExact": true,
+  "externalLegacyBestMerged": true,
+  "migration": "unversioned",
+  "mixed": {
+    "rule": "mixed-unknown+line-v2",
+    "score": 12425,
+    "progress": null,
+    "since": 80,
+    "provenance": "mixed-unknown-prefix",
+    "prefix": {
+      "score": 12345,
+      "totalLines": 9,
+      "rule": "unversioned-unknown"
+    },
+    "old": "{\"gems\":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,\"quartz\",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],\"board\":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],\"pieces\":[{\"s\":5,\"color\":1,\"used\":false},{\"s\":12,\"color\":2,\"used\":false},{\"s\":13,\"color\":0,\"used\":true}],\"score\":12345,\"best\":50000,\"sessionBest\":50000,\"rescued\":0,\"bonus\":0,\"finds\":{},\"turn\":17,\"comboChain\":0,\"comboRemain\":0,\"feverProgress\":0,\"feverTurns\":3,\"gemFeverVersion\":1,\"totalLines\":9}"
+  },
+  "pure": {
+    "schema": 1,
+    "legacyEquivalentRuleId": "line-v1-pr2",
+    "legacyBest": 50000,
+    "legacyEquivalentBest": 8000,
+    "v2Best": 60000,
+    "allBest": 60000,
+    "legacyProvenance": "unversioned-unknown"
+  },
+  "stickyChallenge": true,
+  "cBoundary": {
+    "before": "joy",
+    "after": "challenge",
+    "reference": 60000
+  },
+  "first": {
+    "rule": "line-v2-20261025",
+    "progress": 0,
+    "newBest": 0,
+    "reference": 10000,
+    "mode": "joy"
+  },
+  "feverEvents": {
+    "trigger": {
+      "legacy": 1313,
+      "score": 1310,
+      "turns": 5
+    },
+    "legacy": 1413,
+    "score": 1410,
+    "turns": 0
+  },
+  "unsupportedSchemaReadOnly": true,
+  "missingCounterNotInferred": true,
+  "frozenReferences": {
+    "reference": 50000,
+    "newReference": 60000
+  },
+  "cachedSaveWrites": 0,
+  "quota": {
+    "failed": true,
+    "retry": true
+  },
+  "corruptSaveReadOnly": true,
+  "errors": []
+}
