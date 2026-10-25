@@ -1,0 +1,165 @@
+{
+  "seed": "20261025/20261026",
+  "stats": {
+    "joy": {
+      "count": 100000,
+      "rows": {
+        "square4": {
+          "count": 29130,
+          "targetPercent": 29,
+          "actualPercent": 29.13,
+          "errorPercentagePoints": 0.129999999999999
+        },
+        "rectangle6": {
+          "count": 24742,
+          "targetPercent": 25,
+          "actualPercent": 24.742,
+          "errorPercentagePoints": -0.2579999999999991
+        },
+        "square9": {
+          "count": 11930,
+          "targetPercent": 12,
+          "actualPercent": 11.93,
+          "errorPercentagePoints": -0.07000000000000028
+        },
+        "bar": {
+          "count": 29092,
+          "targetPercent": 29,
+          "actualPercent": 29.092000000000002,
+          "errorPercentagePoints": 0.0920000000000023
+        },
+        "other": {
+          "count": 5106,
+          "targetPercent": 5,
+          "actualPercent": 5.106,
+          "errorPercentagePoints": 0.10599999999999987
+        }
+      },
+      "bar": {
+        "horizontal": 14750,
+        "vertical": 14342,
+        "four": 14523,
+        "five": 14569
+      },
+      "shapeCounts": {
+        "0": 196,
+        "1": 217,
+        "2": 199,
+        "3": 234,
+        "4": 178,
+        "5": 29130,
+        "6": 219,
+        "7": 206,
+        "8": 235,
+        "9": 7397,
+        "10": 206,
+        "11": 210,
+        "12": 12401,
+        "13": 11930,
+        "14": 205,
+        "15": 212,
+        "16": 210,
+        "17": 207,
+        "18": 233,
+        "19": 214,
+        "20": 211,
+        "21": 221,
+        "22": 213,
+        "23": 7126,
+        "24": 7353,
+        "25": 7216,
+        "26": 212,
+        "28": 203,
+        "30": 223,
+        "31": 227,
+        "32": 215,
+        "33": 12341
+      }
+    },
+    "challenge": {
+      "count": 100000,
+      "rows": {
+        "square4": {
+          "count": 20367,
+          "targetPercent": 20,
+          "actualPercent": 20.366999999999997,
+          "errorPercentagePoints": 0.36699999999999733
+        },
+        "rectangle6": {
+          "count": 16918,
+          "targetPercent": 17,
+          "actualPercent": 16.918,
+          "errorPercentagePoints": -0.08200000000000074
+        },
+        "square9": {
+          "count": 8093,
+          "targetPercent": 8,
+          "actualPercent": 8.093,
+          "errorPercentagePoints": 0.09299999999999997
+        },
+        "bar": {
+          "count": 44782,
+          "targetPercent": 45,
+          "actualPercent": 44.782,
+          "errorPercentagePoints": -0.21800000000000352
+        },
+        "other": {
+          "count": 9840,
+          "targetPercent": 10,
+          "actualPercent": 9.84,
+          "errorPercentagePoints": -0.16000000000000014
+        }
+      },
+      "bar": {
+        "horizontal": 22113,
+        "vertical": 22669,
+        "four": 22302,
+        "five": 22480
+      },
+      "shapeCounts": {
+        "0": 408,
+        "1": 403,
+        "2": 422,
+        "3": 420,
+        "4": 427,
+        "5": 20367,
+        "6": 400,
+        "7": 409,
+        "8": 398,
+        "9": 11018,
+        "10": 399,
+        "11": 446,
+        "12": 8502,
+        "13": 8093,
+        "14": 403,
+        "15": 409,
+        "16": 413,
+        "17": 410,
+        "18": 419,
+        "19": 417,
+        "20": 419,
+        "21": 397,
+        "22": 396,
+        "23": 11284,
+        "24": 11095,
+        "25": 11385,
+        "26": 359,
+        "28": 410,
+        "30": 430,
+        "31": 425,
+        "32": 401,
+        "33": 8416
+      }
+    }
+  },
+  "checks": {
+    "independentTransitionTrials": 1000,
+    "allOrders": 6,
+    "areaOnlyFalsePositive": false,
+    "retiredIds": [
+      27,
+      29
+    ],
+    "deterministic": true
+  }
+}

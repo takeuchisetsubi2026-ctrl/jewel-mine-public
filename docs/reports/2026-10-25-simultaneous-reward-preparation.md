@@ -1,5 +1,7 @@
 # ジュエルマイン開発引き継ぎ報告書
 
+※準備段階の履歴です。得点連動までの完了結果は2026-10-25-reward-balance-battery.mdを参照してください。
+
 作業日：2026年10月25日（UTC）
 対象：wild-uncle/jewel-mine-public
 作業ブランチ：feature/reward-balance-battery

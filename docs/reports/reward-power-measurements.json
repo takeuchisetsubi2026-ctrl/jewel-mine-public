@@ -1,0 +1,324 @@
+{
+  "environment": {
+    "browser": "154.0.8037.57",
+    "node": "v24.19.0",
+    "viewport": "360x800",
+    "sampleMs": 1500,
+    "repetitions": 3
+  },
+  "limits": "Desktop headless browser aggregate process CPU and renderer TaskDuration; synthetic visibility; not device battery/GPU energy or an Android thermal test.",
+  "cases": {
+    "pr2-idle": {
+      "samples": [
+        {
+          "processCpuMs": 420.00000000000006,
+          "taskMs": 63.37000000000001,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 34.403000000000006,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 2
+        },
+        {
+          "processCpuMs": 419.99999999999994,
+          "taskMs": 65.446,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 36.049,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 2
+        },
+        {
+          "processCpuMs": 460.00000000000006,
+          "taskMs": 70.016,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 38.981,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 2
+        }
+      ],
+      "medianProcessCpuMs": 420.00000000000006,
+      "medianTaskMs": 65.446
+    },
+    "pr2-feverIdle": {
+      "samples": [
+        {
+          "processCpuMs": 689.9999999999998,
+          "taskMs": 121.485,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 65.068,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 22
+        },
+        {
+          "processCpuMs": 750.0000000000002,
+          "taskMs": 135.207,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 71.28,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 22
+        },
+        {
+          "processCpuMs": 770.0000000000002,
+          "taskMs": 125.78,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 65.94200000000001,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 22
+        }
+      ],
+      "medianProcessCpuMs": 750.0000000000002,
+      "medianTaskMs": 125.78
+    },
+    "pr2-hiddenFever": {
+      "samples": [
+        {
+          "processCpuMs": 880,
+          "taskMs": 161.271,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 91.63499999999999,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 22
+        },
+        {
+          "processCpuMs": 900,
+          "taskMs": 153.709,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 82.543,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 22
+        },
+        {
+          "processCpuMs": 719.9999999999998,
+          "taskMs": 123.247,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 66.077,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 22
+        }
+      ],
+      "medianProcessCpuMs": 880,
+      "medianTaskMs": 153.709
+    },
+    "pr2-clearAnimation": {
+      "samples": [
+        {
+          "processCpuMs": 469.9999999999993,
+          "taskMs": 99.375,
+          "scriptMs": 0.377,
+          "layoutMs": 2.2880000000000003,
+          "styleMs": 48.048,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 7,
+          "runningAnimations": 2
+        },
+        {
+          "processCpuMs": 529.9999999999995,
+          "taskMs": 101.44699999999999,
+          "scriptMs": 0.486,
+          "layoutMs": 1.693,
+          "styleMs": 49.774,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 7,
+          "runningAnimations": 2
+        },
+        {
+          "processCpuMs": 640.0000000000008,
+          "taskMs": 129.808,
+          "scriptMs": 0.398,
+          "layoutMs": 1.0859999999999999,
+          "styleMs": 63.76399999999999,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 7,
+          "runningAnimations": 2
+        }
+      ],
+      "medianProcessCpuMs": 529.9999999999995,
+      "medianTaskMs": 101.44699999999999
+    },
+    "adjusted-idle": {
+      "samples": [
+        {
+          "processCpuMs": 0,
+          "taskMs": 0.34299999999999997,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 0,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 0
+        },
+        {
+          "processCpuMs": 0,
+          "taskMs": 0.31899999999999995,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 0,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 0
+        },
+        {
+          "processCpuMs": 0,
+          "taskMs": 0.32800000000000007,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 0,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 0
+        }
+      ],
+      "medianProcessCpuMs": 0,
+      "medianTaskMs": 0.32800000000000007
+    },
+    "adjusted-feverIdle": {
+      "samples": [
+        {
+          "processCpuMs": 749.9999999999993,
+          "taskMs": 122.72800000000001,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 62.56,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 22
+        },
+        {
+          "processCpuMs": 680.0000000000002,
+          "taskMs": 108.134,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 57.211,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 22
+        },
+        {
+          "processCpuMs": 630.0000000000002,
+          "taskMs": 100.72399999999999,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 54.321,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 22
+        }
+      ],
+      "medianProcessCpuMs": 680.0000000000002,
+      "medianTaskMs": 108.134
+    },
+    "adjusted-hiddenFever": {
+      "samples": [
+        {
+          "processCpuMs": 0,
+          "taskMs": 0.4739999999999999,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 0,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 0
+        },
+        {
+          "processCpuMs": 19.999999999999794,
+          "taskMs": 0.352,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 0,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 0
+        },
+        {
+          "processCpuMs": 0,
+          "taskMs": 0.392,
+          "scriptMs": 0,
+          "layoutMs": 0,
+          "styleMs": 0,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 0,
+          "runningAnimations": 0
+        }
+      ],
+      "medianProcessCpuMs": 0,
+      "medianTaskMs": 0.392
+    },
+    "adjusted-clearAnimation": {
+      "samples": [
+        {
+          "processCpuMs": 99.99999999999869,
+          "taskMs": 18.487999999999996,
+          "scriptMs": 0.623,
+          "layoutMs": 2.113,
+          "styleMs": 3.19,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 9,
+          "runningAnimations": 0
+        },
+        {
+          "processCpuMs": 89.99999999999892,
+          "taskMs": 12.671,
+          "scriptMs": 0.664,
+          "layoutMs": 1.2,
+          "styleMs": 2.562,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 9,
+          "runningAnimations": 0
+        },
+        {
+          "processCpuMs": 90.00000000000047,
+          "taskMs": 13.664,
+          "scriptMs": 0.439,
+          "layoutMs": 1.116,
+          "styleMs": 2.8080000000000003,
+          "rafCallbacks": 0,
+          "rafPending": 0,
+          "domMutations": 9,
+          "runningAnimations": 0
+        }
+      ],
+      "medianProcessCpuMs": 90.00000000000047,
+      "medianTaskMs": 13.664
+    }
+  }
+}

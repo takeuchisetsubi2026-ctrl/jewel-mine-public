@@ -4,26 +4,26 @@
       {
         "cells": 8,
         "nodes": 82,
-        "medianMs": 0.7999999988824129,
-        "p95Ms": 2.900000000372529
+        "medianMs": 0.5,
+        "p95Ms": 1.799999998882413
       },
       {
         "cells": 16,
         "nodes": 163,
-        "medianMs": 1.099999999627471,
-        "p95Ms": 3.900000000372529
+        "medianMs": 1.800000000745058,
+        "p95Ms": 4.5
       },
       {
         "cells": 32,
         "nodes": 323,
-        "medianMs": 1.799999998882413,
-        "p95Ms": 2.900000000372529
+        "medianMs": 2.400000000372529,
+        "p95Ms": 5.700000001117587
       },
       {
         "cells": 64,
         "nodes": 323,
-        "medianMs": 1.799999998882413,
-        "p95Ms": 2.5
+        "medianMs": 1.800000000745058,
+        "p95Ms": 3.099999999627471
       }
     ],
     "scenarios": [
@@ -417,31 +417,31 @@
         "cells": 8,
         "nodes": 9,
         "medianMs": 0.09999999962747097,
-        "p95Ms": 0.10000000149011612
+        "p95Ms": 0.599999999627471
       },
       {
         "cells": 16,
         "nodes": 9,
         "medianMs": 0.09999999962747097,
-        "p95Ms": 3.5
+        "p95Ms": 0.10000000149011612
       },
       {
         "cells": 32,
         "nodes": 9,
-        "medianMs": 0,
-        "p95Ms": 0.10000000149011612
+        "medianMs": 0.09999999962747097,
+        "p95Ms": 0.19999999925494194
       },
       {
         "cells": 64,
         "nodes": 9,
         "medianMs": 0.09999999962747097,
-        "p95Ms": 0.6999999992549419
+        "p95Ms": 0.19999999925494194
       }
     ],
     "scenarios": [
       {
         "name": "single",
-        "score": 1313,
+        "score": 1310,
         "lines": 1,
         "turn": 1,
         "feverTurns": 0,
@@ -517,7 +517,7 @@
       },
       {
         "name": "double",
-        "score": 1775,
+        "score": 2510,
         "lines": 2,
         "turn": 1,
         "feverTurns": 0,
@@ -593,7 +593,7 @@
       },
       {
         "name": "cross",
-        "score": 1775,
+        "score": 2510,
         "lines": 2,
         "turn": 1,
         "feverTurns": 0,
@@ -669,7 +669,7 @@
       },
       {
         "name": "fever",
-        "score": 3026,
+        "score": 3020,
         "lines": 1,
         "turn": 1,
         "feverTurns": 2,
@@ -745,7 +745,7 @@
       },
       {
         "name": "trigger",
-        "score": 1313,
+        "score": 1310,
         "lines": 1,
         "turn": 1,
         "feverTurns": 5,

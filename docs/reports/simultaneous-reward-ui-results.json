@@ -81,5 +81,5 @@
   "animationStops": true,
   "reducedMotion": true,
   "errors": [],
-  "scoringIntegration": "pending preceding reward-balance specification"
+  "scoringIntegration": "verified in reward-integration-results.json"
 }

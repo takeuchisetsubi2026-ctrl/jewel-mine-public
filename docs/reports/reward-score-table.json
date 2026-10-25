@@ -1,0 +1,1270 @@
+{
+  "formula": "round(((300*n+150*max(0,n-1))*n*(1+0.05*L_before)+(combo-1)*100*n)*FEVER)",
+  "excluded": [
+    "placement",
+    "jewel",
+    "all-clear"
+  ],
+  "rows": [
+    {
+      "lines": 1,
+      "previous": 0,
+      "combo": 1,
+      "fever": false,
+      "points": 300
+    },
+    {
+      "lines": 1,
+      "previous": 0,
+      "combo": 1,
+      "fever": true,
+      "points": 600
+    },
+    {
+      "lines": 1,
+      "previous": 0,
+      "combo": 2,
+      "fever": false,
+      "points": 400
+    },
+    {
+      "lines": 1,
+      "previous": 0,
+      "combo": 2,
+      "fever": true,
+      "points": 800
+    },
+    {
+      "lines": 1,
+      "previous": 0,
+      "combo": 4,
+      "fever": false,
+      "points": 600
+    },
+    {
+      "lines": 1,
+      "previous": 0,
+      "combo": 4,
+      "fever": true,
+      "points": 1200
+    },
+    {
+      "lines": 1,
+      "previous": 5,
+      "combo": 1,
+      "fever": false,
+      "points": 375
+    },
+    {
+      "lines": 1,
+      "previous": 5,
+      "combo": 1,
+      "fever": true,
+      "points": 750
+    },
+    {
+      "lines": 1,
+      "previous": 5,
+      "combo": 2,
+      "fever": false,
+      "points": 475
+    },
+    {
+      "lines": 1,
+      "previous": 5,
+      "combo": 2,
+      "fever": true,
+      "points": 950
+    },
+    {
+      "lines": 1,
+      "previous": 5,
+      "combo": 4,
+      "fever": false,
+      "points": 675
+    },
+    {
+      "lines": 1,
+      "previous": 5,
+      "combo": 4,
+      "fever": true,
+      "points": 1350
+    },
+    {
+      "lines": 1,
+      "previous": 10,
+      "combo": 1,
+      "fever": false,
+      "points": 450
+    },
+    {
+      "lines": 1,
+      "previous": 10,
+      "combo": 1,
+      "fever": true,
+      "points": 900
+    },
+    {
+      "lines": 1,
+      "previous": 10,
+      "combo": 2,
+      "fever": false,
+      "points": 550
+    },
+    {
+      "lines": 1,
+      "previous": 10,
+      "combo": 2,
+      "fever": true,
+      "points": 1100
+    },
+    {
+      "lines": 1,
+      "previous": 10,
+      "combo": 4,
+      "fever": false,
+      "points": 750
+    },
+    {
+      "lines": 1,
+      "previous": 10,
+      "combo": 4,
+      "fever": true,
+      "points": 1500
+    },
+    {
+      "lines": 1,
+      "previous": 20,
+      "combo": 1,
+      "fever": false,
+      "points": 600
+    },
+    {
+      "lines": 1,
+      "previous": 20,
+      "combo": 1,
+      "fever": true,
+      "points": 1200
+    },
+    {
+      "lines": 1,
+      "previous": 20,
+      "combo": 2,
+      "fever": false,
+      "points": 700
+    },
+    {
+      "lines": 1,
+      "previous": 20,
+      "combo": 2,
+      "fever": true,
+      "points": 1400
+    },
+    {
+      "lines": 1,
+      "previous": 20,
+      "combo": 4,
+      "fever": false,
+      "points": 900
+    },
+    {
+      "lines": 1,
+      "previous": 20,
+      "combo": 4,
+      "fever": true,
+      "points": 1800
+    },
+    {
+      "lines": 1,
+      "previous": 40,
+      "combo": 1,
+      "fever": false,
+      "points": 900
+    },
+    {
+      "lines": 1,
+      "previous": 40,
+      "combo": 1,
+      "fever": true,
+      "points": 1800
+    },
+    {
+      "lines": 1,
+      "previous": 40,
+      "combo": 2,
+      "fever": false,
+      "points": 1000
+    },
+    {
+      "lines": 1,
+      "previous": 40,
+      "combo": 2,
+      "fever": true,
+      "points": 2000
+    },
+    {
+      "lines": 1,
+      "previous": 40,
+      "combo": 4,
+      "fever": false,
+      "points": 1200
+    },
+    {
+      "lines": 1,
+      "previous": 40,
+      "combo": 4,
+      "fever": true,
+      "points": 2400
+    },
+    {
+      "lines": 2,
+      "previous": 0,
+      "combo": 1,
+      "fever": false,
+      "points": 1500
+    },
+    {
+      "lines": 2,
+      "previous": 0,
+      "combo": 1,
+      "fever": true,
+      "points": 3000
+    },
+    {
+      "lines": 2,
+      "previous": 0,
+      "combo": 2,
+      "fever": false,
+      "points": 1700
+    },
+    {
+      "lines": 2,
+      "previous": 0,
+      "combo": 2,
+      "fever": true,
+      "points": 3400
+    },
+    {
+      "lines": 2,
+      "previous": 0,
+      "combo": 4,
+      "fever": false,
+      "points": 2100
+    },
+    {
+      "lines": 2,
+      "previous": 0,
+      "combo": 4,
+      "fever": true,
+      "points": 4200
+    },
+    {
+      "lines": 2,
+      "previous": 5,
+      "combo": 1,
+      "fever": false,
+      "points": 1875
+    },
+    {
+      "lines": 2,
+      "previous": 5,
+      "combo": 1,
+      "fever": true,
+      "points": 3750
+    },
+    {
+      "lines": 2,
+      "previous": 5,
+      "combo": 2,
+      "fever": false,
+      "points": 2075
+    },
+    {
+      "lines": 2,
+      "previous": 5,
+      "combo": 2,
+      "fever": true,
+      "points": 4150
+    },
+    {
+      "lines": 2,
+      "previous": 5,
+      "combo": 4,
+      "fever": false,
+      "points": 2475
+    },
+    {
+      "lines": 2,
+      "previous": 5,
+      "combo": 4,
+      "fever": true,
+      "points": 4950
+    },
+    {
+      "lines": 2,
+      "previous": 10,
+      "combo": 1,
+      "fever": false,
+      "points": 2250
+    },
+    {
+      "lines": 2,
+      "previous": 10,
+      "combo": 1,
+      "fever": true,
+      "points": 4500
+    },
+    {
+      "lines": 2,
+      "previous": 10,
+      "combo": 2,
+      "fever": false,
+      "points": 2450
+    },
+    {
+      "lines": 2,
+      "previous": 10,
+      "combo": 2,
+      "fever": true,
+      "points": 4900
+    },
+    {
+      "lines": 2,
+      "previous": 10,
+      "combo": 4,
+      "fever": false,
+      "points": 2850
+    },
+    {
+      "lines": 2,
+      "previous": 10,
+      "combo": 4,
+      "fever": true,
+      "points": 5700
+    },
+    {
+      "lines": 2,
+      "previous": 20,
+      "combo": 1,
+      "fever": false,
+      "points": 3000
+    },
+    {
+      "lines": 2,
+      "previous": 20,
+      "combo": 1,
+      "fever": true,
+      "points": 6000
+    },
+    {
+      "lines": 2,
+      "previous": 20,
+      "combo": 2,
+      "fever": false,
+      "points": 3200
+    },
+    {
+      "lines": 2,
+      "previous": 20,
+      "combo": 2,
+      "fever": true,
+      "points": 6400
+    },
+    {
+      "lines": 2,
+      "previous": 20,
+      "combo": 4,
+      "fever": false,
+      "points": 3600
+    },
+    {
+      "lines": 2,
+      "previous": 20,
+      "combo": 4,
+      "fever": true,
+      "points": 7200
+    },
+    {
+      "lines": 2,
+      "previous": 40,
+      "combo": 1,
+      "fever": false,
+      "points": 4500
+    },
+    {
+      "lines": 2,
+      "previous": 40,
+      "combo": 1,
+      "fever": true,
+      "points": 9000
+    },
+    {
+      "lines": 2,
+      "previous": 40,
+      "combo": 2,
+      "fever": false,
+      "points": 4700
+    },
+    {
+      "lines": 2,
+      "previous": 40,
+      "combo": 2,
+      "fever": true,
+      "points": 9400
+    },
+    {
+      "lines": 2,
+      "previous": 40,
+      "combo": 4,
+      "fever": false,
+      "points": 5100
+    },
+    {
+      "lines": 2,
+      "previous": 40,
+      "combo": 4,
+      "fever": true,
+      "points": 10200
+    },
+    {
+      "lines": 3,
+      "previous": 0,
+      "combo": 1,
+      "fever": false,
+      "points": 3600
+    },
+    {
+      "lines": 3,
+      "previous": 0,
+      "combo": 1,
+      "fever": true,
+      "points": 7200
+    },
+    {
+      "lines": 3,
+      "previous": 0,
+      "combo": 2,
+      "fever": false,
+      "points": 3900
+    },
+    {
+      "lines": 3,
+      "previous": 0,
+      "combo": 2,
+      "fever": true,
+      "points": 7800
+    },
+    {
+      "lines": 3,
+      "previous": 0,
+      "combo": 4,
+      "fever": false,
+      "points": 4500
+    },
+    {
+      "lines": 3,
+      "previous": 0,
+      "combo": 4,
+      "fever": true,
+      "points": 9000
+    },
+    {
+      "lines": 3,
+      "previous": 5,
+      "combo": 1,
+      "fever": false,
+      "points": 4500
+    },
+    {
+      "lines": 3,
+      "previous": 5,
+      "combo": 1,
+      "fever": true,
+      "points": 9000
+    },
+    {
+      "lines": 3,
+      "previous": 5,
+      "combo": 2,
+      "fever": false,
+      "points": 4800
+    },
+    {
+      "lines": 3,
+      "previous": 5,
+      "combo": 2,
+      "fever": true,
+      "points": 9600
+    },
+    {
+      "lines": 3,
+      "previous": 5,
+      "combo": 4,
+      "fever": false,
+      "points": 5400
+    },
+    {
+      "lines": 3,
+      "previous": 5,
+      "combo": 4,
+      "fever": true,
+      "points": 10800
+    },
+    {
+      "lines": 3,
+      "previous": 10,
+      "combo": 1,
+      "fever": false,
+      "points": 5400
+    },
+    {
+      "lines": 3,
+      "previous": 10,
+      "combo": 1,
+      "fever": true,
+      "points": 10800
+    },
+    {
+      "lines": 3,
+      "previous": 10,
+      "combo": 2,
+      "fever": false,
+      "points": 5700
+    },
+    {
+      "lines": 3,
+      "previous": 10,
+      "combo": 2,
+      "fever": true,
+      "points": 11400
+    },
+    {
+      "lines": 3,
+      "previous": 10,
+      "combo": 4,
+      "fever": false,
+      "points": 6300
+    },
+    {
+      "lines": 3,
+      "previous": 10,
+      "combo": 4,
+      "fever": true,
+      "points": 12600
+    },
+    {
+      "lines": 3,
+      "previous": 20,
+      "combo": 1,
+      "fever": false,
+      "points": 7200
+    },
+    {
+      "lines": 3,
+      "previous": 20,
+      "combo": 1,
+      "fever": true,
+      "points": 14400
+    },
+    {
+      "lines": 3,
+      "previous": 20,
+      "combo": 2,
+      "fever": false,
+      "points": 7500
+    },
+    {
+      "lines": 3,
+      "previous": 20,
+      "combo": 2,
+      "fever": true,
+      "points": 15000
+    },
+    {
+      "lines": 3,
+      "previous": 20,
+      "combo": 4,
+      "fever": false,
+      "points": 8100
+    },
+    {
+      "lines": 3,
+      "previous": 20,
+      "combo": 4,
+      "fever": true,
+      "points": 16200
+    },
+    {
+      "lines": 3,
+      "previous": 40,
+      "combo": 1,
+      "fever": false,
+      "points": 10800
+    },
+    {
+      "lines": 3,
+      "previous": 40,
+      "combo": 1,
+      "fever": true,
+      "points": 21600
+    },
+    {
+      "lines": 3,
+      "previous": 40,
+      "combo": 2,
+      "fever": false,
+      "points": 11100
+    },
+    {
+      "lines": 3,
+      "previous": 40,
+      "combo": 2,
+      "fever": true,
+      "points": 22200
+    },
+    {
+      "lines": 3,
+      "previous": 40,
+      "combo": 4,
+      "fever": false,
+      "points": 11700
+    },
+    {
+      "lines": 3,
+      "previous": 40,
+      "combo": 4,
+      "fever": true,
+      "points": 23400
+    },
+    {
+      "lines": 4,
+      "previous": 0,
+      "combo": 1,
+      "fever": false,
+      "points": 6600
+    },
+    {
+      "lines": 4,
+      "previous": 0,
+      "combo": 1,
+      "fever": true,
+      "points": 13200
+    },
+    {
+      "lines": 4,
+      "previous": 0,
+      "combo": 2,
+      "fever": false,
+      "points": 7000
+    },
+    {
+      "lines": 4,
+      "previous": 0,
+      "combo": 2,
+      "fever": true,
+      "points": 14000
+    },
+    {
+      "lines": 4,
+      "previous": 0,
+      "combo": 4,
+      "fever": false,
+      "points": 7800
+    },
+    {
+      "lines": 4,
+      "previous": 0,
+      "combo": 4,
+      "fever": true,
+      "points": 15600
+    },
+    {
+      "lines": 4,
+      "previous": 5,
+      "combo": 1,
+      "fever": false,
+      "points": 8250
+    },
+    {
+      "lines": 4,
+      "previous": 5,
+      "combo": 1,
+      "fever": true,
+      "points": 16500
+    },
+    {
+      "lines": 4,
+      "previous": 5,
+      "combo": 2,
+      "fever": false,
+      "points": 8650
+    },
+    {
+      "lines": 4,
+      "previous": 5,
+      "combo": 2,
+      "fever": true,
+      "points": 17300
+    },
+    {
+      "lines": 4,
+      "previous": 5,
+      "combo": 4,
+      "fever": false,
+      "points": 9450
+    },
+    {
+      "lines": 4,
+      "previous": 5,
+      "combo": 4,
+      "fever": true,
+      "points": 18900
+    },
+    {
+      "lines": 4,
+      "previous": 10,
+      "combo": 1,
+      "fever": false,
+      "points": 9900
+    },
+    {
+      "lines": 4,
+      "previous": 10,
+      "combo": 1,
+      "fever": true,
+      "points": 19800
+    },
+    {
+      "lines": 4,
+      "previous": 10,
+      "combo": 2,
+      "fever": false,
+      "points": 10300
+    },
+    {
+      "lines": 4,
+      "previous": 10,
+      "combo": 2,
+      "fever": true,
+      "points": 20600
+    },
+    {
+      "lines": 4,
+      "previous": 10,
+      "combo": 4,
+      "fever": false,
+      "points": 11100
+    },
+    {
+      "lines": 4,
+      "previous": 10,
+      "combo": 4,
+      "fever": true,
+      "points": 22200
+    },
+    {
+      "lines": 4,
+      "previous": 20,
+      "combo": 1,
+      "fever": false,
+      "points": 13200
+    },
+    {
+      "lines": 4,
+      "previous": 20,
+      "combo": 1,
+      "fever": true,
+      "points": 26400
+    },
+    {
+      "lines": 4,
+      "previous": 20,
+      "combo": 2,
+      "fever": false,
+      "points": 13600
+    },
+    {
+      "lines": 4,
+      "previous": 20,
+      "combo": 2,
+      "fever": true,
+      "points": 27200
+    },
+    {
+      "lines": 4,
+      "previous": 20,
+      "combo": 4,
+      "fever": false,
+      "points": 14400
+    },
+    {
+      "lines": 4,
+      "previous": 20,
+      "combo": 4,
+      "fever": true,
+      "points": 28800
+    },
+    {
+      "lines": 4,
+      "previous": 40,
+      "combo": 1,
+      "fever": false,
+      "points": 19800
+    },
+    {
+      "lines": 4,
+      "previous": 40,
+      "combo": 1,
+      "fever": true,
+      "points": 39600
+    },
+    {
+      "lines": 4,
+      "previous": 40,
+      "combo": 2,
+      "fever": false,
+      "points": 20200
+    },
+    {
+      "lines": 4,
+      "previous": 40,
+      "combo": 2,
+      "fever": true,
+      "points": 40400
+    },
+    {
+      "lines": 4,
+      "previous": 40,
+      "combo": 4,
+      "fever": false,
+      "points": 21000
+    },
+    {
+      "lines": 4,
+      "previous": 40,
+      "combo": 4,
+      "fever": true,
+      "points": 42000
+    },
+    {
+      "lines": 5,
+      "previous": 0,
+      "combo": 1,
+      "fever": false,
+      "points": 10500
+    },
+    {
+      "lines": 5,
+      "previous": 0,
+      "combo": 1,
+      "fever": true,
+      "points": 21000
+    },
+    {
+      "lines": 5,
+      "previous": 0,
+      "combo": 2,
+      "fever": false,
+      "points": 11000
+    },
+    {
+      "lines": 5,
+      "previous": 0,
+      "combo": 2,
+      "fever": true,
+      "points": 22000
+    },
+    {
+      "lines": 5,
+      "previous": 0,
+      "combo": 4,
+      "fever": false,
+      "points": 12000
+    },
+    {
+      "lines": 5,
+      "previous": 0,
+      "combo": 4,
+      "fever": true,
+      "points": 24000
+    },
+    {
+      "lines": 5,
+      "previous": 5,
+      "combo": 1,
+      "fever": false,
+      "points": 13125
+    },
+    {
+      "lines": 5,
+      "previous": 5,
+      "combo": 1,
+      "fever": true,
+      "points": 26250
+    },
+    {
+      "lines": 5,
+      "previous": 5,
+      "combo": 2,
+      "fever": false,
+      "points": 13625
+    },
+    {
+      "lines": 5,
+      "previous": 5,
+      "combo": 2,
+      "fever": true,
+      "points": 27250
+    },
+    {
+      "lines": 5,
+      "previous": 5,
+      "combo": 4,
+      "fever": false,
+      "points": 14625
+    },
+    {
+      "lines": 5,
+      "previous": 5,
+      "combo": 4,
+      "fever": true,
+      "points": 29250
+    },
+    {
+      "lines": 5,
+      "previous": 10,
+      "combo": 1,
+      "fever": false,
+      "points": 15750
+    },
+    {
+      "lines": 5,
+      "previous": 10,
+      "combo": 1,
+      "fever": true,
+      "points": 31500
+    },
+    {
+      "lines": 5,
+      "previous": 10,
+      "combo": 2,
+      "fever": false,
+      "points": 16250
+    },
+    {
+      "lines": 5,
+      "previous": 10,
+      "combo": 2,
+      "fever": true,
+      "points": 32500
+    },
+    {
+      "lines": 5,
+      "previous": 10,
+      "combo": 4,
+      "fever": false,
+      "points": 17250
+    },
+    {
+      "lines": 5,
+      "previous": 10,
+      "combo": 4,
+      "fever": true,
+      "points": 34500
+    },
+    {
+      "lines": 5,
+      "previous": 20,
+      "combo": 1,
+      "fever": false,
+      "points": 21000
+    },
+    {
+      "lines": 5,
+      "previous": 20,
+      "combo": 1,
+      "fever": true,
+      "points": 42000
+    },
+    {
+      "lines": 5,
+      "previous": 20,
+      "combo": 2,
+      "fever": false,
+      "points": 21500
+    },
+    {
+      "lines": 5,
+      "previous": 20,
+      "combo": 2,
+      "fever": true,
+      "points": 43000
+    },
+    {
+      "lines": 5,
+      "previous": 20,
+      "combo": 4,
+      "fever": false,
+      "points": 22500
+    },
+    {
+      "lines": 5,
+      "previous": 20,
+      "combo": 4,
+      "fever": true,
+      "points": 45000
+    },
+    {
+      "lines": 5,
+      "previous": 40,
+      "combo": 1,
+      "fever": false,
+      "points": 31500
+    },
+    {
+      "lines": 5,
+      "previous": 40,
+      "combo": 1,
+      "fever": true,
+      "points": 63000
+    },
+    {
+      "lines": 5,
+      "previous": 40,
+      "combo": 2,
+      "fever": false,
+      "points": 32000
+    },
+    {
+      "lines": 5,
+      "previous": 40,
+      "combo": 2,
+      "fever": true,
+      "points": 64000
+    },
+    {
+      "lines": 5,
+      "previous": 40,
+      "combo": 4,
+      "fever": false,
+      "points": 33000
+    },
+    {
+      "lines": 5,
+      "previous": 40,
+      "combo": 4,
+      "fever": true,
+      "points": 66000
+    },
+    {
+      "lines": 6,
+      "previous": 0,
+      "combo": 1,
+      "fever": false,
+      "points": 15300
+    },
+    {
+      "lines": 6,
+      "previous": 0,
+      "combo": 1,
+      "fever": true,
+      "points": 30600
+    },
+    {
+      "lines": 6,
+      "previous": 0,
+      "combo": 2,
+      "fever": false,
+      "points": 15900
+    },
+    {
+      "lines": 6,
+      "previous": 0,
+      "combo": 2,
+      "fever": true,
+      "points": 31800
+    },
+    {
+      "lines": 6,
+      "previous": 0,
+      "combo": 4,
+      "fever": false,
+      "points": 17100
+    },
+    {
+      "lines": 6,
+      "previous": 0,
+      "combo": 4,
+      "fever": true,
+      "points": 34200
+    },
+    {
+      "lines": 6,
+      "previous": 5,
+      "combo": 1,
+      "fever": false,
+      "points": 19125
+    },
+    {
+      "lines": 6,
+      "previous": 5,
+      "combo": 1,
+      "fever": true,
+      "points": 38250
+    },
+    {
+      "lines": 6,
+      "previous": 5,
+      "combo": 2,
+      "fever": false,
+      "points": 19725
+    },
+    {
+      "lines": 6,
+      "previous": 5,
+      "combo": 2,
+      "fever": true,
+      "points": 39450
+    },
+    {
+      "lines": 6,
+      "previous": 5,
+      "combo": 4,
+      "fever": false,
+      "points": 20925
+    },
+    {
+      "lines": 6,
+      "previous": 5,
+      "combo": 4,
+      "fever": true,
+      "points": 41850
+    },
+    {
+      "lines": 6,
+      "previous": 10,
+      "combo": 1,
+      "fever": false,
+      "points": 22950
+    },
+    {
+      "lines": 6,
+      "previous": 10,
+      "combo": 1,
+      "fever": true,
+      "points": 45900
+    },
+    {
+      "lines": 6,
+      "previous": 10,
+      "combo": 2,
+      "fever": false,
+      "points": 23550
+    },
+    {
+      "lines": 6,
+      "previous": 10,
+      "combo": 2,
+      "fever": true,
+      "points": 47100
+    },
+    {
+      "lines": 6,
+      "previous": 10,
+      "combo": 4,
+      "fever": false,
+      "points": 24750
+    },
+    {
+      "lines": 6,
+      "previous": 10,
+      "combo": 4,
+      "fever": true,
+      "points": 49500
+    },
+    {
+      "lines": 6,
+      "previous": 20,
+      "combo": 1,
+      "fever": false,
+      "points": 30600
+    },
+    {
+      "lines": 6,
+      "previous": 20,
+      "combo": 1,
+      "fever": true,
+      "points": 61200
+    },
+    {
+      "lines": 6,
+      "previous": 20,
+      "combo": 2,
+      "fever": false,
+      "points": 31200
+    },
+    {
+      "lines": 6,
+      "previous": 20,
+      "combo": 2,
+      "fever": true,
+      "points": 62400
+    },
+    {
+      "lines": 6,
+      "previous": 20,
+      "combo": 4,
+      "fever": false,
+      "points": 32400
+    },
+    {
+      "lines": 6,
+      "previous": 20,
+      "combo": 4,
+      "fever": true,
+      "points": 64800
+    },
+    {
+      "lines": 6,
+      "previous": 40,
+      "combo": 1,
+      "fever": false,
+      "points": 45900
+    },
+    {
+      "lines": 6,
+      "previous": 40,
+      "combo": 1,
+      "fever": true,
+      "points": 91800
+    },
+    {
+      "lines": 6,
+      "previous": 40,
+      "combo": 2,
+      "fever": false,
+      "points": 46500
+    },
+    {
+      "lines": 6,
+      "previous": 40,
+      "combo": 2,
+      "fever": true,
+      "points": 93000
+    },
+    {
+      "lines": 6,
+      "previous": 40,
+      "combo": 4,
+      "fever": false,
+      "points": 47700
+    },
+    {
+      "lines": 6,
+      "previous": 40,
+      "combo": 4,
+      "fever": true,
+      "points": 95400
+    }
+  ]
+}
