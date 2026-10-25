@@ -1393,6 +1393,7 @@ function makePieces(board=null,context=state){
 try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mine-v227')||localStorage.getItem('jewel-mine-v226')||localStorage.getItem('jewel-mine-v225')||localStorage.getItem('jewel-mine-v224')||localStorage.getItem('jewel-mine-v223')||localStorage.getItem('jewel-mine-v222')||localStorage.getItem('jewel-mine-v221')||localStorage.getItem('jewel-mine-v220')||localStorage.getItem('jewel-mine-v219')||localStorage.getItem('jewel-mine-v218')||localStorage.getItem('jewel-mine-v217')||localStorage.getItem('jewel-mine-v216')||localStorage.getItem('jewel-mine-v215')||localStorage.getItem('jewel-mine-v214')||localStorage.getItem('jewel-mine-v213')||localStorage.getItem('jewel-mine-v212')||localStorage.getItem('jewel-mine-v211')||localStorage.getItem('jewel-mine-v210')||localStorage.getItem('jewel-mine-v29')||localStorage.getItem('jewel-mine-v28')||localStorage.getItem('jewel-mine-v27')||localStorage.getItem('jewel-mine-v26')||localStorage.getItem('jewel-mine-v25')||localStorage.getItem('jewel-mine-v24')||localStorage.getItem('jewel-mine-v23')||localStorage.getItem('jewel-mine-v22')||localStorage.getItem('jewel-mine-v21')||localStorage.getItem('jewel-mine-v20')||localStorage.getItem('animal-block-v20')||localStorage.getItem('animal-block-v19')||localStorage.getItem('animal-block-v18')||localStorage.getItem('animal-block-v17')||localStorage.getItem('animal-block-v16')||localStorage.getItem('animal-block-v15')||localStorage.getItem('animal-block-v14')||localStorage.getItem('animal-block-v13')||localStorage.getItem('animal-block-v12')||localStorage.getItem('animal-block-v11')||localStorage.getItem('animal-block-v10')||localStorage.getItem('animal-block-v09')||'null');if(x&&Array.isArray(x.board)&&x.board.length===64&&Array.isArray(x.pieces)&&x.pieces.length===3)state=x;else state=fresh()}catch(e){state=fresh()}state.sessionBest=Number.isFinite(state.sessionBest)&&state.sessionBest>=0?state.sessionBest:Math.max(0,Number(state.best)||0);state.bonus=Number.isFinite(state.bonus)?state.bonus:0;state.finds=state.finds||{};state.gems=Array.isArray(state.gems)&&state.gems.length===64?state.gems:Array(64).fill(null);let retainedGem=false;state.gems=state.gems.map((gem,i)=>{if(gem===null||state.board[i]===null||retainedGem)return null;retainedGem=true;return gem});delete state.animalAt;state.feverProgress=Number.isFinite(state.feverProgress)?state.feverProgress:0;state.feverTurns=Number.isFinite(state.feverTurns)?state.feverTurns:0;state.totalLines=Number.isFinite(state.totalLines)?state.totalLines:0;if(state.gemFeverVersion!==1){state.feverProgress=0;state.bonus=0;state.gemFeverVersion=1;}state.pieces.forEach(p=>{if((p.s===27||p.s===29)&&!p.used)p.s=5});const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};function toast(main,sub='',mode='normal'){
  if(document.hidden){if(mode==='fever')pendingFeverNotice=true;return}
  const el=$('toast');
+ if(mode!=='fever'&&el.classList.contains('fever-notice')&&el.classList.contains('show'))return;
  el.className='toast'+(mode==='combo'?' combo':mode==='fever'?' fever-notice':'');
  el.innerHTML=sub?`${main}<span class="sub">${sub}</span>`:main;
  el.classList.add('show');clearTimeout(toast.timer);
@@ -1482,6 +1483,7 @@ function syncVisibility(){
  if(document.hidden){
   stopSimultaneousReward();
   cosmeticTimers.forEach(clearTimeout);cosmeticTimers.clear();cosmeticKeys.clear();
+  if($('toast').classList.contains('fever-notice')&&$('toast').classList.contains('show'))pendingFeverNotice=true;
   clearTimeout(toast.timer);$('toast').classList.remove('show');
   $('burstLayer').replaceChildren();document.querySelector('.gem-bonus-pop')?.remove();document.querySelector('.place-points')?.remove();document.querySelector('.boardwrap').classList.remove('haptic-clear');
   cancelAnimationFrame(scoreAnimFrame);scoreAnimFrame=0;++scoreAnimToken;scoreAnimTarget=null;scoreDisplayValue=state.score;showScoreNumber(state.score);
@@ -1497,8 +1499,9 @@ function syncVisibility(){
 }
 document.addEventListener('visibilitychange',syncVisibility);
 function showClearToast(lines,comboChain,lineEventPoints){
- if(lines>=2){clearTimeout(toast.timer);$('toast').classList.remove('show');showSimultaneousReward(lines,lineEventPoints);return}
- stopSimultaneousReward();centerComboOnBoard();
+ const feverShowing=$('toast').classList.contains('fever-notice')&&$('toast').classList.contains('show');
+ if(lines>=2){if(!feverShowing){clearTimeout(toast.timer);$('toast').classList.remove('show')}showSimultaneousReward(lines,lineEventPoints);return}
+ stopSimultaneousReward();if(feverShowing)return;centerComboOnBoard();
  const main=`<div class="combo-head"><span class="combo-num">${comboChain}</span><span class="combo-word">COMBO</span></div>`;
  toast(main,'','combo');
 }
