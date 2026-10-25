@@ -1066,7 +1066,19 @@ body::after{content:none!important}
 #over.new-record .bonus-result #foundfinal{color:#fff4dc!important;text-shadow:0 1px 2px #000;font-weight:800}
 #over.new-record .bonus-result{background:#24182f!important}
 #over.new-record>p{color:#fff4dc!important}
-</style></head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0.7 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
+</style><style>
+/* One reusable, non-interactive reward surface; no particles or render loop. */
+.simultaneous-reward{position:fixed;left:50%;top:50%;z-index:24;pointer-events:none;transform:translate(-50%,-50%);text-align:center;min-width:190px;padding:12px 28px 18px;border-radius:24px;background:#1c102bed;color:var(--reward-color,#ffe28b);text-shadow:0 3px 0 #32101f;contain:layout style;isolation:isolate}
+.simultaneous-reward[hidden]{display:none}
+.simultaneous-reward[data-tier="2"]{--reward-color:#ffe28b}
+.simultaneous-reward[data-tier="3"]{--reward-color:#ffad55}
+.simultaneous-reward[data-tier="4"]{--reward-color:#ff9fd8}
+.simultaneous-reward[data-tier="5"]{--reward-color:#fff09a}
+.reward-glow{position:absolute;inset:3px;border:2px solid var(--reward-color);border-radius:22px;box-shadow:0 0 18px 5px var(--reward-color),inset 0 0 12px var(--reward-color);opacity:0;z-index:-1}
+.reward-multiplier{display:block;font-size:clamp(68px,20vw,110px);line-height:1.06;font-weight:1000;font-variant-numeric:tabular-nums;-webkit-text-stroke:1px #34142a}
+.reward-points{display:block;margin-top:4px;color:#fff9e7;font-size:clamp(22px,7vw,32px);font-weight:900;font-variant-numeric:tabular-nums}
+</style>
+</head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0.7 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div id="simultaneousReward" class="simultaneous-reward" hidden aria-live="polite" aria-atomic="true"><i class="reward-glow" aria-hidden="true"></i><strong class="reward-multiplier"></strong><span class="reward-points"></span></div><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
 (()=>{'use strict';const N=8,KEY='jewel-mine-v35';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]],[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
 // Haptics only work in browsers implementing navigator.vibrate (iOS Safari does not).
 function buzz(kind){try{if(typeof navigator.vibrate==='function')navigator.vibrate(kind==='clear'?24:12)}catch(e){}}
@@ -1370,6 +1382,36 @@ function finishGame(){
  }
 $('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal()}
 let animationLocked=false;let revealTimers=[];
+// Points are supplied by the scoring transaction; presentation never recalculates rewards.
+let simultaneousAnimation=null,simultaneousGlow=null;
+function stopSimultaneousReward(){
+ const el=$('simultaneousReward');
+ if(simultaneousAnimation){simultaneousAnimation.onfinish=null;simultaneousAnimation.cancel();simultaneousAnimation=null}
+ simultaneousGlow?.cancel();simultaneousGlow=null;
+ el.hidden=true;
+}
+function showSimultaneousReward(lines,lineEventPoints){
+ stopSimultaneousReward();
+ if(document.hidden||!Number.isInteger(lines)||lines<2||!Number.isFinite(lineEventPoints)||lineEventPoints<0)return;
+ const el=$('simultaneousReward');el.dataset.tier=String(Math.min(5,lines));
+ el.querySelector('.reward-multiplier').textContent='×'+lines;
+ el.querySelector('.reward-points').textContent='+'+lineEventPoints.toLocaleString('ja-JP');
+ el.hidden=false;
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ simultaneousAnimation=el.animate(reduced?[{opacity:0},{opacity:1,offset:.15},{opacity:1,offset:.8},{opacity:0}]:[
+  {transform:'translate(-50%,-50%) scale(.35)',opacity:0},
+  {transform:'translate(-50%,-50%) scale(1.22)',opacity:1,offset:.17},
+  {transform:'translate(-50%,-50%) scale(.97)',opacity:1,offset:.32},
+  {transform:'translate(-50%,-50%) scale(1)',opacity:1,offset:.68},
+  {transform:'translate(-50%,calc(-50% - 24px)) scale(.98)',opacity:0}
+ ],{duration:reduced?200:720,easing:'ease-out'});
+ if(!reduced)simultaneousGlow=el.querySelector('.reward-glow').animate([
+  {opacity:0},{opacity:1,offset:.2},{opacity:.3,offset:.4},{opacity:0,offset:.65},{opacity:0}
+ ],{duration:720,easing:'ease-out'});
+ const animation=simultaneousAnimation;
+ animation.onfinish=()=>{if(simultaneousAnimation===animation)stopSimultaneousReward()};
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSimultaneousReward()});
 function showClearToast(lines,comboChain,totalPoints){centerComboOnBoard();
  const main=`<div class="combo-head"><span class="combo-num">${comboChain}</span><span class="combo-word">COMBO</span></div>`;
  toast(main,'','combo');
@@ -1478,7 +1520,7 @@ function place(r,c){
  const noMoves=!hasMoves();
  playReveals(found,()=>{if(noMoves)finishGame()});
 }
-function reset(){$('burstLayer').replaceChildren();const best=state.best;state=fresh(best);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
+function reset(){stopSimultaneousReward();$('burstLayer').replaceChildren();const best=state.best;state=fresh(best);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
 // Pointer drag v0.2: a real floating block follows ABOVE the finger, showing exact placement.
 function dragCellSize(){const c=boardEl.children[0], n=boardEl.children[1];return {size:c.getBoundingClientRect().width,pitch:n.getBoundingClientRect().left-c.getBoundingClientRect().left};}
 function dragPosition(e){if(!drag)return;const d=drag, first=boardEl.children[0].getBoundingClientRect();let left=e.clientX-d.width/2, top=e.clientY-d.lift-d.height/2;d.ghost.style.left=left+'px';d.ghost.style.top=top+'px';let c=Math.round((left-first.left)/d.pitch),r=Math.round((top-first.top)/d.pitch);d.r=r;d.c=c;const good=r>=0&&c>=0&&r<N&&c<N&&valid(state.pieces[d.index],r,c);d.good=good;d.ghost.classList.toggle('invalid',!good);if(r>=-2&&c>=-2&&r<N&&c<N){selected=d.index;preview(r,c);if(!good&&r>=0&&c>=0) $('message').textContent='';else if(good&&!document.querySelector('.boardwrap').classList.contains('readyline'))$('message').textContent='';}else{clearPreview();$('message').textContent='';}}
