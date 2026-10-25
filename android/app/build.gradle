@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+def buildIdentity = new groovy.json.JsonSlurper().parse(file('../../build/identity.json'))
+
 android {
     namespace = "com.wilduncle.jewelmine.codextest"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +9,10 @@ android {
         applicationId "com.wilduncle.jewelmine.codextest"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode Integer.parseInt(System.getenv('GITHUB_RUN_NUMBER') ?: '1')
-        versionName "1.0"
+        versionCode buildIdentity.versionCode as int
+        versionName buildIdentity.versionName
+        resValue "string", "app_name", buildIdentity.appName
+        resValue "string", "title_activity_main", buildIdentity.appName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

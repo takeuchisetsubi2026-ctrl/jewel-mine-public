@@ -1,0 +1,154 @@
+{
+  "target": "d513c89a95d0bfc382ef2e5257720e66df9142e6",
+  "pullRequests": [
+    {
+      "number": 1,
+      "url": "https://github.com/wild-uncle/jewel-mine-public/pull/1",
+      "baseBranch": "build/android-debug-apk",
+      "headBranch": "fix/android-feedback-ui",
+      "headSha": "8b598c808cdf3e17a7952575965129bee22b7033",
+      "diffBase": "9f8b20e368fd6b5b4fe77b6cb9ae4febf675fc97",
+      "ancestorOfPR4": true,
+      "commits": [
+        "8b598c808cdf3e17a7952575965129bee22b7033 Record Android feedback verification and APK link",
+        "4dfb818c0efc8f4bd749c51c2606060759a94f1f Simplify clear effects and improve record and drag visibility"
+      ],
+      "files": [
+        "docs/fever-320.png",
+        "docs/highscore-feedback.png",
+        "docs/reports/2026-10-25-android-feedback-ui.md",
+        "docs/test-results.json",
+        "index.html",
+        "scripts/check-assets.cjs",
+        "tests/regression.cjs"
+      ]
+    },
+    {
+      "number": 2,
+      "url": "https://github.com/wild-uncle/jewel-mine-public/pull/2",
+      "baseBranch": "fix/android-feedback-ui",
+      "headBranch": "feature/score-adaptive-piece-generation",
+      "headSha": "d4c092e40cd7e1637c13d52f7e4a0e0de9f93039",
+      "diffBase": "8b598c808cdf3e17a7952575965129bee22b7033",
+      "ancestorOfPR4": true,
+      "commits": [
+        "d4c092e40cd7e1637c13d52f7e4a0e0de9f93039 Link final successful Android CI and latest test APK",
+        "cf6712e1b0f236192890ab2a9198a8e2c258b370 Record vNext draw statistics, gameplay distributions and Android CI evidence",
+        "66b4aca239b66bb6db983a59ebb82be2812d6f6b Normalize simulation boards and document the shared greedy policy",
+        "96fc0455bf2ffca3bc31f6a4a5f5ede575c1c6c7 Add score-adaptive weighted piece sets with bounded route evaluation"
+      ],
+      "files": [
+        "docs/fever-320.png",
+        "docs/highscore-feedback.png",
+        "docs/reports/2026-10-25-vnext-piece-generation.md",
+        "docs/reports/piece-base-statistics.json",
+        "docs/reports/piece-browser-results.json",
+        "docs/reports/piece-generation-design.md",
+        "docs/reports/piece-simulation.json",
+        "docs/test-results.json",
+        "index.html",
+        "package.json",
+        "tests/piece-browser.cjs",
+        "tests/piece-generation.cjs",
+        "tests/piece-simulation.cjs",
+        "tests/piece-test-helpers.cjs",
+        "tests/regression.cjs"
+      ]
+    },
+    {
+      "number": 3,
+      "url": "https://github.com/wild-uncle/jewel-mine-public/pull/3",
+      "baseBranch": "feature/score-adaptive-piece-generation",
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "1ac50c0ef3f230552935dac261422aeebac5cc72",
+      "diffBase": "d4c092e40cd7e1637c13d52f7e4a0e0de9f93039",
+      "ancestorOfPR4": true,
+      "commits": [
+        "1ac50c0ef3f230552935dac261422aeebac5cc72 Clarify measurement scope and final handoff details",
+        "c590ad1af885ec02476b7361cec1ab67c9ad5c1f Record reward balance, score compatibility and measured rendering costs",
+        "8079485a9fd6584813b8cad3227de3ea395f7de4 Preserve full FEVER notice during consecutive line rewards",
+        "5eacbb0377efee336d5d71b5b676ae26422af495 Balance large pieces, apply line rewards and stop unnecessary background rendering",
+        "879ffa9c7e1a55358b3474faa4fd21cfbaf362a5 Link successful preparation APK with explicit incomplete status",
+        "ece31abf424e22cd8e714b56fea29ab18ba173eb Document tested reward UI preparation and missing scoring specification",
+        "41d91a78348ce758fb2556f06cd40ce0ac26d0b9 Prepare reusable nonblocking simultaneous-clear reward presentation"
+      ],
+      "files": [
+        "docs/fever-320.png",
+        "docs/highscore-feedback.png",
+        "docs/reports/2026-10-25-reward-balance-battery.md",
+        "docs/reports/2026-10-25-simultaneous-reward-preparation.md",
+        "docs/reports/reward-actual-six-lines.png",
+        "docs/reports/reward-base-statistics.json",
+        "docs/reports/reward-generation-benchmark.json",
+        "docs/reports/reward-integration-results.json",
+        "docs/reports/reward-power-measurements.json",
+        "docs/reports/reward-score-table.json",
+        "docs/reports/reward-simulation.json",
+        "docs/reports/simultaneous-reward-ui-results.json",
+        "docs/reports/simultaneous-reward-x4.png",
+        "docs/test-results.json",
+        "index.html",
+        "package.json",
+        "tests/piece-generation.cjs",
+        "tests/piece-test-helpers.cjs",
+        "tests/regression.cjs",
+        "tests/reward-generation-benchmark.cjs",
+        "tests/reward-integration.cjs",
+        "tests/reward-power.cjs",
+        "tests/reward-scoring.cjs",
+        "tests/reward-simulation.cjs",
+        "tests/simultaneous-reward.cjs"
+      ]
+    },
+    {
+      "number": 4,
+      "url": "https://github.com/wild-uncle/jewel-mine-public/pull/4",
+      "baseBranch": "feature/reward-balance-battery",
+      "headBranch": "feature/score-versioning-difficulty",
+      "headSha": "d513c89a95d0bfc382ef2e5257720e66df9142e6",
+      "diffBase": "1ac50c0ef3f230552935dac261422aeebac5cc72",
+      "ancestorOfPR4": true,
+      "commits": [
+        "d513c89a95d0bfc382ef2e5257720e66df9142e6 Document score migration design, comparisons and verified Android artifact",
+        "298c901aa71af1bd0751685d1657ca53aa69d882 Keep legacy-resume piece selection unchanged and clarify replay baselines",
+        "ad511fc1b71ae3496bae6ff0696e1410dc6a609f Version score records, migrate saves safely and separate difficulty progress"
+      ],
+      "files": [
+        "docs/fever-320.png",
+        "docs/reports/2026-10-25-score-versioning-difficulty.md",
+        "docs/reports/reward-actual-six-lines.png",
+        "docs/reports/reward-integration-results.json",
+        "docs/reports/score-versioning-generation.json",
+        "docs/reports/score-versioning-power.json",
+        "docs/reports/score-versioning-tests.json",
+        "docs/reports/simultaneous-reward-x4.png",
+        "docs/reports/versioning-comparison.json",
+        "docs/test-results.json",
+        "index.html",
+        "package.json",
+        "tests/piece-browser.cjs",
+        "tests/reward-generation-benchmark.cjs",
+        "tests/reward-integration.cjs",
+        "tests/reward-power.cjs",
+        "tests/score-versioning-browser.cjs",
+        "tests/score-versioning.cjs",
+        "tests/versioning-comparison.cjs"
+      ]
+    }
+  ],
+  "oldThread": {
+    "commit": "87dde26c042543163203d09ef3bb17db246ef585",
+    "ancestorOfPR4": false,
+    "comparisonFiles": [
+      "M\tdocs/fever-320.png",
+      "A\tdocs/highscore-feedback.png",
+      "A\tdocs/reports/2026-10-25-android-feedback-ui.md",
+      "M\tdocs/test-results.json",
+      "M\tindex.html",
+      "M\tscripts/check-assets.cjs",
+      "D\ttests/android-ux-v2.cjs",
+      "M\ttests/regression.cjs"
+    ],
+    "classification": "game UX requirements preserved by PR1 alternate implementation; legacy effect superseded; separate original evidence retained in old bundle"
+  }
+}
