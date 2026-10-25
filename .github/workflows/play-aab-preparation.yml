@@ -38,17 +38,18 @@ jobs:
       - name: Verify AAB signature and reject unexpected signing
         run: |
           python3 - <<'PY'
-          import pathlib, zipfile, subprocess
+          import pathlib, zipfile
           p=pathlib.Path('android/app/build/outputs/bundle/release/app-release.aab')
           assert p.is_file() and p.stat().st_size>0, 'AAB missing'
           with zipfile.ZipFile(p) as z:
               assert 'base/manifest/AndroidManifest.xml' in z.namelist()
-          out=subprocess.run(['jarsigner','-verify',str(p)],capture_output=True,text=True)
-          if out.returncode == 0:
-              print('AAB has a valid JAR signature; signer identity has not been established.')
-              print('STOP: signed AAB is not approved for distribution.')
+          with zipfile.ZipFile(p) as z:
+              signatures=[n for n in z.namelist() if n.upper().startswith('META-INF/') and n.upper().endswith(('.RSA','.DSA','.EC'))]
+          if signatures:
+              print('STOP: AAB contains signing certificate blocks:', len(signatures))
               raise SystemExit(2)
-          print('AAB has no valid JAR signature. Not upload-ready.')
+          print('Unsigned AAB archive verified (no JAR signing certificate blocks).')
+          print('Not upload-ready: Play signing and identity checks still required.')
           PY
       - uses: actions/upload-artifact@v4
         with:
