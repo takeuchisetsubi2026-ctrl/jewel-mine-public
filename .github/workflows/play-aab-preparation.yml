@@ -1,0 +1,50 @@
+name: Play AAB preparation (unsigned verification only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unsigned-aab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22.22.0'
+          cache: npm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
+      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - run: npm ci
+      - run: npm run build:web
+      - run: npx cap sync android
+      - name: Validate Play package ID and build unsigned release AAB
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon -PplayApplicationId=com.takeuchisetsubi.jewelmine bundleRelease
+      - name: Confirm unsigned AAB and application ID
+        run: |
+          python3 - <<'PY'
+          import pathlib, zipfile, subprocess
+          p=pathlib.Path('android/app/build/outputs/bundle/release/app-release.aab')
+          assert p.is_file() and p.stat().st_size>0, 'AAB missing'
+          with zipfile.ZipFile(p) as z:
+              assert 'base/manifest/AndroidManifest.xml' in z.namelist()
+          out=subprocess.run(['jarsigner','-verify',str(p)],capture_output=True,text=True)
+          assert out.returncode != 0, 'Unexpected signed AAB: stop'
+          print('Unsigned AAB verified. This is NOT upload-ready.')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: play-aab-unsigned-not-for-upload
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 7
