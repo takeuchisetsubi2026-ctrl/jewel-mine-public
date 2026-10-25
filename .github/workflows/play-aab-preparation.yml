@@ -1,5 +1,10 @@
 name: Play AAB preparation (unsigned verification only)
 on:
+  push:
+    branches: [feature/play-aab-preparation-20261026]
+    paths:
+      - '.github/workflows/play-aab-preparation.yml'
+      - 'android/app/build.gradle'
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,7 +35,7 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew --no-daemon -PplayApplicationId=com.takeuchisetsubi.jewelmine bundleRelease
-      - name: Confirm unsigned AAB and application ID
+      - name: Confirm unsigned AAB archive
         run: |
           python3 - <<'PY'
           import pathlib, zipfile, subprocess
