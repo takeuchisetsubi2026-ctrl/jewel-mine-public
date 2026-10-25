@@ -57,15 +57,15 @@ def string_field(message, number):
 
 
 def package_from_manifest(data):
-    # XmlNode.element = field 3; XmlElement.attribute = field 3.
+    # XmlNode.element = field 3; XmlElement.name = field 3; XmlElement.attribute = field 4.
     elements = [v for n, w, v in fields(data) if n == 3 and w == 2]
     if len(elements) != 1:
         raise ValueError("AAB manifest must contain exactly one XmlElement")
     element = elements[0]
-    if string_field(element, 2) != "manifest":
+    if string_field(element, 3) != "manifest":
         raise ValueError("Root element is not <manifest>")
     for n, w, attribute in fields(element):
-        if n == 3 and w == 2 and string_field(attribute, 2) == "package":
+        if n == 4 and w == 2 and string_field(attribute, 2) == "package":
             value = string_field(attribute, 3)
             if not value:
                 raise ValueError("Empty manifest package")
