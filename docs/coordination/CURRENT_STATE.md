@@ -43,3 +43,12 @@ Preserve both. Before installing TEST09, identify intended update target from An
 2. Owner confirms device saved-game restoration and usability.
 3. B-mode and piece-generation candidate evaluation with larger sample and real feedback.
 4. Non-destructive recovery UI and separate best details after approval.
+
+## JM-001 additional evidence — main Codex investigation PR #7
+
+- Main Codex thread designated explicitly by the owner on 2026-10-25; no automatic polling or task execution installed.
+- Investigation branch: investigation/jm-001-apk-identities; report [reports/JM-001.md](reports/JM-001.md). Status REVIEW for repository evidence; device mapping still PARTIAL and awaiting owner information.
+- Source initially cc6bbf1, refreshed against coordination commit 318fe33daa6f6766e9fa95841bcd3b5440385be2 after concurrent shared-queue updates. Those updates, including PR5 implemented/device-pending status, are retained.
+- Provenance clarification: debug-25 API head is 298c901, but checkout used PR merge SHA 10e89ca24314a541883fd31e545bf9c41862a82d. Both complete trees equal 9c6066be679c605762404c92101d628ae3d864d4.
+- New report/evidence only; no new APK, installation, game/save/app-ID/signing changes or next-task implementation.
+- New communication-ping document was preserved without executing it; it is not part of the manually started JM-001 task.

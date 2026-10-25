@@ -2,6 +2,14 @@
 **Proposed coordination process, not an automatically executing queue.** One designated Codex thread implements only after a human starts the task. No automatic merges.
 
 ## JM-001 — Inventory installed v4.0.7 and v4.0.8 (PARTIAL; DEVICE EVIDENCE NEEDED)
+Status: REVIEW — repository evidence complete; device identities remain PARTIAL / DEVICE EVIDENCE NEEDED.
+Owner: user-designated main Codex thread (2026-10-25).
+Work branch: investigation/jm-001-apk-identities.
+Additional investigation PR: https://github.com/wild-uncle/jewel-mine-public/pull/7
+Report: docs/coordination/reports/JM-001.md
+Evidence: docs/coordination/reports/JM-001-evidence.json
+Actual debug-25 checkout: 10e89ca24314a541883fd31e545bf9c41862a82d; complete tree equals development head 298c901.
+
 GitHub-side investigation completed in PR #5: https://github.com/wild-uncle/jewel-mine-public/pull/5
 - PR #1–#4 inheritance audited; no missing gameplay changes found in inspected evidence.
 - PR #4 APK lineage identified; v4.0.8 lineage not identified.
