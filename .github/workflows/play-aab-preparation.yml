@@ -35,7 +35,7 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew --no-daemon -PplayApplicationId=com.takeuchisetsubi.jewelmine bundleRelease
-      - name: Confirm unsigned AAB archive
+      - name: Verify AAB signature and reject unexpected signing
         run: |
           python3 - <<'PY'
           import pathlib, zipfile, subprocess
@@ -44,8 +44,11 @@ jobs:
           with zipfile.ZipFile(p) as z:
               assert 'base/manifest/AndroidManifest.xml' in z.namelist()
           out=subprocess.run(['jarsigner','-verify',str(p)],capture_output=True,text=True)
-          assert out.returncode != 0, 'Unexpected signed AAB: stop'
-          print('Unsigned AAB verified. This is NOT upload-ready.')
+          if out.returncode == 0:
+              print('AAB has a valid JAR signature; signer identity has not been established.')
+              print('STOP: signed AAB is not approved for distribution.')
+              raise SystemExit(2)
+          print('AAB has no valid JAR signature. Not upload-ready.')
           PY
       - uses: actions/upload-artifact@v4
         with:
