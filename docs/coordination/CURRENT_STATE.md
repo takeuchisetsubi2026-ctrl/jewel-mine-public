@@ -30,3 +30,13 @@ Two separately installed Android icons are observed, showing v4.0.7 and v4.0.8. 
 3. Retain unknown-provenance best as an explicitly provisional B-mode baseline; no retroactive conversion.
 4. Compare B-mode and piece-generation candidate with larger tests and human feedback.
 5. Only then prioritize non-destructive recovery UI and separate best-score details.
+
+### JM-001 investigation update — 2026-10-25 UTC
+
+- Owner explicitly designated the current main Codex thread; no automatic task polling/execution is installed.
+- Task source: coordination/single-task-queue-20261025 @ cc6bbf17092a45ae8d79b382d0b2a8cef1cc6e9f.
+- JM-001 report: [reports/JM-001.md](reports/JM-001.md); status REVIEW, installed-app mapping still unknown.
+- Work branch: investigation/jm-001-apk-identities; investigation PR #7. These updates exist on that work branch, not merged into PR #6 or main.
+- Provenance clarification: debug-25 API head is 298c901, but checkout used PR merge SHA 10e89ca24314a541883fd31e545bf9c41862a82d. The complete tracked-file tree equals 298c901. See report/evidence for the distinction.
+- Standard app ID codextest plus existing public test certificate is a recommendation, not owner approval or device identification. Neither old app has been installed over, removed or cleared by this investigation.
+- Existing draft PR #5 contains pre-queue build-identity work; untouched here. It is not an approved JM-002 completion. JM-002 and later tasks remain blocked/waiting as recorded.

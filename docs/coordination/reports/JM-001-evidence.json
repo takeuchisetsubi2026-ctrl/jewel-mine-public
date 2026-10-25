@@ -1,0 +1,59 @@
+{
+  "task": "JM-001",
+  "checkedUtc": "2026-10-25T06:57:44.344922+00:00",
+  "coordinationSource": "cc6bbf17092a45ae8d79b382d0b2a8cef1cc6e9f",
+  "deviceConnected": false,
+  "pr4": {
+    "run": {
+      "id": 40161734949,
+      "run_number": 25,
+      "event": "pull_request",
+      "head_sha": "298c901aa71af1bd0751685d1657ca53aa69d882",
+      "head_branch": "feature/score-versioning-difficulty",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/wild-uncle/jewel-mine-public/actions/runs/40161734949"
+    },
+    "actualCheckoutSha": "10e89ca24314a541883fd31e545bf9c41862a82d",
+    "treeSha": "9c6066be679c605762404c92101d628ae3d864d4",
+    "treeEqualsDevelopmentHead": true,
+    "gameSourceSha256": "0bf0fec5d391c57a534b16a351b3e2acba8ccb33eed056f24fa75f8eef07db71",
+    "signatureCertificateSha256": "adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029",
+    "signatureEvidence": "successful Actions apksigner verification log",
+    "androidVersionEvidence": "Gradle source configuration and run number; downloaded APK manifest not independently inspected",
+    "configuredApplicationId": "com.wilduncle.jewelmine.codextest",
+    "configuredVersionName": "1.0",
+    "configuredVersionCode": 25,
+    "footer": "試作品 v4.0.7",
+    "artifacts": [
+      {
+        "id": 12585894845,
+        "name": "jewel-mine-test-debug-25",
+        "expired": false,
+        "size_in_bytes": 4292426
+      }
+    ]
+  },
+  "retainedOldApk": {
+    "fileName": "jewel-mine-android-ux-v2-debug.apk",
+    "apkSha256": "bee7fcd4a935d923a38c131fc9b3a074ed48e3ce22e286fc434804e87acabdac",
+    "badging": "package: name='com.wilduncle.jewelmine.codextest' versionCode='3' versionName='1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+    "gameSourceMatchesCommit": "87dde26c042543163203d09ef3bb17db246ef585",
+    "gameSourceSha256": "6825b15040bbd33916984e83ca721f16e5b33a9836f2cb0919abe4bddaa016f3",
+    "sameCertificateAsPR4": true,
+    "containsPR4RuleId": false,
+    "mappingToInstalledApp": "unknown"
+  },
+  "v408HistorySearch": {
+    "command": "git log --all -G '試作品 v4\\.0\\.8' --format=%H -- '*.html'",
+    "matchingCommits": []
+  },
+  "protectedHeads": {
+    "main": "d5ffa1e23a4e44056a8ca5729ebfe42e38caa6cc",
+    "fix/android-feedback-ui": "8b598c808cdf3e17a7952575965129bee22b7033",
+    "feature/score-adaptive-piece-generation": "d4c092e40cd7e1637c13d52f7e4a0e0de9f93039",
+    "feature/reward-balance-battery": "1ac50c0ef3f230552935dac261422aeebac5cc72",
+    "feature/score-versioning-difficulty": "d513c89a95d0bfc382ef2e5257720e66df9142e6",
+    "coordination/single-task-queue-20261025": "cc6bbf17092a45ae8d79b382d0b2a8cef1cc6e9f"
+  }
+}
