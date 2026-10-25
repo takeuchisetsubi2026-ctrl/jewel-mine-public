@@ -5,7 +5,7 @@ const evalGame=(page,fn)=>page.evaluate(code=>window.__testEval('('+code+')()'),
  const current=fs.readFileSync('index.html','utf8');new vm.Script(current.match(/<script>([\s\S]*?)<\/script>/)[1]);
  const baseline=require('child_process').execFileSync('git',['show','d5ffa1e:index.html'],{encoding:'utf8',maxBuffer:4e6});
  const server=http.createServer((q,r)=>{r.setHeader('Content-Type','text/html; charset=utf-8');r.end((q.url==='/baseline'?baseline:current).replace('})();</script>', 'window.__testEval=code=>eval(code);})();</script>'))}).listen(0,'127.0.0.1');
- const browser=await chromium.launch({headless:true,channel:'chrome'});
+ const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']}:{channel:'chrome'})});
  try{
  const results={};
  for(const version of ['baseline','current']){

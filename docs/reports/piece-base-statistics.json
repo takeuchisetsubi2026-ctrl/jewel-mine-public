@@ -1,0 +1,97 @@
+{
+  "seed": "20261025/20261026",
+  "stats": {
+    "joy": {
+      "count": 100000,
+      "rows": {
+        "square4": {
+          "count": 25069,
+          "targetPercent": 25,
+          "actualPercent": 25.069000000000003,
+          "errorPercentagePoints": 0.06900000000000261
+        },
+        "rectangle6": {
+          "count": 24868,
+          "targetPercent": 25,
+          "actualPercent": 24.868000000000002,
+          "errorPercentagePoints": -0.1319999999999979
+        },
+        "square9": {
+          "count": 19744,
+          "targetPercent": 20,
+          "actualPercent": 19.744,
+          "errorPercentagePoints": -0.2560000000000002
+        },
+        "bar": {
+          "count": 25209,
+          "targetPercent": 25,
+          "actualPercent": 25.209,
+          "errorPercentagePoints": 0.20899999999999963
+        },
+        "other": {
+          "count": 5110,
+          "targetPercent": 5,
+          "actualPercent": 5.11,
+          "errorPercentagePoints": 0.11000000000000032
+        }
+      },
+      "bar": {
+        "horizontal": 12819,
+        "vertical": 12390,
+        "four": 12538,
+        "five": 12671
+      }
+    },
+    "challenge": {
+      "count": 100000,
+      "rows": {
+        "square4": {
+          "count": 18231,
+          "targetPercent": 18,
+          "actualPercent": 18.231,
+          "errorPercentagePoints": 0.23100000000000165
+        },
+        "rectangle6": {
+          "count": 17015,
+          "targetPercent": 17,
+          "actualPercent": 17.015,
+          "errorPercentagePoints": 0.015000000000000568
+        },
+        "square9": {
+          "count": 13104,
+          "targetPercent": 13,
+          "actualPercent": 13.104,
+          "errorPercentagePoints": 0.1039999999999992
+        },
+        "bar": {
+          "count": 41824,
+          "targetPercent": 42,
+          "actualPercent": 41.824,
+          "errorPercentagePoints": -0.17600000000000193
+        },
+        "other": {
+          "count": 9826,
+          "targetPercent": 10,
+          "actualPercent": 9.826,
+          "errorPercentagePoints": -0.1739999999999995
+        }
+      },
+      "bar": {
+        "horizontal": 20638,
+        "vertical": 21186,
+        "four": 20805,
+        "five": 21019
+      }
+    }
+  },
+  "checks": {
+    "independentTransitionTrials": 1000,
+    "allOrders": 6,
+    "areaOnlyFalsePositive": false,
+    "retiredIds": [
+      27,
+      29
+    ],
+    "deterministic": true
+  }
+}
