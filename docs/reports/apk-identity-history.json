@@ -1,0 +1,255 @@
+{
+  "sources": [
+    {
+      "commit": "87dde26",
+      "footer": [
+        "試作品 v4.0.7 ・広告なし ・自動保存"
+      ],
+      "sourceSha256": "6825b15040bbd33916984e83ca721f16e5b33a9836f2cb0919abe4bddaa016f3",
+      "pr4": false,
+      "primarySaveKey": [
+        "jewel-mine-v35"
+      ]
+    },
+    {
+      "commit": "4dfb818",
+      "footer": [
+        "試作品 v4.0.7 ・広告なし ・自動保存"
+      ],
+      "sourceSha256": "c55ce8179abd4049ad3312f4bb7e156a4b481e75c096411adffbc58af7ae83a3",
+      "pr4": false,
+      "primarySaveKey": [
+        "jewel-mine-v35"
+      ]
+    },
+    {
+      "commit": "d4c092e",
+      "footer": [
+        "試作品 v4.0.7 ・広告なし ・自動保存"
+      ],
+      "sourceSha256": "4742b6986d5d77137b88de78e95ddceef8674cf6df9d4d73ac65cfa524f6aaad",
+      "pr4": false,
+      "primarySaveKey": [
+        "jewel-mine-v35"
+      ]
+    },
+    {
+      "commit": "1ac50c0",
+      "footer": [
+        "試作品 v4.0.7 ・広告なし ・自動保存"
+      ],
+      "sourceSha256": "f4611357f5f86033f7ee603dae7e0669faf7f34c65c2dfa837fb06033b82ba0b",
+      "pr4": false,
+      "primarySaveKey": [
+        "jewel-mine-v35"
+      ]
+    },
+    {
+      "commit": "298c901",
+      "footer": [
+        "試作品 v4.0.7 ・広告なし ・自動保存"
+      ],
+      "sourceSha256": "0bf0fec5d391c57a534b16a351b3e2acba8ccb33eed056f24fa75f8eef07db71",
+      "pr4": true,
+      "primarySaveKey": [
+        "jewel-mine-v36-score-rules"
+      ]
+    },
+    {
+      "commit": "d513c89",
+      "footer": [
+        "試作品 v4.0.7 ・広告なし ・自動保存"
+      ],
+      "sourceSha256": "0bf0fec5d391c57a534b16a351b3e2acba8ccb33eed056f24fa75f8eef07db71",
+      "pr4": true,
+      "primarySaveKey": [
+        "jewel-mine-v36-score-rules"
+      ]
+    }
+  ],
+  "retainedApkSourceHash": "6825b15040bbd33916984e83ca721f16e5b33a9836f2cb0919abe4bddaa016f3",
+  "actions": [
+    {
+      "conclusion": "success",
+      "databaseId": 40162037689,
+      "headBranch": "feature/score-versioning-difficulty",
+      "headSha": "d513c89a95d0bfc382ef2e5257720e66df9142e6",
+      "number": 26
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40161734949,
+      "headBranch": "feature/score-versioning-difficulty",
+      "headSha": "298c901aa71af1bd0751685d1657ca53aa69d882",
+      "number": 25
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40161732059,
+      "headBranch": "feature/score-versioning-difficulty",
+      "headSha": "298c901aa71af1bd0751685d1657ca53aa69d882",
+      "number": 24
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 40161563773,
+      "headBranch": "feature/score-versioning-difficulty",
+      "headSha": "ad511fc1b71ae3496bae6ff0696e1410dc6a609f",
+      "number": 23
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40161438596,
+      "headBranch": "feature/score-versioning-difficulty",
+      "headSha": "ad511fc1b71ae3496bae6ff0696e1410dc6a609f",
+      "number": 22
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40158007147,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "1ac50c0ef3f230552935dac261422aeebac5cc72",
+      "number": 21
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 40157837066,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "c590ad1af885ec02476b7361cec1ab67c9ad5c1f",
+      "number": 20
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40157445067,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "8079485a9fd6584813b8cad3227de3ea395f7de4",
+      "number": 19
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40157441552,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "8079485a9fd6584813b8cad3227de3ea395f7de4",
+      "number": 18
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40157233145,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "5eacbb0377efee336d5d71b5b676ae26422af495",
+      "number": 17
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40157230520,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "5eacbb0377efee336d5d71b5b676ae26422af495",
+      "number": 16
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40155343221,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "879ffa9c7e1a55358b3474faa4fd21cfbaf362a5",
+      "number": 15
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 40155311988,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "ece31abf424e22cd8e714b56fea29ab18ba173eb",
+      "number": 14
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40155309451,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "ece31abf424e22cd8e714b56fea29ab18ba173eb",
+      "number": 13
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40155119192,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "41d91a78348ce758fb2556f06cd40ce0ac26d0b9",
+      "number": 12
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40155092719,
+      "headBranch": "feature/reward-balance-battery",
+      "headSha": "41d91a78348ce758fb2556f06cd40ce0ac26d0b9",
+      "number": 11
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40146528216,
+      "headBranch": "feature/score-adaptive-piece-generation",
+      "headSha": "d4c092e40cd7e1637c13d52f7e4a0e0de9f93039",
+      "number": 10
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40146309270,
+      "headBranch": "feature/score-adaptive-piece-generation",
+      "headSha": "cf6712e1b0f236192890ab2a9198a8e2c258b370",
+      "number": 9
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 40146068097,
+      "headBranch": "feature/score-adaptive-piece-generation",
+      "headSha": "66b4aca239b66bb6db983a59ebb82be2812d6f6b",
+      "number": 8
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40145999799,
+      "headBranch": "feature/score-adaptive-piece-generation",
+      "headSha": "66b4aca239b66bb6db983a59ebb82be2812d6f6b",
+      "number": 7
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 40145900610,
+      "headBranch": "feature/score-adaptive-piece-generation",
+      "headSha": "96fc0455bf2ffca3bc31f6a4a5f5ede575c1c6c7",
+      "number": 6
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40114628855,
+      "headBranch": "fix/android-feedback-ui",
+      "headSha": "8b598c808cdf3e17a7952575965129bee22b7033",
+      "number": 5
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40114409187,
+      "headBranch": "fix/android-feedback-ui",
+      "headSha": "4dfb818c0efc8f4bd749c51c2606060759a94f1f",
+      "number": 4
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40114382232,
+      "headBranch": "fix/android-feedback-ui",
+      "headSha": "4dfb818c0efc8f4bd749c51c2606060759a94f1f",
+      "number": 3
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 40089260086,
+      "headBranch": "build/android-debug-apk",
+      "headSha": "38aca3e4a664bdabbab7bfb4ff37852862d634ca",
+      "number": 2
+    },
+    {
+      "conclusion": "failure",
+      "databaseId": 40089113285,
+      "headBranch": "build/android-debug-apk",
+      "headSha": "d1135338663558a9074b5fac405f0f76c02d6877",
+      "number": 1
+    }
+  ]
+}

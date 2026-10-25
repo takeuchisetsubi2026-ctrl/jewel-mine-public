@@ -11,3 +11,7 @@ android/capacitor-cordova-android-plugins/
 *.jks
 !android/signing/public-test.keystore
 .tooling/
+
+build/
+dist/
+node_modules
