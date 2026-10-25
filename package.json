@@ -5,8 +5,9 @@
   "scripts": {
     "build:web": "node scripts/build-web.cjs",
     "check": "node scripts/check-assets.cjs",
-    "test": "node tests/regression.cjs",
-    "sync:android": "npm run build:web && cap sync android"
+    "test": "node tests/piece-generation.cjs && node tests/regression.cjs && node tests/piece-browser.cjs",
+    "sync:android": "npm run build:web && cap sync android",
+    "test:simulation": "node tests/piece-simulation.cjs"
   },
   "engines": {
     "node": ">=22"

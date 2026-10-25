@@ -1067,7 +1067,7 @@ body::after{content:none!important}
 #over.new-record .bonus-result{background:#24182f!important}
 #over.new-record>p{color:#fff4dc!important}
 </style></head><body><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">試作品 v4.0.7 ・広告なし ・自動保存</div><div class="ad-space" aria-hidden="true"></div></main><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>採掘をやり直す？</h2><p>現在のスコアと盤面をリセットして、<br>最初からもう一度始めます。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
-(()=>{'use strict';const N=8,KEY='jewel-mine-v35';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
+(()=>{'use strict';const N=8,KEY='jewel-mine-v35';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]],[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
 // Haptics only work in browsers implementing navigator.vibrate (iOS Safari does not).
 function buzz(kind){try{if(typeof navigator.vibrate==='function')navigator.vibrate(kind==='clear'?24:12)}catch(e){}}
 let clearHintActive=false;
@@ -1169,88 +1169,152 @@ function centerComboOnBoard(){const r=boardEl.getBoundingClientRect();$('toast')
  }
 }
 function renderMeter(){buildMeter();const meter=$('feverMeter');const segs=[...document.querySelectorAll('#meterSegs .meter-light')];const activeCount=state.feverTurns>0?20:Math.max(0,Math.min(20,state.feverProgress*4));segs.forEach((el,i)=>el.classList.toggle('active',i<activeCount));meter.classList.toggle('fevering',state.feverTurns>0);document.body.classList.toggle('fever',state.feverTurns>0);const rule=$('ruleText');if(rule){rule.textContent=state.feverTurns>0?`FEVER TIME ×2　残り ${state.feverTurns} 手`:`💎 ${state.feverProgress}/5 でFEVER！・ライン得点 ×${(1+state.totalLines*0.01).toFixed(2)}`;}}
-const fresh=()=>({gems:Array(64).fill(null),board:Array(64).fill(null),pieces:makePieces(),score:0,best:0,rescued:0,bonus:0,finds:{},turn:0,comboChain:0,comboRemain:0,feverProgress:0,feverTurns:0,gemFeverVersion:1,totalLines:0});const clone=o=>JSON.parse(JSON.stringify(o));const PIECE_POOL=SHAPES.flatMap((shape,i)=>{
- // Keep shape IDs stable for old save files. Hide the hard U-shaped piece and staircase.
- if(i===27||i===29)return [];
- const n=shape.length;
- // Casual mode: emphasize easy clears, squares and straight lines.
- const weight=i===5?24:i===13?7:(i===9||i===23)?12:(i===24||i===25||i===26)?10:
-    n<=2?7:n===3?6:n===4?5:n===5?2:n===6?2:1;
- return Array(weight).fill(i);
-});
-function randomPiece(){return {s:PIECE_POOL[Math.floor(Math.random()*PIECE_POOL.length)],color:Math.floor(Math.random()*COLORS.length),used:false}}
-// Verify at least one full three-piece route, accounting for all line clears.
-function routeExists(board,pieces){
- const memo=new Set();
- function seek(b,mask){
-  if(mask===7)return true;
-  const key=mask+':'+b.map(v=>v===null?'0':'1').join('');
-  if(memo.has(key))return false;
-  for(let j=0;j<3;j++){
-   if(mask&(1<<j))continue;
-   const shape=SHAPES[pieces[j].s];
-   const w=Math.max(...shape.map(q=>q[0]))+1,h=Math.max(...shape.map(q=>q[1]))+1;
-   for(let r=0;r<=N-h;r++)for(let c=0;c<=N-w;c++){
-    if(!shape.every(([x,y])=>b[(r+y)*N+c+x]===null))continue;
-    const nb=b.slice();for(const [x,y] of shape)nb[(r+y)*N+c+x]=j;
-    const rows=[],cols=[];
-    for(let k=0;k<N;k++){
-     if(Array.from({length:N},(_,q)=>nb[k*N+q]).every(v=>v!==null))rows.push(k);
-     if(Array.from({length:N},(_,q)=>nb[q*N+k]).every(v=>v!==null))cols.push(k);
-    }
-    if(rows.length||cols.length)for(let i=0;i<64;i++)if(rows.includes(Math.floor(i/N))||cols.includes(i%N))nb[i]=null;
-    if(seek(nb,mask|(1<<j)))return true;
-   }
-  }
-  memo.add(key);return false;
+// BEGIN SCORE ADAPTIVE GENERATOR
+// Pure occupancy model. Existing shape IDs are append-only for save compatibility.
+function createPieceGenerator(shapes){
+ const config={
+  weights:{joy:{square4:25,rectangle6:25,square9:20,bar:25,other:5},challenge:{square4:18,rectangle6:17,square9:13,bar:42,other:10}},
+  threshold:.8,firstBest:10000,bar4Share:.5,
+  randomCandidates:8,beamWidth:8,constructiveCandidates:2,
+  // Selection is probabilistic even among verified full routes.
+  temperature:{joy:28,challenge:48},largeSetCandidates:1,mixedSetCandidates:1
+ };
+ const excluded=new Set([27,29]);
+ const category=id=>{
+  const s=shapes[id],w=Math.max(...s.map(p=>p[0]))+1,h=Math.max(...s.map(p=>p[1]))+1;
+  if(w===2&&h===2&&s.length===4)return 'square4';
+  if(w*h===6&&s.length===6)return 'rectangle6';
+  if(w===3&&h===3&&s.length===9)return 'square9';
+  if((w===1||h===1)&&(s.length===4||s.length===5))return 'bar';
+  return 'other';
+ };
+ const groups={square4:[],rectangle6:[],square9:[],bar:[],other:[]};
+ shapes.forEach((s,id)=>{if(!excluded.has(id))groups[category(id)].push(id)});
+ const mode=(score,best)=>score>=(best>0?best:config.firstBest)*config.threshold?'challenge':'joy';
+ const choose=(list,rng)=>list[Math.min(list.length-1,Math.floor(rng()*list.length))];
+ function draw(which,rng=Math.random){
+  let roll=rng()*100,key='other';
+  for(const [k,weight] of Object.entries(config.weights[which])){roll-=weight;if(roll<0){key=k;break}}
+  if(key!=='bar')return choose(groups[key],rng);
+  const length=rng()<config.bar4Share?4:5,horizontal=rng()<.5;
+  return groups.bar.find(id=>shapes[id].length===length&&(Math.max(...shapes[id].map(p=>p[1]))===0)===horizontal);
  }
- return seek(board,0);
+ const masks=shapes.map(s=>{
+  const w=Math.max(...s.map(p=>p[0]))+1,h=Math.max(...s.map(p=>p[1]))+1,out=[];
+  for(let r=0;r<=8-h;r++)for(let c=0;c<=8-w;c++){
+   let lo=0,hi=0;for(const [x,y] of s){const i=(r+y)*8+c+x;if(i<32)lo|=1<<i;else hi|=1<<(i-32)}
+   out.push({lo:lo>>>0,hi:hi>>>0,r,c});
+  }return out;
+ });
+ const lines=[];
+ for(let k=0;k<8;k++)for(let axis=0;axis<2;axis++){
+  let lo=0,hi=0;for(let j=0;j<8;j++){const i=axis?j*8+k:k*8+j;if(i<32)lo|=1<<i;else hi|=1<<(i-32)}
+  lines.push({lo:lo>>>0,hi:hi>>>0});
+ }
+ function encode(board){let lo=0,hi=0;board.forEach((v,i)=>{if(v!==null){if(i<32)lo|=1<<i;else hi|=1<<(i-32)}});return {lo:lo>>>0,hi:hi>>>0}}
+ function decode(b){return Array.from({length:64},(_,i)=>((i<32?b.lo>>>i:b.hi>>>(i-32))&1)?0:null)}
+ function pop(x){x=x-((x>>>1)&0x55555555);x=(x&0x33333333)+((x>>>2)&0x33333333);return (((x+(x>>>4))&0x0f0f0f0f)*0x01010101)>>>24}
+ const fits=(b,p)=>!(b.lo&p.lo)&&!(b.hi&p.hi);
+ function apply(b,p){
+  let lo=(b.lo|p.lo)>>>0,hi=(b.hi|p.hi)>>>0,clearLo=0,clearHi=0,count=0;
+  // Detect all complete rows/columns before clearing their union, exactly as place().
+  for(const line of lines)if(((lo&line.lo)>>>0)===line.lo&&((hi&line.hi)>>>0)===line.hi){count++;clearLo|=line.lo;clearHi|=line.hi}
+  lo=(lo&~clearLo)>>>0;hi=(hi&~clearHi)>>>0;
+  return {lo,hi,lines:count,allClear:count>0&&lo===0&&hi===0};
+ }
+ function near(b){let value=0;for(const l of lines){const n=pop(b.lo&l.lo)+pop(b.hi&l.hi);value+=n>=5?(n-4)*(n-4):0}return value}
+ const orders=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
+ function evaluate(board,ids,{beamWidth=config.beamWidth,witness=[]}={}){
+  const start=Array.isArray(board)?encode(board):board;
+  let best=null,partial=null,visited=0,pruned=false;
+  const completeOrders=[];
+  for(const order of orders){
+   let frontier=[{...start,lines:0,multi:0,barLines:0,allClear:false,path:[],rank:0}];
+   for(const index of order){
+    const id=ids[index],next=new Map();
+    for(const node of frontier)for(const p of masks[id]){
+     if(!fits(node,p))continue;visited++;
+     const b=apply(node,p),linesTotal=node.lines+b.lines;
+     const child={...b,lines:linesTotal,multi:node.multi+(b.lines>=2?1:0),barLines:node.barLines+(category(id)==='bar'?b.lines:0),allClear:node.allClear||b.allClear,path:[...node.path,{index,id,r:p.r,c:p.c,lines:b.lines,allClear:b.allClear}]};
+     child.rank=(child.allClear?200:0)+linesTotal*28+child.multi*14+child.barLines*8+near(b)*.15;
+     const key=b.lo+':'+b.hi+':'+Number(child.allClear);
+     if(!next.has(key)||next.get(key).rank<child.rank)next.set(key,child);
+     if(!partial||child.path.length>partial.path.length||child.path.length===partial.path.length&&child.rank>partial.rank)partial=child;
+    }
+    const sorted=[...next.values()].sort((a,b)=>b.rank-a.rank);
+    if(sorted.length>beamWidth)pruned=true;
+    frontier=sorted.slice(0,beamWidth);
+    if(!frontier.length)break;
+   }
+   const full=frontier.filter(n=>n.path.length===3);
+   if(full.length){completeOrders.push(order.join(''));for(const node of full)if(!best||(node.allClear&&!best.allClear)||node.allClear===best.allClear&&node.rank>best.rank)best=node}
+  }
+  // A constructive route is independently replayed; never infer feasibility from area.
+  if(witness.length===3){
+   let b=start,total=0,multi=0,barLines=0,allClear=false;const path=[],used=new Set();
+   for(const step of witness){
+    const p=masks[ids[step.index]]?.find(p=>p.r===step.r&&p.c===step.c);
+    if(!p||used.has(step.index)||!fits(b,p))break;
+    used.add(step.index);b=apply(b,p);total+=b.lines;multi+=b.lines>=2?1:0;barLines+=category(ids[step.index])==='bar'?b.lines:0;allClear||=b.allClear;
+    path.push({...step,id:ids[step.index],lines:b.lines,allClear:b.allClear});
+   }
+   const rank=(allClear?200:0)+total*28+multi*14+barLines*8+near(b)*.15;
+   if(path.length===3){if(!completeOrders.includes(path.map(p=>p.index).join('')))completeOrders.push(path.map(p=>p.index).join(''));if(!best||(allClear&&!best.allClear)||allClear===best.allClear&&rank>best.rank)best={...b,lines:total,multi,barLines,allClear,path,rank}}
+  }
+  const route=best||partial;
+  return {complete:!!best,allClear:!!route?.allClear,lines:route?.lines||0,multi:route?.multi||0,barLines:route?.barLines||0,placed:route?.path.length||0,path:route?.path||[],completeOrders,ordersConsidered:6,visited,exhaustive:!pruned};
+ }
+ function generate(board,score,best,rng=Math.random){
+  const which=mode(score,best),sets=[];
+  for(let i=0;i<config.randomCandidates;i++)sets.push(Array.from({length:3},()=>draw(which,rng)));
+  // Explicit candidates are board-corrected opportunities, not part of the base draw ratios.
+  for(let i=0;i<config.largeSetCandidates;i++)sets.push([choose(groups.square9,rng),choose(groups.square9,rng),choose(groups.rectangle6,rng)]);
+  for(let i=0;i<config.mixedSetCandidates;i++)sets.push([choose(groups.square4,rng),choose(groups.rectangle6,rng),drawBar(rng)]);
+  const planned=[];
+  for(let i=0;i<config.constructiveCandidates;i++){
+   let b=encode(board);const ids=[],witness=[];
+   for(let index=0;index<3;index++){
+    const available=[];
+    for(const [key,list] of Object.entries(groups))for(const id of list){
+     const places=masks[id].filter(p=>fits(b,p));if(!places.length)continue;
+     const share=key==='bar'?(shapes[id].length===4?config.bar4Share:1-config.bar4Share)/2:1/list.length;
+     available.push({id,places,weight:config.weights[which][key]*share});
+    }
+    if(!available.length)break;
+    let roll=rng()*available.reduce((n,c)=>n+c.weight,0),chosen=available[available.length-1];
+    for(const c of available){roll-=c.weight;if(roll<0){chosen=c;break}}
+    const options=chosen.places.map(p=>{const next=apply(b,p);return {p,next,value:next.lines*4+(next.allClear?8:0)+near(next)*.02}});
+    const max=Math.max(...options.map(c=>c.value));
+    const weights=options.map(c=>Math.exp((c.value-max)/2));
+    roll=rng()*weights.reduce((a,b)=>a+b,0);let option=options[options.length-1];
+    for(let j=0;j<options.length;j++){roll-=weights[j];if(roll<0){option=options[j];break}}
+    ids.push(chosen.id);witness.push({index,id:chosen.id,r:option.p.r,c:option.p.c});b=option.next;
+   }
+   if(ids.length===3)planned.push({ids,witness});
+  }
+  const evaluated=[...sets.map(ids=>({ids,witness:[]})),...planned].map(({ids,witness})=>({ids,evaluation:evaluate(board,ids,{witness})}));
+  const full=evaluated.filter(c=>c.evaluation.complete);
+  const pool=full.length?full:evaluated;
+  const values=pool.map(c=>{
+   const e=c.evaluation,large=c.ids.filter(id=>['square4','rectangle6','square9'].includes(category(id))).length;
+   return e.placed*30+e.completeOrders.length*(which==='joy'?5:2)-c.ids.filter(id=>shapes[id].length>=4&&!masks[id].some(p=>fits(encode(board),p))).length*(which==='joy'?12:6)+e.lines*(which==='joy'?20:12)+e.multi*12+e.barLines*8+(e.allClear?45:0)+(e.lines&&c.ids.some(id=>category(id)==='bar')?large*(which==='joy'?8:3):0);
+  });
+  const max=Math.max(...values),weights=values.map(v=>Math.exp((v-max)/config.temperature[which]));
+  let ticket=rng()*weights.reduce((a,b)=>a+b,0),chosen=pool[pool.length-1];
+  for(let i=0;i<pool.length;i++){ticket-=weights[i];if(ticket<0){chosen=pool[i];break}}
+  return {...chosen,mode:which,candidates:evaluated.length,verifiedFullCandidates:full.length};
+ }
+ function drawBar(rng){const length=rng()<config.bar4Share?4:5,horizontal=rng()<.5;return choose(groups.bar.filter(id=>shapes[id].length===length&&(Math.max(...shapes[id].map(p=>p[1]))===0)===horizontal),rng)}
+ return {config,groups,category,mode,draw,generate,evaluate,encode,decode,masks,fits,apply,near};
 }
-function makePieces(board=null){
- if(!board)return Array.from({length:3},randomPiece);
- // Casual adaptive draw: favour visible clearing opportunities rather than merely fitting.
- const occupancy=board.filter(v=>v!==null).length/64;
- const candidates=[];
- for(let attempt=0;attempt<24;attempt++){
-  const pieces=Array.from({length:3},randomPiece);
-  // Never burden a player with three awkward shapes at once.
-  const simple=pieces.filter(p=>{const sh=SHAPES[p.s];const [w,h]=dims(sh);return sh.length<=3||sh.length===w*h||w===1||h===1}).length;
-  if(simple===0)continue;
-  let bestClear=0,nearClear=0,placements=0;
-  for(const p of pieces){
-   const sh=SHAPES[p.s], [w,h]=dims(sh);
-   for(let r=0;r<=8-h;r++)for(let c=0;c<=8-w;c++){
-    if(!sh.every(([x,y])=>board[(r+y)*8+c+x]===null))continue;
-    placements++;
-    const b=board.slice();for(const [x,y] of sh)b[(r+y)*8+c+x]=p.color;
-    let lines=0,close=0;
-    for(let k=0;k<8;k++){
-     let row=0,col=0;for(let j=0;j<8;j++){if(b[k*8+j]!==null)row++;if(b[j*8+k]!==null)col++}
-     if(row===8)lines++;else if(row>=6)close=Math.max(close,row);
-     if(col===8)lines++;else if(col>=6)close=Math.max(close,col);
-    }
-    bestClear=Math.max(bestClear,lines);nearClear=Math.max(nearClear,close);
-   }
-  }
-  if(!placements)continue;
-  const squares=pieces.filter(p=>{const sh=SHAPES[p.s],[w,h]=dims(sh);return sh.length===w*h&&w>=2&&h>=2}).length;
-  const straights=pieces.filter(p=>{const [w,h]=dims(SHAPES[p.s]);return w===1||h===1}).length;
-  const score=bestClear*62+nearClear*5+simple*8+squares*6+straights*5
-   +Math.min(placements,55)*.30
-   +(occupancy>.58&&pieces.some(p=>SHAPES[p.s].length<=2)?15:0)
-   +(occupancy>.73&&pieces.filter(p=>SHAPES[p.s].length<=3).length>=2?12:0)
-   +Math.random()*32;
-  candidates.push({pieces,score});
- }
- candidates.sort((a,b)=>b.score-a.score);
- // Check routes only for the best-ranked sets to keep iPhone interactions responsive.
- // Sample from a wider quality band, so every pack is not the easiest possible.
- const shortlist=candidates.slice(0,Math.min(15,candidates.length));
- for(let i=shortlist.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shortlist[i],shortlist[j]]=[shortlist[j],shortlist[i]];}
- for(const c of shortlist)if(routeExists(board,c.pieces))return c.pieces;
- // Small rescue pieces are the last resort, not the default draw.
- return Array.from({length:3},()=>({s:Math.random()<.5?0:1,color:Math.floor(Math.random()*COLORS.length),used:false}));
-}try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mine-v227')||localStorage.getItem('jewel-mine-v226')||localStorage.getItem('jewel-mine-v225')||localStorage.getItem('jewel-mine-v224')||localStorage.getItem('jewel-mine-v223')||localStorage.getItem('jewel-mine-v222')||localStorage.getItem('jewel-mine-v221')||localStorage.getItem('jewel-mine-v220')||localStorage.getItem('jewel-mine-v219')||localStorage.getItem('jewel-mine-v218')||localStorage.getItem('jewel-mine-v217')||localStorage.getItem('jewel-mine-v216')||localStorage.getItem('jewel-mine-v215')||localStorage.getItem('jewel-mine-v214')||localStorage.getItem('jewel-mine-v213')||localStorage.getItem('jewel-mine-v212')||localStorage.getItem('jewel-mine-v211')||localStorage.getItem('jewel-mine-v210')||localStorage.getItem('jewel-mine-v29')||localStorage.getItem('jewel-mine-v28')||localStorage.getItem('jewel-mine-v27')||localStorage.getItem('jewel-mine-v26')||localStorage.getItem('jewel-mine-v25')||localStorage.getItem('jewel-mine-v24')||localStorage.getItem('jewel-mine-v23')||localStorage.getItem('jewel-mine-v22')||localStorage.getItem('jewel-mine-v21')||localStorage.getItem('jewel-mine-v20')||localStorage.getItem('animal-block-v20')||localStorage.getItem('animal-block-v19')||localStorage.getItem('animal-block-v18')||localStorage.getItem('animal-block-v17')||localStorage.getItem('animal-block-v16')||localStorage.getItem('animal-block-v15')||localStorage.getItem('animal-block-v14')||localStorage.getItem('animal-block-v13')||localStorage.getItem('animal-block-v12')||localStorage.getItem('animal-block-v11')||localStorage.getItem('animal-block-v10')||localStorage.getItem('animal-block-v09')||'null');if(x&&Array.isArray(x.board)&&x.board.length===64&&Array.isArray(x.pieces)&&x.pieces.length===3)state=x;else state=fresh()}catch(e){state=fresh()}state.bonus=Number.isFinite(state.bonus)?state.bonus:0;state.finds=state.finds||{};state.gems=Array.isArray(state.gems)&&state.gems.length===64?state.gems:Array(64).fill(null);let retainedGem=false;state.gems=state.gems.map((gem,i)=>{if(gem===null||state.board[i]===null||retainedGem)return null;retainedGem=true;return gem});delete state.animalAt;state.feverProgress=Number.isFinite(state.feverProgress)?state.feverProgress:0;state.feverTurns=Number.isFinite(state.feverTurns)?state.feverTurns:0;state.totalLines=Number.isFinite(state.totalLines)?state.totalLines:0;if(state.gemFeverVersion!==1){state.feverProgress=0;state.bonus=0;state.gemFeverVersion=1;}state.pieces.forEach(p=>{if((p.s===27||p.s===29)&&!p.used)p.s=5});const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};function toast(main,sub='',mode='normal'){
+const pieceGenerator=createPieceGenerator(SHAPES);
+// END SCORE ADAPTIVE GENERATOR
+const fresh=(best=0)=>({gems:Array(64).fill(null),board:Array(64).fill(null),pieces:makePieces(null,{score:0,sessionBest:best}),score:0,best,sessionBest:best,rescued:0,bonus:0,finds:{},turn:0,comboChain:0,comboRemain:0,feverProgress:0,feverTurns:0,gemFeverVersion:1,totalLines:0});const clone=o=>JSON.parse(JSON.stringify(o));
+function makePieces(board=null,context=state){
+ const result=pieceGenerator.generate(board||Array(64).fill(null),context?.score||0,context?.sessionBest??context?.best??0);
+ return result.ids.map(s=>({s,color:Math.floor(Math.random()*COLORS.length),used:false}));
+}
+try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mine-v227')||localStorage.getItem('jewel-mine-v226')||localStorage.getItem('jewel-mine-v225')||localStorage.getItem('jewel-mine-v224')||localStorage.getItem('jewel-mine-v223')||localStorage.getItem('jewel-mine-v222')||localStorage.getItem('jewel-mine-v221')||localStorage.getItem('jewel-mine-v220')||localStorage.getItem('jewel-mine-v219')||localStorage.getItem('jewel-mine-v218')||localStorage.getItem('jewel-mine-v217')||localStorage.getItem('jewel-mine-v216')||localStorage.getItem('jewel-mine-v215')||localStorage.getItem('jewel-mine-v214')||localStorage.getItem('jewel-mine-v213')||localStorage.getItem('jewel-mine-v212')||localStorage.getItem('jewel-mine-v211')||localStorage.getItem('jewel-mine-v210')||localStorage.getItem('jewel-mine-v29')||localStorage.getItem('jewel-mine-v28')||localStorage.getItem('jewel-mine-v27')||localStorage.getItem('jewel-mine-v26')||localStorage.getItem('jewel-mine-v25')||localStorage.getItem('jewel-mine-v24')||localStorage.getItem('jewel-mine-v23')||localStorage.getItem('jewel-mine-v22')||localStorage.getItem('jewel-mine-v21')||localStorage.getItem('jewel-mine-v20')||localStorage.getItem('animal-block-v20')||localStorage.getItem('animal-block-v19')||localStorage.getItem('animal-block-v18')||localStorage.getItem('animal-block-v17')||localStorage.getItem('animal-block-v16')||localStorage.getItem('animal-block-v15')||localStorage.getItem('animal-block-v14')||localStorage.getItem('animal-block-v13')||localStorage.getItem('animal-block-v12')||localStorage.getItem('animal-block-v11')||localStorage.getItem('animal-block-v10')||localStorage.getItem('animal-block-v09')||'null');if(x&&Array.isArray(x.board)&&x.board.length===64&&Array.isArray(x.pieces)&&x.pieces.length===3)state=x;else state=fresh()}catch(e){state=fresh()}state.sessionBest=Number.isFinite(state.sessionBest)&&state.sessionBest>=0?state.sessionBest:Math.max(0,Number(state.best)||0);state.bonus=Number.isFinite(state.bonus)?state.bonus:0;state.finds=state.finds||{};state.gems=Array.isArray(state.gems)&&state.gems.length===64?state.gems:Array(64).fill(null);let retainedGem=false;state.gems=state.gems.map((gem,i)=>{if(gem===null||state.board[i]===null||retainedGem)return null;retainedGem=true;return gem});delete state.animalAt;state.feverProgress=Number.isFinite(state.feverProgress)?state.feverProgress:0;state.feverTurns=Number.isFinite(state.feverTurns)?state.feverTurns:0;state.totalLines=Number.isFinite(state.totalLines)?state.totalLines:0;if(state.gemFeverVersion!==1){state.feverProgress=0;state.bonus=0;state.gemFeverVersion=1;}state.pieces.forEach(p=>{if((p.s===27||p.s===29)&&!p.used)p.s=5});const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};function toast(main,sub='',mode='normal'){
  const el=$('toast');
  el.className='toast'+(mode==='combo'?' combo':mode==='fever'?' fever-notice':'');
  el.innerHTML=sub?`${main}<span class="sub">${sub}</span>`:main;
@@ -1414,7 +1478,7 @@ function place(r,c){
  const noMoves=!hasMoves();
  playReveals(found,()=>{if(noMoves)finishGame()});
 }
-function reset(){$('burstLayer').replaceChildren();const best=state.best;state=fresh();state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
+function reset(){$('burstLayer').replaceChildren();const best=state.best;state=fresh(best);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
 // Pointer drag v0.2: a real floating block follows ABOVE the finger, showing exact placement.
 function dragCellSize(){const c=boardEl.children[0], n=boardEl.children[1];return {size:c.getBoundingClientRect().width,pitch:n.getBoundingClientRect().left-c.getBoundingClientRect().left};}
 function dragPosition(e){if(!drag)return;const d=drag, first=boardEl.children[0].getBoundingClientRect();let left=e.clientX-d.width/2, top=e.clientY-d.lift-d.height/2;d.ghost.style.left=left+'px';d.ghost.style.top=top+'px';let c=Math.round((left-first.left)/d.pitch),r=Math.round((top-first.top)/d.pitch);d.r=r;d.c=c;const good=r>=0&&c>=0&&r<N&&c<N&&valid(state.pieces[d.index],r,c);d.good=good;d.ghost.classList.toggle('invalid',!good);if(r>=-2&&c>=-2&&r<N&&c<N){selected=d.index;preview(r,c);if(!good&&r>=0&&c>=0) $('message').textContent='';else if(good&&!document.querySelector('.boardwrap').classList.contains('readyline'))$('message').textContent='';}else{clearPreview();$('message').textContent='';}}
