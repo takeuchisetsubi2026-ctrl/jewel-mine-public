@@ -3,8 +3,10 @@
 **This is a proposal, not an automatically running job queue.** Only the designated Codex thread may implement a task after explicit start. Other threads must not execute independently.
 
 ## JM-001 — Inventory two installed APK identities (NEXT; investigation only)
-Status: READY FOR MANUAL START
-Owner: unassigned Codex thread
+Status: IN PROGRESS
+Owner: designated main Codex thread (owner assigned 2026-10-25)
+Work branch: investigation/jm-001-apk-identities
+Source: coordination/single-task-queue-20261025 @ cc6bbf17092a45ae8d79b382d0b2a8cef1cc6e9f
 Code changes: NONE initially
 
 - Trace v4.0.7 and v4.0.8 through repository history, build configs, workflow artifacts, app IDs, versionCode/versionName, signature and save namespaces.
