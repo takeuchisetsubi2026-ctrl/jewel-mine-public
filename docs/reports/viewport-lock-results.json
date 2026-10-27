@@ -1,0 +1,34 @@
+[
+  {
+    "width": 360,
+    "height": 640,
+    "edgeGestures": 4,
+    "successfulDrags": 3,
+    "layoutStable": true,
+    "saveUnchangedByEdgeGestures": true
+  },
+  {
+    "width": 393,
+    "height": 851,
+    "edgeGestures": 4,
+    "successfulDrags": 3,
+    "layoutStable": true,
+    "saveUnchangedByEdgeGestures": true
+  },
+  {
+    "width": 412,
+    "height": 915,
+    "edgeGestures": 4,
+    "successfulDrags": 3,
+    "layoutStable": true,
+    "saveUnchangedByEdgeGestures": true
+  },
+  {
+    "width": 800,
+    "height": 360,
+    "edgeGestures": 4,
+    "successfulDrags": 3,
+    "layoutStable": true,
+    "saveUnchangedByEdgeGestures": true
+  }
+]
