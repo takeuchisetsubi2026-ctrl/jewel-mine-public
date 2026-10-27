@@ -5,7 +5,7 @@
   "scripts": {
     "build:web": "node scripts/build-web.cjs",
     "check": "node scripts/check-assets.cjs",
-    "test": "node tests/piece-generation.cjs && node tests/regression.cjs && node tests/piece-browser.cjs && node tests/simultaneous-reward.cjs && node tests/reward-scoring.cjs && node tests/reward-integration.cjs && node tests/score-versioning.cjs && node tests/score-versioning-browser.cjs && node tests/build-identity.cjs",
+    "test": "node tests/piece-generation.cjs && node tests/regression.cjs && node tests/piece-browser.cjs && node tests/simultaneous-reward.cjs && node tests/reward-scoring.cjs && node tests/reward-integration.cjs && node tests/score-versioning.cjs && node tests/score-versioning-browser.cjs && node tests/build-identity.cjs && node tests/viewport-lock.cjs",
     "sync:android": "npm run build:web && cap sync android",
     "test:simulation": "node tests/piece-simulation.cjs",
     "test:reward-simulation": "node tests/reward-simulation.cjs",
