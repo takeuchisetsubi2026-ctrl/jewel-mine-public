@@ -126,12 +126,12 @@
     "url": "https://takeuchisetsubi2026-ctrl.github.io/jewel-mine-public/",
     "responseGitBlobSha": "b1023e6270090fda41450a07f68d7dc0be2a70fb",
     "mainIndexBlobSha": "b1023e6270090fda41450a07f68d7dc0be2a70fb",
-    "settings": "unconfirmed; connector endpoint unsupported"
+    "settings": "Confirmed via user-reported direct UI: Deploy from a branch / main / (root), HTTPS enforced. Connector endpoint remains unsupported."
   },
   "limitations": {
     "mainProtection": "403 Resource not accessible by integration; branch list protected:false observed separately",
     "workflowList": "unsupported connector endpoint per user audit",
-    "windowsLogin": "user audit reported wild-uncle; owner switch unconfirmed",
+    "windowsLogin": "Owner login and Actions/Pages settings confirmed via user-reported direct UI; earlier wild-uncle access failure is historical.",
     "mobileUI": "not directly verified",
     "publishedCloudEnvironment": "user account status unconfirmed"
   },
@@ -202,5 +202,43 @@
     "apkUploaded": false,
     "appealSent": false,
     "productionPublished": false
+  },
+  "ownerUIConfirmation": {
+    "dateJST": "2026-10-30",
+    "source": "user-provided direct UI verification; no independent UI replay in this Work",
+    "account": "takeuchisetsubi2026-ctrl",
+    "browser": "ChatGPT built-in browser",
+    "actions": {
+      "settingsPageVisible": true,
+      "allowedActions": "Allow all actions and reusable workflows",
+      "retentionDays": 90,
+      "forkApproval": "first-time contributors require approval",
+      "workflowPermissions": "Read repository contents and packages",
+      "allowActionsToCreatePRs": false,
+      "changesNeeded": false,
+      "savePressed": false
+    },
+    "pages": {
+      "liveURL": "https://takeuchisetsubi2026-ctrl.github.io/jewel-mine-public/",
+      "source": "Deploy from a branch",
+      "branch": "main",
+      "folder": "/(root)",
+      "enforceHTTPS": true,
+      "lastDeployedDisplayJST": "2026-10-22 12:23",
+      "runId": 39716569591,
+      "pageTitleVersion": "v3.7.3",
+      "visibleGameText": "試作品v4.0.7・広告なし・自動保存",
+      "latestDevelopmentPreview": false
+    },
+    "artifactRetentionDistinction": {
+      "repositoryDays": 90,
+      "androidDebugWorkflowDays": 30,
+      "workflowChanged": false
+    },
+    "pending": [
+      "same existing Work resumed on user's phone",
+      "artifact download on user's phone",
+      "published Cloud environment status and execution access"
+    ]
   }
 }

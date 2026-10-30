@@ -7,7 +7,7 @@
 - 共通タスク管理：既存PR #6。今回はPR #6本文・コメントを変更していない。本台帳は観測資料であり新たなタスク受付先ではない。
 - GitHub接続アカウント：takeuchisetsubi2026-ctrl。repo APIはadmin/push/read trueを返した。
 - ただし連携アプリは管理APIを制限する。main/protectionは403、Pages設定APIとworkflow一覧APIはコネクタ対象外。アカウント権限と連携アプリ権限は別。
-- ユーザーからの直前実査報告：Windowsブラウザはwild-uncleでログインしておりSettingsへアクセス不可だった。所有者への切替後の画面は未確認。
+- 当初はWindowsブラウザがwild-uncleでSettingsへアクセス不可。追記：所有者ログイン後のActions・Pages設定をユーザーが直接UI確認済み。詳細は末尾。
 - main一覧のprotected:falseは観測値。管理APIでの詳細な保護ルール検査の代わりにならない。変更しない。
 
 ## ソース・Pages
@@ -16,7 +16,7 @@
 - 最新の既存開発PR #14 head：feature/admob-integration-20261030 / c0bb303aad12b3e5ed1671a760c24f585ff88c22。
 - 公開Pages：https://takeuchisetsubi2026-ctrl.github.io/jewel-mine-public/
 - 今回のHTTP取得HTMLのGit blob SHAはb1023e6270090fda41450a07f68d7dc0be2a70fbでmain/index.htmlと一致。公開Pagesは現在main相当の内容。PR #14のWeb表示テストの代用にしない。
-- Pagesの配信元設定（branch/folder/Actions）は未確認。内容一致から設定まで断定しない。デプロイ変更なし。
+- Pages配信元はユーザー直接UI確認によりDeploy from a branch / main / (root)、HTTPS必須ON。デプロイ変更なし。詳細は末尾。
 
 ## 既存PRのスナップショット（すべてopen、未マージ）
 | PR | Draft | head | base |
@@ -77,3 +77,32 @@ APK SHA-256：37e89c10f559b1f1807ffadebc5a122a2283d0637bb19ac4549c9ecdc6eae8d1
 APK取得先：https://github.com/takeuchisetsubi2026-ctrl/jewel-mine-public/actions/runs/40985254973/artifacts/12956698942
 record artifact：12956688923。今回record ZIPを取得し破損なし、recordのpackage・証明書・SHA・attemptを確認した。
 APK本体の再ダウンロード・直接再検査・実機導入は今回行っていない。CIの署名検証成功とrecordを根拠にする。
+
+## 所有者ログイン後のUI確認（2026-10-30追記）
+証拠種別：ユーザーから提供された直接UI確認結果。確認者は所有者アカウントでChatGPT内蔵ブラウザにログインしたユーザー。このWorkからの独立したUI追試・スクリーンショット回収は行っていない。
+
+● 完了：repo/settings/actionsが正常表示。
+- Allow all actions and reusable workflows：選択。
+- Artifact/log retention：90日。
+- forkからの実行：first-time contributorsの承認が必要。
+- Workflow permissions：Read repository contents and packages。
+- ActionsによるPR作成承認チェック：OFF。
+設定変更の必要なし。ユーザーはSaveを押していない。
+設定の90日はリポジトリの保持設定。Android debug workflowのupload-artifactはretention-days:30を明示しているため、今回のAPK成果物の保持期間を90日へ読み替えない。
+ActionsのPR作成チェックOFFはGITHUB_TOKENによるPR作成の設定であり、このWorkの接続済GitHub経由でDraft PRを作成した事実と矛盾しない。設定をONへ変えない。
+
+● 完了：Pages設定の直接UI確認。
+- Live URL：https://takeuchisetsubi2026-ctrl.github.io/jewel-mine-public/
+- Source：Deploy from a branch。
+- Branch：main / (root)。
+- HTTPS必須：ON。
+- 最終デプロイ表示：Oct 22 12:23 JST / run39716569591。
+- 公開ページのタイトル：v3.7.3。
+- ゲーム画面の表示：「試作品v4.0.7・広告なし・自動保存」。
+タイトルと画面内のバージョン表示は異なるため両方記録する。単一の現在バージョンと決めつけない。
+以前のHTTPによるmain/index.htmlとの一致確認と合わせ、公開Pagesはmainの公開版。PR #14等の新しい開発版プレビューではない。
+APIのPages設定取得非対応という過去の制約は残るが、設定内容自体は今回のユーザーUI報告により確認済み。
+
+○ 未完了：本人スマホで同じ既存Workを再開、成果物ダウンロード、Cloud環境の公開状態・実行権限。
+◐ 作業中：この追記完了時点で新たなビルド・公開・設定変更なし。
+新しいWorkは作成しない。次の本人スマホ確認はユーザー側の案内に従い、完了証拠が届くまで完了扱いしない。

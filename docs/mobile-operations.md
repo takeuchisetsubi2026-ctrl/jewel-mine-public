@@ -38,9 +38,9 @@ mainへの追加、既定ブランチ変更、workflow変更は今回行わな�
 - 本物のAdMob広告・Android WebView・Pixelの保存互換性はブラウザのモックテストだけでは完了にならない。
 - ブランチプレビューの公開やPages配信元切替は実施しない。
 
-## 今日PCで一括確認する項目（変更は別途判断）
-1. GitHubプロフィールをtakeuchisetsubi2026-ctrlへ切り替える。同じPCでもwild-uncleのセッション権限とは別。
-2. repo/Settingsを開く。GeneralのDefault branch、Actions>Generalの許可状態、PagesのSource/branch/folder、Branches/Rulesの表示を読み取り記録する。保存ボタンは押さない。秘密値は撮影しない。
+## PC・スマホ確認一覧（所有者UI確認結果を追記）
+1. ● 完了（ユーザー直接UI確認）：takeuchisetsubi2026-ctrlへログインし、Settings表示に成功。再度の切替案内は不要。
+2. ● 完了（ユーザー直接UI確認）：ActionsとPages設定を読取確認。設定変更不要、Save未押下。詳細は共通台帳末尾。Branches/Rulesの詳細UI確認まで完了したとは扱わない。
 3. 上記run画面を開きRe-runメニューが見えるか確認する。今回エージェントが検証したrunを重ねて再実行する必要はない。
 4. iPhone/Pixelで同じ所有者アカウント・同じrunを開き、成功表示とArtifactsのダウンロードまで往復確認する。APKを開いて導入しない。
 5. 同じChatGPTアカウントで既存Workを開けることを確認する。Settings>Codex Cloud>Environmentsがある場合は既存の環境名・公開済み状態・対象repo・利用権限を記録する。
@@ -73,3 +73,8 @@ Play Protect無効化・強制導入・APK外部アップロード・申請送�
 - https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow
 - https://learn.chatgpt.com/docs/environments/cloud-environments
 
+
+## 2026-10-30追記
+所有者ログイン後のActions/Pagesの設定はユーザーの直接UI報告で確認済み。PCで同じ設定を再変更する必要はない。公開ページはタイトルv3.7.3、画面内は「試作品v4.0.7・広告なし・自動保存」。開発版のプレビューではない。
+リポジトリ保持設定90日とworkflow指定30日を区別する。
+本人スマホの同一Work再開・成果物DL、Cloud環境公開状態は未確認。新規Workは作らない。

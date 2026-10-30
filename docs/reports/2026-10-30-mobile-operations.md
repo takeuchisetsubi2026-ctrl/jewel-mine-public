@@ -46,3 +46,7 @@ Cloud Environmentsは既存環境の状態を確認するだけ。新規Work/tas
 【chat】ジュエルマイン開発へ本報告を転記。既存Workを唯一の実作業先として継続する。
 禁止条件を維持し、未確認の本人UI・環境公開・警告解消を次の判断事項として扱う。
 
+
+
+## 所有者UI確認の後続追記
+この初回報告のSettings・Pages配信元の未確認状態は、その後のユーザー直接UI確認で更新された。現在の詳細はdocs/common-ledger.md末尾と2026-10-30-owner-ui-confirmation.txtを参照。スマホ同一Work再開・成果物DL・Cloud環境公開状態は引き続き未確認。
