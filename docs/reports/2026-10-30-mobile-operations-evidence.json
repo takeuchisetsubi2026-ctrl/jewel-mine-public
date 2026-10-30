@@ -1,0 +1,206 @@
+{
+  "checkedDateJST": "2026-10-30",
+  "repository": "takeuchisetsubi2026-ctrl/jewel-mine-public",
+  "source": "connected GitHub read APIs, workflow job rerun, record ZIPs, public Pages HTTP",
+  "defaultBranch": "main",
+  "mainSha": "d5ffa1e23a4e44056a8ca5729ebfe42e38caa6cc",
+  "mainPaths": [
+    "README.md",
+    "cave_back.webp",
+    "cave_props.webp",
+    "index 31.html",
+    "index.html",
+    "jewel_mine_v23.zip",
+    "lantern.webp",
+    "mine_tunnel.webp",
+    "mine_tunnel_clean_v373.webp"
+  ],
+  "repoPermissions": {
+    "admin": true,
+    "maintain": true,
+    "push": true,
+    "triage": true,
+    "pull": true
+  },
+  "openPRs": [
+    {
+      "number": 14,
+      "draft": true,
+      "head": "feature/admob-integration-20261030",
+      "headSha": "c0bb303aad12b3e5ed1671a760c24f585ff88c22",
+      "base": "feature/rewarded-board-reset-20261028"
+    },
+    {
+      "number": 13,
+      "draft": true,
+      "head": "feature/rewarded-board-reset-20261028",
+      "headSha": "42bdf3731872fa3f32ccdbbef5fc2810fc2137fe",
+      "base": "fix/android-viewport-lock-20261027"
+    },
+    {
+      "number": 12,
+      "draft": true,
+      "head": "fix/android-viewport-lock-20261027",
+      "headSha": "8f9a064b632d6f7c71553daedd2a83f389c19134",
+      "base": "feature/play-aab-preparation-20261026"
+    },
+    {
+      "number": 11,
+      "draft": true,
+      "head": "audit/play-aab-failures-20261027",
+      "headSha": "a9ff49dc3c3cc75211f30e3f7756779c4184af24",
+      "base": "feature/play-aab-preparation-20261026"
+    },
+    {
+      "number": 10,
+      "draft": true,
+      "head": "feature/play-aab-preparation-20261026",
+      "headSha": "ba9384adb229f3e867d09184689d85e135c67fd7",
+      "base": "feature/apk-build-identity"
+    },
+    {
+      "number": 9,
+      "draft": true,
+      "head": "test/codex-cloud-write-check-20261025",
+      "headSha": "587c3092df65e238b36ff700518c8296d66eab81",
+      "base": "coordination/single-task-queue-20261025"
+    },
+    {
+      "number": 8,
+      "draft": true,
+      "head": "test/codex-mention-smoke-20261025",
+      "headSha": "2d91768297a1a2ba74e499117073daa28d324657",
+      "base": "coordination/single-task-queue-20261025"
+    },
+    {
+      "number": 7,
+      "draft": true,
+      "head": "investigation/jm-001-apk-identities",
+      "headSha": "1fefa2602eb5f22509b4360bae19b5b1415c4ba7",
+      "base": "coordination/single-task-queue-20261025"
+    },
+    {
+      "number": 6,
+      "draft": true,
+      "head": "coordination/single-task-queue-20261025",
+      "headSha": "6c69cf2a48036c6bbe914ebdf27c75a5aa34e3d3",
+      "base": "feature/score-versioning-difficulty"
+    },
+    {
+      "number": 5,
+      "draft": true,
+      "head": "feature/apk-build-identity",
+      "headSha": "8cccee39f8871bbecc55bbfe773f34644c076b26",
+      "base": "feature/score-versioning-difficulty"
+    },
+    {
+      "number": 4,
+      "draft": true,
+      "head": "feature/score-versioning-difficulty",
+      "headSha": "d513c89a95d0bfc382ef2e5257720e66df9142e6",
+      "base": "feature/reward-balance-battery"
+    },
+    {
+      "number": 3,
+      "draft": true,
+      "head": "feature/reward-balance-battery",
+      "headSha": "1ac50c0ef3f230552935dac261422aeebac5cc72",
+      "base": "feature/score-adaptive-piece-generation"
+    },
+    {
+      "number": 2,
+      "draft": true,
+      "head": "feature/score-adaptive-piece-generation",
+      "headSha": "d4c092e40cd7e1637c13d52f7e4a0e0de9f93039",
+      "base": "fix/android-feedback-ui"
+    },
+    {
+      "number": 1,
+      "draft": false,
+      "head": "fix/android-feedback-ui",
+      "headSha": "8b598c808cdf3e17a7952575965129bee22b7033",
+      "base": "build/android-debug-apk"
+    }
+  ],
+  "pages": {
+    "url": "https://takeuchisetsubi2026-ctrl.github.io/jewel-mine-public/",
+    "responseGitBlobSha": "b1023e6270090fda41450a07f68d7dc0be2a70fb",
+    "mainIndexBlobSha": "b1023e6270090fda41450a07f68d7dc0be2a70fb",
+    "settings": "unconfirmed; connector endpoint unsupported"
+  },
+  "limitations": {
+    "mainProtection": "403 Resource not accessible by integration; branch list protected:false observed separately",
+    "workflowList": "unsupported connector endpoint per user audit",
+    "windowsLogin": "user audit reported wild-uncle; owner switch unconfirmed",
+    "mobileUI": "not directly verified",
+    "publishedCloudEnvironment": "user account status unconfirmed"
+  },
+  "rerun": {
+    "requestToolSuccess": true,
+    "originalJobId": 123834660963,
+    "runId": 40985254973,
+    "attempt": 2,
+    "jobId": 123911348736,
+    "status": "completed",
+    "conclusion": "success",
+    "record": {
+      "schema": 1,
+      "testNumber": 9,
+      "testLabel": "TEST 09",
+      "appName": "09 ジュエルマイン",
+      "versionName": "4.0.9",
+      "versionCode": 9000552,
+      "applicationId": "com.wilduncle.jewelmine.codextest",
+      "gitSha": "53f1e943e5a7ed7def31c671a9a3ae14e1336fe2",
+      "dirty": false,
+      "buildUtc": "2026-10-30T05:36:19.080Z",
+      "sourceSha256": "1ad24dfabc068ddfab5df017bb29efcfc91dbff94c79be39cc703a818720a9ec",
+      "certificateSha256": "adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029",
+      "runNumber": 55,
+      "runAttempt": 2,
+      "runUrl": "https://github.com/takeuchisetsubi2026-ctrl/jewel-mine-public/actions/runs/40985254973",
+      "artifactName": "jewel-mine-test-09-53f1e94-55-2",
+      "apkFileName": "jewel-mine-test-09-v4.0.9-53f1e94-55-2-debug.apk",
+      "apkSha256": "37e89c10f559b1f1807ffadebc5a122a2283d0637bb19ac4549c9ecdc6eae8d1",
+      "artifactUrl": "https://github.com/takeuchisetsubi2026-ctrl/jewel-mine-public/actions/runs/40985254973/artifacts/12956698942",
+      "artifactId": "12956698942"
+    },
+    "recordArtifactId": 12956688923,
+    "artifactList": [
+      {
+        "id": 12956698942,
+        "name": "jewel-mine-test-09-53f1e94-55-2",
+        "expired": false,
+        "digest": "sha256:94ac7f940b4386fa11c5e4d275ace02b31687d3a87184985f0dbfa6a9a0ff03b"
+      },
+      {
+        "id": 12956688923,
+        "name": "jewel-mine-test-09-53f1e94-55-2-record",
+        "expired": false,
+        "digest": "sha256:d8bbb6f7a613168bde63c2049f3133a6fe343af26d1f57ff90f31ef409164b1d"
+      },
+      {
+        "id": 12947305396,
+        "name": "jewel-mine-test-09-53f1e94-55-1",
+        "expired": false,
+        "digest": "sha256:303e48fc4d66597486deab5e9aec95d1670faa21b50cdb9ac65fd19f59b490ad"
+      },
+      {
+        "id": 12947041319,
+        "name": "jewel-mine-test-09-53f1e94-55-1-record",
+        "expired": false,
+        "digest": "sha256:ae325a0918347b3faf5accb015564b5c86a87c77129e1a037e792fbafb94b691"
+      }
+    ]
+  },
+  "safety": {
+    "mainChanged": false,
+    "existingPRHeadChanged": false,
+    "applicationIdChanged": false,
+    "signingChanged": false,
+    "deviceAccessed": false,
+    "apkUploaded": false,
+    "appealSent": false,
+    "productionPublished": false
+  }
+}

@@ -1,57 +1,56 @@
-# AndroidテストAPKのビルドとスマートフォン導入
+# AndroidテストAPKのビルドと安全な確認
+更新：2026-10-30。旧所有者URLや初期導入時の推定を現状の手順として使わない。過去の内容はGit履歴に保全されている。
 
-## 構成
+## 現在の入口
+- リポジトリ：https://github.com/takeuchisetsubi2026-ctrl/jewel-mine-public
+- [共通台帳](common-ledger.md)：PR・APK・実機・Pagesの確認根拠
+- [スマホ運用手順](mobile-operations.md)：既存run再実行、今日のPC確認、依頼用コピペ
+- 実作業は既存【WORK】ジュエルマイン開発のみ。新しいWorkは作らない。
 
-共通ゲームはルートindex.html。`npm run build:web`でwwwへコピーし、`npx cap sync android`でAndroidへ同期する。生成物はGit管理しない。Web公開版のコード・設定は変更しない。
+## 安全条件
+既存Pixel 7のアプリ・保存データ・BEST200,555／SCORE116,070を保護する。
+Play Protectの警告が出ている間は導入を停止する。無効化、警告を無視したインストール、ADBによる回避、アンインストール、データ消去を行わない。
+CI成功、署名一致、versionCode増加は安全性・保存互換性・実機成功を保証しない。
+APKの外部アップロード、申請送信、main/既存PR変更・マージ、本番公開は実施しない。
 
-固定依存: Capacitor core/android/cli 8.4.3、Playwright 1.64.1。package-lock.jsonを管理しnpm ciで再現。最新8.5.3のCLIにiOS向け間接依存の監査警告があったため8.4.3を採用し、npm auditで0件を確認した。
-ビルド: Node 22、JDK21、SDK36、Gradle8.14.3、AGP8.13.0、minSdk24（Android7以降）。WebViewの互換性は実機確認が必要。
+## ビルド構成（変更していない）
+ルートindex.html → npm run build:web → www → npx cap sync android。
+既存CIはnpm ci、build identity生成、npm test、assetsチェック、assembleDebug、APK署名・内部assets照合、Artifacts保存。
+Node22.22.0／JDK21／Android SDK36をworkflowで指定。依存はpackage-lock.jsonに従いnpm ciを使用する。
+本番のAdMob IDは実行に使わず、開発・CIはGoogleテストID。実広告・実機は別の確認項目。
 
-## アプリIDと署名
+## 識別情報
+package：com.wilduncle.jewelmine.codextest
+versionName：4.0.9
+表示名：09 ジュエルマイン
+公開テスト証明書SHA-256：
+adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029
+公開テスト鍵を本番鍵へ転用しない。鍵ファイルやパスワードを別サービスへ送らない。
 
-ID: `com.wilduncle.jewelmine.codextest`
-表示名: ジュエルマイン テスト
-旧APKのID・鍵は不明。更新互換性は保証しない。別IDでの並行インストールを意図したテスト版。もし旧アプリと偶然IDが一致して署名不一致になった場合は旧版を削除せず相談する。
+versionCodeは単純なrun_numberではなく、testNumber×1,000,000 + runNumber×10 + runAttempt。
+現在のコードはrunAttempt<10。再実行も別APKになる。最新成果物一覧は共通台帳とCI recordを照合する。
+端末内旧APK9000291と旧原本一致はユーザー確認済み。「旧ID・鍵が不明」という初期資料の記述を現在の結論にしない。
+端末にあるAPKの一致と、更新後のゲームデータ互換性の実証は別。
 
-`android/signing/public-test.keystore`は**公開のテスト専用鍵**（パスワードandroid）。Actionsの一時ランナー間で同じ署名を維持し、このテスト版を上書き更新できるようにする。誰でも署名可能なので本番・機密用途に使用しない。release配布時は別IDと秘密鍵を使用する。Actionsではrun_numberをversionCodeに使用する。同じworkflowの新しい実行を順に導入する。古い実行のAPKへのダウングレードは非対応。
-旧APKやWebブラウザとは保存領域が別。旧版をアンインストールしない。このテスト版も削除・データ消去するとセーブが失われる。
+## PCなしのCI
+main以外のコードpush／PRが起点。docs/**、README.md、AGENTS.mdのみは除外。
+workflow_dispatchは開発ブランチにあるが、既定mainにworkflowがないためRun workflowの通常経路は未整備。
+既存runの再実行はmain変更なしで利用できる。今回、接続済GitHubからrun40985254973をattempt2として再実行し成功した。
+スマホブラウザのRe-run操作・成果物ダウンロードはユーザーのアカウントでの確認を残す。
+空コミット、設定変更、mainへのworkflow追加を再実行の必須条件にしない。
 
-## PCなしの通常サイクル
+## 取得してから照合するもの
+ArtifactsはAPK ZIPとrecord ZIPをセットで保全し、run URL・attempt・head SHA・実際のcheckout SHA・versionCode・package・証明書・APK SHA-256を記録する。
+ZIPのdigestとAPK単体のSHA-256は別。Actionsの緑表示だけを根拠にインストールしない。
+Artifactsの保存期間はこのworkflowでは30日。期限切れは同一run再実行等で別成果物として扱う。
+iPhoneは指示と結果確認用。Android APKの実行はできない。
+公開Pagesは現在main相当で最新Android開発版ではない。
 
-1. iPhoneからCodexへ、対象開発ブランチでの修正・検証・pushを指示する。
-2. main以外へのコードpushでAndroid debug APKが自動実行される（docsのみの変更は除外）。mainのWeb公開は更新しない。
-3. AndroidのブラウザでGitHubにログインし、以下のActions画面を開く。
-   https://github.com/wild-uncle/jewel-mine-public/actions/workflows/android-debug.yml
-4. 対象ブランチ・最新コミットの緑色の成功した実行を開く。Artifactsの`jewel-mine-test-debug-実行番号`をダウンロードする。有効期限30日。期限切れならCodexへ再ビルドを依頼する。
-5. AndroidのファイルアプリでZIPを展開しapp-debug.apkを開く。必要ならダウンロードに使ったブラウザ／ファイルアプリの「不明なアプリのインストール」を許可する。導入後は許可を戻す。
-6. 「ジュエルマイン テスト」を起動する。iPhoneは指示用でありAndroid APKはインストールできない。
+## 実機未完了
+広告の視聴完了／キャンセル／読み込み失敗、復活と盤面リセット、終了3回ごとの広告、広告前後のドラッグ、画面固定、バナー領域、バックグラウンド復帰、保存データ保持。
+これらは警告解消と安全な導入条件を確認するまで未完了。現時点で新APKの導入を指示しない。
 
-workflow_dispatchも定義済み。ただしGitHubは通常デフォルトブランチにworkflowが存在するまでRun workflowボタンやdispatchを利用できない。mainへは承認なく追加しないため、当面はコードpushによる自動実行を使用する。Codexは必要なら専用ブランチに空コミットをpushして再実行できる。
-
-## 自動検証
-
-構文・FEVER150%/1250ms・軽量化コードを検査し、生成Web資産と共通ソースが一致することを確認。既存Chrome回帰テスト後、Gradle assembleDebugを実行。APK内assets/public/index.htmlのバイト一致、APK署名を検証し、APKとSHA256SUMS.txtをArtifactsへ保存する。
-
-ローカル: npm ci → npm run sync:android → npm run check → npm test → android/でgradlew assembleDebug。Chromeが必要。SDK/JDKの環境変数を設定する。APKはandroid/app/build/outputs/apk/debug/app-debug.apk。
-
-## ユーザー側の実機テスト
-
-- 起動、狭幅、ステータス／ナビゲーション領域、縦横回転、オフライン起動
-- タップ・ドラッグ・置けない場所・連続操作
-- 単一行、複数行、縦横同時消去時の停止や描画乱れ
-- 宝石、コンボ、FEVER文字の大きさ・虹色・表示時間、5手・2倍
-- スコア保存、アプリ終了再起動、バックグラウンド復帰
-- 新しい実行のAPKによる上書き更新でセーブが維持されること
-
-実機テストは未実施。APKビルド成功と実機での滑らかさは別の確認事項。
-
-公式資料: https://capacitorjs.com/docs/getting-started 、https://capacitorjs.com/docs/android 、https://github.com/actions/upload-artifact
-
-## 初回確認済みAPK
-
-2026-10-24にActions実行40089260086が成功（コード38aca3e）。
-APKダウンロード（GitHubログインが必要）:
-https://github.com/wild-uncle/jewel-mine-public/actions/runs/40089260086/artifacts/12557783498
-
-成果物名: jewel-mine-test-debug-2。有効期限: 2026-11-23 11:18 UTC。APKとSHA256SUMS.txtを含むZIP。
-ビルドログと証跡: docs/reports/2026-10-24-android-build-evidence.json。
+## 公式資料
+- https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs
+- https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow
+- https://developer.android.com/studio/publish/app-signing
