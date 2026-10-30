@@ -8,7 +8,9 @@ const gameSource=source
   .replace("window.addEventListener('gameviewportresize',refreshDragOrigin);",'')
  .replace(/\/\/ Rewarded board reset:[\s\S]*?(?=render\(\);if\(scorePersistenceBlocked)/,base.slice(base.indexOf("$('restart').addEventListener('click'"),base.indexOf("render();if(scorePersistenceBlocked)",base.indexOf("$('restart').addEventListener('click'"))))
  .replace('drag||rewardedAds.busy||animationLocked','drag||animationLocked')
- .replace('suppressTap||rewardedAds.busy||scorePersistenceBlocked','suppressTap||scorePersistenceBlocked');
+ .replace('suppressTap||rewardedAds.busy||scorePersistenceBlocked','suppressTap||scorePersistenceBlocked')
+ .replace('window.JewelMineAds?.newGame();','')
+ .replace(";void rewardedAds.request('game-over')",'');
 assert.deepEqual([...gameSource.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]),[...base.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]));
 assert.equal(gameSource.split('</head>')[0],base.split('</head>')[0]);
 assert.equal(m.applicationId,'com.wilduncle.jewelmine.codextest');
