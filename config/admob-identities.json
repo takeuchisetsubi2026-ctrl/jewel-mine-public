@@ -1,0 +1,17 @@
+{
+  "mode": "test-only-all-build-types",
+  "productionEnabled": false,
+  "production": {
+    "appId": "ca-app-pub-8200983228535531~2429301259",
+    "banner": "ca-app-pub-8200983228535531/9429909597",
+    "rewarded": "ca-app-pub-8200983228535531/1140978150",
+    "interstitial": "ca-app-pub-8200983228535531/8028151831",
+    "rewardedInterstitialOnHold": "ca-app-pub-8200983228535531/1970136250"
+  },
+  "test": {
+    "appId": "ca-app-pub-3940256099942544~3347511713",
+    "banner": "ca-app-pub-3940256099942544/9214589741",
+    "rewarded": "ca-app-pub-3940256099942544/5224354917",
+    "interstitial": "ca-app-pub-3940256099942544/1033173712"
+  }
+}

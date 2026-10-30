@@ -1090,7 +1090,26 @@ html,body{width:100%;height:100%;min-height:0!important;overflow:hidden!importan
 #gameViewport>.app{position:absolute!important;left:50%;top:0;width:100%;margin:0!important;min-height:0!important;transform:translateX(-50%) scale(var(--game-fit,1));transform-origin:top center;touch-action:none}
 dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:pan-y}
 </style>
-</head><body><div id="gameViewport"><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">広告なし ・自動保存</div><div class="footer" id="buildIdentity">TEST 09｜v4.0.9｜開発ソース（未ビルド）</div><div class="ad-space" aria-hidden="true"></div></main></div><div id="simultaneousReward" class="simultaneous-reward" hidden aria-live="polite" aria-atomic="true"><i class="reward-glow" aria-hidden="true"></i><strong class="reward-multiplier"></strong><span class="reward-points"></span></div><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>広告を見て盤面をリセット？</h2><p>広告の報酬獲得後に盤面と宝石を消します。<br>スコア・FEVER・手持ちブロックは保持します。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">広告を見て盤面リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="again">もう一回！</button></dialog><script>
+</head><body><script id="admob-native-adapter">
+// Capacitor generates these Promise methods from the registered native plugin.
+(()=>{
+ const native=window.Capacitor?.Plugins?.JewelMineAds;
+ if(!native)return;
+ let gameId;
+ const key='jewel-mine-ad-game-session';
+ function newGame(){gameId=crypto.randomUUID?.()||(Date.now()+'-'+Math.random());try{localStorage.setItem(key,gameId)}catch(_){}}
+ try{gameId=localStorage.getItem(key)}catch(_){}
+ if(!gameId)newGame();
+ const ready=native.initialize();
+ ready.catch(()=>{});
+ window.JewelMineRewardedAdProvider={async show(request){
+  await ready;
+  if(request.purpose==='game-over')return native.gameOver({...request,eventId:gameId});
+  return native.showRewarded(request);
+ }};
+ window.JewelMineAds={newGame};
+})();
+</script><div id="gameViewport"><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer">テスト広告 ・自動保存</div><div class="footer" id="buildIdentity">TEST 09｜v4.0.9｜開発ソース（未ビルド）</div><div class="ad-space" aria-hidden="true"></div></main></div><div id="simultaneousReward" class="simultaneous-reward" hidden aria-live="polite" aria-atomic="true"><i class="reward-glow" aria-hidden="true"></i><strong class="reward-multiplier"></strong><span class="reward-points"></span></div><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>広告を見て盤面をリセット？</h2><p>広告の報酬獲得後に盤面と宝石を消します。<br>スコア・FEVER・手持ちブロックは保持します。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">広告を見て盤面リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="revive">広告を見て復活</button><button id="again">もう一回！</button></dialog><script>
 (()=>{'use strict';const N=8,KEY='jewel-mine-v36-score-rules';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]],[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
 // Haptics only work in browsers implementing navigator.vibrate (iOS Safari does not).
 function buzz(kind){try{if(typeof navigator.vibrate==='function')navigator.vibrate(kind==='clear'?24:12)}catch(e){}}
@@ -1556,7 +1575,7 @@ function finishGame(){
    burst.append(bit);
   }
  }
-$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal()}
+$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal();void rewardedAds.request('game-over')}
 let animationLocked=false;let revealTimers=[];
 // Points are supplied by the scoring transaction; presentation never recalculates rewards.
 let simultaneousAnimation=null,simultaneousGlow=null;
@@ -1718,7 +1737,7 @@ function place(r,c){
  const noMoves=!hasMoves();
  playReveals(found,()=>{if(noMoves)finishGame()});
 }
-function reset(){if(scorePersistenceBlocked){toast('保存データを保持中です。復元確認が必要です');return}stopSimultaneousReward();cosmeticTimers.forEach(clearTimeout);cosmeticTimers.clear();cosmeticKeys.clear();pendingFeverNotice=false;$('burstLayer').replaceChildren();const best=state.best,records=clone(state.scoreRecords);state=fresh(best,records);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
+function reset(){if(scorePersistenceBlocked){toast('保存データを保持中です。復元確認が必要です');return}window.JewelMineAds?.newGame();stopSimultaneousReward();cosmeticTimers.forEach(clearTimeout);cosmeticTimers.clear();cosmeticKeys.clear();pendingFeverNotice=false;$('burstLayer').replaceChildren();const best=state.best,records=clone(state.scoreRecords);state=fresh(best,records);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
 // Pointer drag v0.2: a real floating block follows ABOVE the finger, showing exact placement.
 function dragCellSize(){const c=boardEl.children[0], n=boardEl.children[1];return {size:c.getBoundingClientRect().width,pitch:n.getBoundingClientRect().left-c.getBoundingClientRect().left};}
 function dragPosition(e){
@@ -1744,7 +1763,7 @@ tray.addEventListener('click',e=>{if(suppressTap||rewardedAds.busy||scorePersist
 const rewardedAds=(()=>{
  let busy=false,sequence=0;
  return Object.freeze({get busy(){return busy},async request(purpose){
-  if(busy||!['board-reset','revive'].includes(purpose))return false;
+  if(busy||!['board-reset','revive','game-over'].includes(purpose))return false;
   busy=true;
   const requestId=String(++sequence);
   try{
@@ -1752,7 +1771,7 @@ const rewardedAds=(()=>{
    if(!provider||typeof provider.show!=='function')return false;
    // Provider resolves only after dismissal, and echoes this session's reward.
    const result=await provider.show({purpose,requestId});
-   return result?.requestId===requestId&&result?.rewardEarned===true;
+   return result?.requestId===requestId&&result?.dismissed===true&&(purpose==='game-over'||result?.rewardEarned===true);
   }catch(_){return false}finally{busy=false}
  }});
 })();
@@ -1767,6 +1786,17 @@ async function requestBoardReset(){
  state.board.fill(null);state.gems.fill(null);prev=null;selected=-1;
  $('message').textContent='';render();
 }
+// AdMob revive uses the same single-flight gate; no reward means no mutation.
+async function requestRevive(){
+ if(rewardedAds.busy||drag||animationLocked||scorePersistenceBlocked)return;
+ const snapshot=JSON.stringify(state);
+ const earned=await rewardedAds.request('revive');
+ if(!earned){toast('広告を完了できませんでした。ゲームはそのままです');return}
+ if(scorePersistenceBlocked||JSON.stringify(state)!==snapshot)return;
+ state.board.fill(null);state.gems.fill(null);prev=null;selected=-1;
+ $('over').close();$('message').textContent='';render();
+}
+$('revive').addEventListener('click',requestRevive);
 $('restart').addEventListener('click',()=>{if(!rewardedAds.busy&&!drag&&!animationLocked&&!scorePersistenceBlocked)$('resetConfirm').showModal()});$('resetNo').addEventListener('click',()=>$('resetConfirm').close());$('resetYes').addEventListener('click',requestBoardReset);$('again').addEventListener('click',()=>{if(!rewardedAds.busy)reset()});render();if(scorePersistenceBlocked)document.querySelector('.footer').textContent='保存データを保持しています（要復元確認）';if(!scorePersistenceBlocked&&!canPlay())finishGame();if(document.hidden)syncVisibility()
 })();</script>
 <script>

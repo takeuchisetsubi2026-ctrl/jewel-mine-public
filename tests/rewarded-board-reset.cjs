@@ -14,7 +14,7 @@ try{
  await page.locator('#restart').click();await page.locator('#resetNo').click();assert.equal(await state(),initial);
  await request();await page.waitForTimeout(20);assert.equal(await state(),initial);assert.equal(await saved(),initialSave);
  for(const outcome of ['cancel','fail','wrong','ok']){
-  await page.evaluate(outcome=>{window.calls=0;window.JewelMineRewardedAdProvider={show:({requestId})=>{window.calls++;return new Promise((resolve,reject)=>{window.settle=()=>outcome==='fail'?reject(Error('load failed')):resolve({requestId:outcome==='wrong'?'old':requestId,rewardEarned:outcome==='ok'})})}}},outcome);
+  await page.evaluate(outcome=>{window.calls=0;window.JewelMineRewardedAdProvider={show:({requestId})=>{window.calls++;return new Promise((resolve,reject)=>{window.settle=()=>outcome==='fail'?reject(Error('load failed')):resolve({requestId:outcome==='wrong'?'old':requestId,rewardEarned:outcome==='ok',dismissed:true})})}}},outcome);
   await request();assert(await page.evaluate(()=>JewelMineRewardedAds.busy));
   assert.equal(await page.evaluate(()=>JewelMineRewardedAds.request('revive')),false);
   await page.locator('.piece').first().dispatchEvent('pointerdown',{pointerId:7,clientX:20,clientY:20});assert.equal(await run('drag'),null);
@@ -29,7 +29,7 @@ try{
  await run('state.board[1]=2;render()');const repeat=await state();await request();assert.equal(await state(),repeat);await page.evaluate(()=>settle());await page.waitForTimeout(30);assert.equal(await page.evaluate(()=>calls),2);assert(await run('state.board.every(x=>x===null)'));
  await page.reload();assert(await run('state.board.every(x=>x===null)'));assert.equal(await run('state.score'),1000);assert.equal(await run('state.best'),12345);
  // A request for revive shares the same lock and cannot overlap reset.
- await page.evaluate(()=>{window.JewelMineRewardedAdProvider={show:({requestId})=>new Promise(resolve=>window.finishRevive=()=>resolve({requestId,rewardEarned:true}))};window.revive=JewelMineRewardedAds.request('revive')});
+ await page.evaluate(()=>{window.JewelMineRewardedAdProvider={show:({requestId})=>new Promise(resolve=>window.finishRevive=()=>resolve({requestId,rewardEarned:true,dismissed:true}))};window.revive=JewelMineRewardedAds.request('revive')});
  assert.equal(await page.evaluate(()=>JewelMineRewardedAds.request('board-reset')),false);await page.evaluate(()=>finishRevive());assert(await page.evaluate(()=>revive));
  assert.deepEqual(errors,[]);console.log('Rewarded board reset: confirmation/cancel/missing provider/failure/stale reward/state preservation/repeated reward/shared revive lock/reload PASS');
 }finally{await browser.close()}
