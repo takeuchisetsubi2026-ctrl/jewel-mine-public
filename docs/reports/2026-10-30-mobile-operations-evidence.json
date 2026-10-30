@@ -132,7 +132,7 @@
     "mainProtection": "403 Resource not accessible by integration; branch list protected:false observed separately",
     "workflowList": "unsupported connector endpoint per user audit",
     "windowsLogin": "Owner login and Actions/Pages settings confirmed via user-reported direct UI; earlier wild-uncle access failure is historical.",
-    "mobileUI": "Same existing Work send and handoff TXT opening reported by user. Direct receipt cross-check not completed; Actions artifact ZIP download unconfirmed.",
+    "mobileUI": "User reported same Work send, TXT opening, and ZIP saving. Actual saved ZIP identity/integrity/hash and direct receipt cross-check remain unconfirmed.",
     "publishedCloudEnvironment": "user account status unconfirmed"
   },
   "rerun": {
@@ -236,7 +236,7 @@
       "workflowChanged": false
     },
     "pending": [
-      "artifact download on user's phone",
+      "saved artifact ZIP byte/hash verification",
       "published Cloud environment status and execution access",
       "direct receipt cross-check of the reported mobile message"
     ]
@@ -248,11 +248,14 @@
     "directMessageReceiptCrossChecked": false,
     "reason": "reporting read_thread did not yet show the referenced mobile message",
     "handoffTXTOpenedReported": true,
-    "artifactZIPDownloaded": false,
+    "artifactZIPDownloaded": true,
     "nextRunId": 40985254973,
     "nextArtifactId": 12956698942,
     "apkInstallRequested": false,
     "cloudPublishedStatus": "unconfirmed",
-    "ciRerunForThisUpdate": false
+    "ciRerunForThisUpdate": false,
+    "artifactZIPDownloadEvidence": "User statement: ZIP保存できた",
+    "downloadedZIPInspected": false,
+    "actualDownloadedArtifactIdentity": "unconfirmed until ZIP bytes are supplied"
   }
 }
