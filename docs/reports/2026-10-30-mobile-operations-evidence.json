@@ -132,7 +132,7 @@
     "mainProtection": "403 Resource not accessible by integration; branch list protected:false observed separately",
     "workflowList": "unsupported connector endpoint per user audit",
     "windowsLogin": "Owner login and Actions/Pages settings confirmed via user-reported direct UI; earlier wild-uncle access failure is historical.",
-    "mobileUI": "User reported same Work send, TXT opening, and ZIP saving. Actual saved ZIP identity/integrity/hash and direct receipt cross-check remain unconfirmed.",
+    "mobileUI": "User reported phone download; attached ZIP directly verified against GitHub artifact digest. Cloud publication/access and direct cross-check of earlier mobile send remain distinct.",
     "publishedCloudEnvironment": "user account status unconfirmed"
   },
   "rerun": {
@@ -236,9 +236,8 @@
       "workflowChanged": false
     },
     "pending": [
-      "saved artifact ZIP byte/hash verification",
       "published Cloud environment status and execution access",
-      "direct receipt cross-check of the reported mobile message"
+      "direct receipt cross-check of the earlier reported mobile message"
     ]
   },
   "phoneConfirmation": {
@@ -255,7 +254,48 @@
     "cloudPublishedStatus": "unconfirmed",
     "ciRerunForThisUpdate": false,
     "artifactZIPDownloadEvidence": "User statement: ZIP保存できた",
-    "downloadedZIPInspected": false,
-    "actualDownloadedArtifactIdentity": "unconfirmed until ZIP bytes are supplied"
+    "downloadedZIPInspected": true,
+    "actualDownloadedArtifactIdentity": "confirmed by full ZIP SHA-256 equality with GitHub artifact12956698942",
+    "verification": {
+      "zipSha256": "94ac7f940b4386fa11c5e4d275ace02b31687d3a87184985f0dbfa6a9a0ff03b",
+      "zipIntegrity": "pass",
+      "apkIntegrity": "pass",
+      "apkSha256": "37e89c10f559b1f1807ffadebc5a122a2283d0637bb19ac4549c9ecdc6eae8d1",
+      "apkBytes": 9355536,
+      "manifest": {
+        "versionCode": 9000552,
+        "versionName": "4.0.9",
+        "compileSdkVersion": 36,
+        "compileSdkVersionCodename": "16",
+        "package": "com.wilduncle.jewelmine.codextest",
+        "platformBuildVersionCode": 36,
+        "platformBuildVersionName": 16
+      },
+      "v2CertificateSha256": [
+        "adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029"
+      ],
+      "buildInfo": {
+        "schema": 1,
+        "testNumber": 9,
+        "testLabel": "TEST 09",
+        "appName": "09 ジュエルマイン",
+        "versionName": "4.0.9",
+        "versionCode": 9000552,
+        "applicationId": "com.wilduncle.jewelmine.codextest",
+        "gitSha": "53f1e943e5a7ed7def31c671a9a3ae14e1336fe2",
+        "dirty": false,
+        "buildUtc": "2026-10-30T05:36:19.080Z",
+        "sourceSha256": "1ad24dfabc068ddfab5df017bb29efcfc91dbff94c79be39cc703a818720a9ec",
+        "certificateSha256": "adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029",
+        "runNumber": 55,
+        "runAttempt": 2,
+        "runUrl": "https://github.com/takeuchisetsubi2026-ctrl/jewel-mine-public/actions/runs/40985254973",
+        "artifactName": "jewel-mine-test-09-53f1e94-55-2",
+        "apkFileName": "jewel-mine-test-09-v4.0.9-53f1e94-55-2-debug.apk",
+        "apkSha256": "37e89c10f559b1f1807ffadebc5a122a2283d0637bb19ac4549c9ecdc6eae8d1"
+      },
+      "signatureVerificationLimit": "v2 certificate block parsed and hashed; full cryptographic signature verification not repeated",
+      "embeddedAssetsIndexPresent": true
+    }
   }
 }

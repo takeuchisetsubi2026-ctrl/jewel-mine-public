@@ -1,0 +1,13 @@
+ジュエルマイン開発引継ぎ報告書
+日時：2026-10-30
+対象：takeuchisetsubi2026-ctrl/jewel-mine-public
+ブランチ：docs/mobile-operations-20261030 / Draft PR #15
+基点：e126a3410d80f54cf31a0a067c910f99f81b3e65
+1. ● 完了：スマホ取得ZIPを直接受領し、破損なし・GitHub成果物digest一致を確認。
+2. ● 検証：APK SHA-256が同梱チェックサム・build-info・CI recordと一致。内部ManifestのID/版とv2証明書指紋も一致。完全な暗号学的署名検証の再実行ではない。
+3. GitHub：PR #15のdocsのみ更新。main・既存開発PR変更・マージなし。
+4. APK：run40985254973 attempt2 / versionCode9000552。インストール・外部提出・CI再実行なし。
+APK SHA-256：37e89c10f559b1f1807ffadebc5a122a2283d0637bb19ac4549c9ecdc6eae8d1
+5. ○ 未完了：Cloud環境公開状態・実行権限、Play Protect警告解消、広告・更新保存保持の実機検証。◐ 実行中CIなし。
+6. 次作業：既存Cloud環境の状態確認。新しいWorkは作らない。
+7. 【chat】への引継ぎ：スマホで取得→このWorkへ添付→原本照合を確認。CI成功・証明書一致を実機動作や安全性の保証にしない。

@@ -126,3 +126,19 @@ ZIP取得のみ。APK起動・インストールはしない。
 ○ 未完了：本人スマホに保存されたZIP本体の破損・内部build-info・APKハッシュ照合。次はこのWorkへのZIP添付で確認する。
 ○ 未完了：Cloud環境の公開状態・実行権限。スマホ送信やZIP保存から推定しない。
 APKインストール、CI再実行、外部アップロード、申請、新しいWork作成は行っていない。
+
+## スマホ取得ZIPの直接照合（2026-10-30追記）
+● 完了（直接検査）：本人がこのWorkへ添付したjewel-mine-test-09-53f1e94-55-2.zipを検査。
+ZIP SHA-256：94ac7f940b4386fa11c5e4d275ace02b31687d3a87184985f0dbfa6a9a0ff03b
+GitHub artifact12956698942のdigestと完全一致。run40985254973 attempt2の配布ZIPと同一。
+ZIPおよび内部APKのCRC検査：破損なし。
+APK SHA-256：37e89c10f559b1f1807ffadebc5a122a2283d0637bb19ac4549c9ecdc6eae8d1
+同梱SHA256SUMS.txt・build-info.json・先に回収したCI recordと一致。
+内部AndroidManifest：package com.wilduncle.jewelmine.codextest、versionName4.0.9、versionCode9000552。build-infoと一致。
+APK v2証明書ブロックから読み取った証明書SHA-256：
+adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029
+既知のテスト証明書と一致。今回の直接検査は証明書ブロックの読取・指紋比較であり、完全な暗号学的署名検証の再実行ではない。既存CIの署名検証成功とは区別する。
+スマホでの取得→同じWorkへ添付→配布原本と照合の経路を確認。
+以前の「保存ZIP本体は未受領・未照合」は、この添付の直接検査により解消。
+○ 未完了：Cloud環境の公開状態・実行権限、Play Protect警告解消、新APKの実機更新・広告・保存保持。
+APKのインストール・外部アップロード・申請送信・CI再実行なし。
