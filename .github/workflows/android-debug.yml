@@ -5,15 +5,20 @@ permissions:
   contents: read
 concurrency:
   group: android-debug-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
+      # Build the reviewed PR #14 source, not the minimal GitHub Pages main branch.
+      # Keep this SHA pinned until an explicit review updates the build target.
       - uses: actions/checkout@v5
         with:
+          ref: c0bb303aad12b3e5ed1671a760c24f585ff88c22
           fetch-depth: 0
+      - name: Verify pinned source commit
+        run: test "$(git rev-parse HEAD)" = "c0bb303aad12b3e5ed1671a760c24f585ff88c22"
       - uses: actions/setup-node@v5
         with:
           node-version: '22.22.0'
