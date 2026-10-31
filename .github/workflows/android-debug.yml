@@ -1,0 +1,78 @@
+name: Android debug APK
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: android-debug-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      # Build the reviewed PR #14 source, not the minimal GitHub Pages main branch.
+      # Keep this SHA pinned until an explicit review updates the build target.
+      - uses: actions/checkout@v5
+        with:
+          ref: c0bb303aad12b3e5ed1671a760c24f585ff88c22
+          fetch-depth: 0
+      - name: Verify pinned source commit
+        run: test "$(git rev-parse HEAD)" = "c0bb303aad12b3e5ed1671a760c24f585ff88c22"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22.22.0'
+          cache: npm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
+      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - run: npm ci
+      - name: Generate immutable build identity
+        id: identity
+        run: npm run build:web
+      - run: npx playwright install --with-deps chrome
+      - run: npm test
+      - run: npx cap sync android
+      - run: npm run check
+      - name: Build debug APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+      - name: Verify packaged game and APK signature
+        run: |
+          python3 scripts/verify-apk.py
+      - uses: actions/upload-artifact@v4
+        id: apk
+        with:
+          name: ${{ steps.identity.outputs.artifactName }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30
+      - name: Download instructions
+        env:
+          ARTIFACT_URL: ${{ steps.apk.outputs.artifact-url }}
+          ARTIFACT_ID: ${{ steps.apk.outputs.artifact-id }}
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path('dist/build-info.json')
+          m=json.loads(p.read_text())
+          m.update(artifactUrl=os.environ['ARTIFACT_URL'],artifactId=os.environ['ARTIFACT_ID'])
+          pathlib.Path('build/release-record.json').write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write(f"{m['appName']} | {m['versionName']} | code {m['versionCode']} | {m['gitSha']}\n\n[APK ZIP]({m['artifactUrl']})\n\nAPK SHA-256: {m['apkSha256']}\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.identity.outputs.artifactName }}-record
+          path: build/release-record.json
+          if-no-files-found: error
+          retention-days: 30
+
