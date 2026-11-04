@@ -5,7 +5,7 @@ def buildIdentity = new groovy.json.JsonSlurper().parse(file('../../build/identi
 // Play distribution is an opt-in build path. The existing TEST 09 package ID
 // and fixed public debug signing configuration remain unchanged by default.
 def playApplicationId = providers.gradleProperty('playApplicationId').orNull
-if (playApplicationId != null && playApplicationId != 'com.takeuchisetsubi.jewelmine') {
+if (playApplicationId != null && !['com.takeuchisetsubi.jewelmine', 'com.takeuchisetsubi.jewelmine2'].contains(playApplicationId)) {
     throw new GradleException('Unexpected Play application ID')
 }
 
