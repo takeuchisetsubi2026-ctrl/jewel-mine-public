@@ -32,6 +32,8 @@ jobs:
         run: "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \"platforms;android-36\" \"build-tools;36.0.0\""
       - run: npm ci
       - run: npm run build:web
+      - name: Prepare isolated Jewelmine2 generated identity
+        run: node scripts/prepare-jewelmine2-ci.cjs
       - run: npx cap sync android
       - name: Build unsigned new-package AAB
         working-directory: android
@@ -42,12 +44,22 @@ jobs:
         run: |
           python3 scripts/verify-aab-package.py android/app/build/outputs/bundle/release/app-release.aab com.takeuchisetsubi.jewelmine2
           python3 - <<'PY'
-          import zipfile,pathlib
+          import zipfile,pathlib,json,re
           p=pathlib.Path('android/app/build/outputs/bundle/release/app-release.aab')
           with zipfile.ZipFile(p) as z:
               assert 'base/manifest/AndroidManifest.xml' in z.namelist()
               signed=[n for n in z.namelist() if n.upper().startswith('META-INF/') and n.upper().endswith(('.RSA','.DSA','.EC'))]
               assert not signed, f'Unexpected signed AAB: {signed}'
+              cap=json.loads(z.read('base/assets/capacitor.config.json'))
+              info=json.loads(z.read('base/assets/public/build-info.json'))
+              html=z.read('base/assets/public/index.html').decode('utf-8')
+              assert cap['appId']=='com.takeuchisetsubi.jewelmine2', cap
+              assert cap['appName']=='ジュエルマイン2', cap
+              assert info['applicationId']=='com.takeuchisetsubi.jewelmine2', info
+              assert info['appName']=='ジュエルマイン2', info
+              match=re.search(r'<script type="application/json" id="buildMetadata">(.*?)</script>',html,re.S)
+              assert match and json.loads(match.group(1))['applicationId']=='com.takeuchisetsubi.jewelmine2'
+              assert 'Jewelmine2｜v' in html
           print('Unsigned jewelmine2 AAB verified; NOT FOR PLAY UPLOAD')
           PY
       - uses: actions/upload-artifact@v4
