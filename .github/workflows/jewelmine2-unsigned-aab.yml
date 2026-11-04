@@ -1,0 +1,52 @@
+name: Jewelmine2 unsigned AAB verification
+on:
+  push:
+    branches: [feature/jewelmine2-unsigned-aab-20261104]
+    paths:
+      - 'android/app/build.gradle'
+      - '.github/workflows/jewelmine2-unsigned-aab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-unsigned-aab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - run: npm ci
+      - run: npm run build:web
+      - run: npx cap sync android
+      - name: Build unsigned new-package AAB
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon -PplayApplicationId=com.takeuchisetsubi.jewelmine2 bundleRelease
+      - name: Verify new package and unsigned status
+        run: |
+          python3 scripts/verify-aab-package.py android/app/build/outputs/bundle/release/app-release.aab com.takeuchisetsubi.jewelmine2
+          python3 - <<'PY'
+          import zipfile,pathlib
+          p=pathlib.Path('android/app/build/outputs/bundle/release/app-release.aab')
+          with zipfile.ZipFile(p) as z:
+              assert 'base/manifest/AndroidManifest.xml' in z.namelist()
+              signed=[n for n in z.namelist() if n.upper().startswith('META-INF/') and n.upper().endswith(('.RSA','.DSA','.EC'))]
+              assert not signed, f'Unexpected signed AAB: {signed}'
+          print('Unsigned jewelmine2 AAB verified; NOT FOR PLAY UPLOAD')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jewelmine2-unsigned-not-for-upload
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 7
