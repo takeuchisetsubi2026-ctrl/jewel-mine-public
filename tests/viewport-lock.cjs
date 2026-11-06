@@ -36,6 +36,36 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
   assert.equal(await page.evaluate(()=>JSON.stringify(localStorage)),persisted);assert.deepEqual(errors,[]);
   results.push({width,height,edgeGestures:4,successfulDrags:3,layoutStable:true,saveUnchangedByEdgeGestures:true});await context.close();
  }
+ const source=fs.readFileSync('index.html','utf8');
+ const viewport={width:412,height:800}; // Available WebView area after a simulated native banner/insets.
+ const measure=async native=>{
+  const page=await browser.newPage({viewport,isMobile:true,hasTouch:true});
+  if(native)await page.addInitScript(()=>{
+   window.Capacitor={Plugins:{JewelMineAds:{initialize:async()=>{}}}};
+  });
+  await page.route('http://jewel.test/**',r=>r.fulfill({contentType:'text/html',body:source}));
+  await page.goto('http://jewel.test/');
+  const read=()=>page.evaluate(()=>{
+   const rect=s=>document.querySelector(s).getBoundingClientRect();
+   const width=s=>rect(s).width;
+   return {board:width('#board'),score:parseFloat(getComputedStyle(document.querySelector('#score')).fontSize)*width('.app')/document.querySelector('.app').offsetWidth,tile:width('.mini .unit'),footerGap:innerHeight-rect('#buildIdentity').bottom};
+  });
+  await page.waitForFunction(()=>document.querySelector('.app').style.getPropertyValue('--game-fit'));
+  const measurement=await read();
+  if(native){
+   for(const height of [720,900]){
+    await page.setViewportSize({width:viewport.width,height});
+    await page.waitForFunction(()=>Math.abs(document.querySelector('.app').getBoundingClientRect().bottom-innerHeight)<1);
+    assert((await read()).footerGap>=0);
+   }
+  }
+  await page.close();
+  return measurement;
+ };
+ const web=await measure(false),native=await measure(true);
+ console.log('412×800 CSS px, simulated WebView:',JSON.stringify({web,native}));
+ assert(native.board>web.board&&native.score>web.score&&native.tile>web.tile);
+ assert(native.footerGap>=0&&native.footerGap<=12);
  fs.writeFileSync('docs/reports/viewport-lock-results.json',JSON.stringify(results,null,2)+'\n');console.log('Viewport lock:',JSON.stringify(results));
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

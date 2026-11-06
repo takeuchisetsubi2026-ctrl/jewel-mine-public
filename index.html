@@ -1088,6 +1088,17 @@ html.app-background *,html.app-background *::before,html.app-background *::after
 html,body{width:100%;height:100%;min-height:0!important;overflow:hidden!important;overscroll-behavior:none}
 #gameViewport{position:fixed;inset:0;overflow:hidden;overscroll-behavior:none;touch-action:none}
 #gameViewport>.app{position:absolute!important;left:50%;top:0;width:100%;margin:0!important;min-height:0!important;transform:translateX(-50%) scale(var(--game-fit,1));transform-origin:top center;touch-action:none}
+/* The Android banner is a sibling of the WebView and already reduces its viewport. */
+html.native-banner #gameViewport>.app{display:flex;flex-direction:column;justify-content:space-between;min-height:100%!important;padding:calc(10px + env(safe-area-inset-top)) 8px 8px!important}
+.native-banner .app>*{flex-shrink:0}
+.native-banner .ad-space{display:none!important}
+.native-banner .boardshell{width:100%!important}
+.native-banner .boardwrap{inset:12px!important}
+.native-banner .scorevalue{font-size:clamp(48px,15vw,76px)!important}
+.native-banner .tray .piece{container-type:inline-size;min-height:130px!important}
+.native-banner .tray .mini{--tile:min(25px,calc(100cqw / var(--cols)));grid-template-columns:repeat(var(--cols),var(--tile))!important;grid-template-rows:repeat(var(--rows),var(--tile))!important}
+.native-banner .tray .mini .unit{width:var(--tile)!important;height:var(--tile)!important}
+#revive:disabled{opacity:.55}
 dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:pan-y}
 </style>
 </head><body><script id="admob-native-adapter">
@@ -1095,6 +1106,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
 (()=>{
  const native=window.Capacitor?.Plugins?.JewelMineAds;
  if(!native)return;
+ document.documentElement.classList.add('native-banner');
  let gameId;
  const key='jewel-mine-ad-game-session';
  function newGame(){gameId=crypto.randomUUID?.()||(Date.now()+'-'+Math.random());try{localStorage.setItem(key,gameId)}catch(_){}}
@@ -1488,8 +1500,9 @@ function validScoreRecordShape(data){return data&&typeof data==='object'&&!Array
 function readScoreRecords(){try{const raw=localStorage.getItem(SCORE_RECORD_KEY);if(!raw)return mergeScoreRecords();const data=JSON.parse(raw);if(!validScoreRecordShape(data)){recordWritesBlocked=true;return data&&data.schema===1?mergeScoreRecords(data):mergeScoreRecords()}lastSavedRecords=raw;return mergeScoreRecords(data)}catch(e){recordWritesBlocked=true;return mergeScoreRecords()}}
 function readArchivedBest(){try{const old=JSON.parse(localStorage.getItem('jewel-mine-v35')||'null');return old?mergeScoreRecords({legacyBest:nonnegative(old.best),allBest:nonnegative(old.best)}):mergeScoreRecords()}catch(e){return mergeScoreRecords()}}
 const persistedScoreRecords=mergeScoreRecords(readScoreRecords(),readArchivedBest());let knownScoreRecords=persistedScoreRecords;
+const MAX_REVIVES=2;
 function fresh(best=0,records=null){
- const next={gems:Array(64).fill(null),board:Array(64).fill(null),pieces:[],score:0,best,sessionBest:best,rescued:0,bonus:0,finds:{},turn:0,comboChain:0,comboRemain:0,feverProgress:0,feverTurns:0,gemFeverVersion:1,totalLines:0,
+ const next={gems:Array(64).fill(null),board:Array(64).fill(null),pieces:[],score:0,best,sessionBest:best,revivesUsed:0,rescued:0,bonus:0,finds:{},turn:0,comboChain:0,comboRemain:0,feverProgress:0,feverTurns:0,gemFeverVersion:1,totalLines:0,
   ...newScoreRun(best,records||{legacyBest:best,allBest:best},pieceGenerator.config.firstBest)};
  next.pieces=makePieces(null,next);return next;
 }
@@ -1509,6 +1522,8 @@ function validVersionedMetadata(x){
 }
 let loadedCounterKnown=true;
 try{const x=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jewel-mine-v35')||localStorage.getItem('jewel-mine-v227')||localStorage.getItem('jewel-mine-v226')||localStorage.getItem('jewel-mine-v225')||localStorage.getItem('jewel-mine-v224')||localStorage.getItem('jewel-mine-v223')||localStorage.getItem('jewel-mine-v222')||localStorage.getItem('jewel-mine-v221')||localStorage.getItem('jewel-mine-v220')||localStorage.getItem('jewel-mine-v219')||localStorage.getItem('jewel-mine-v218')||localStorage.getItem('jewel-mine-v217')||localStorage.getItem('jewel-mine-v216')||localStorage.getItem('jewel-mine-v215')||localStorage.getItem('jewel-mine-v214')||localStorage.getItem('jewel-mine-v213')||localStorage.getItem('jewel-mine-v212')||localStorage.getItem('jewel-mine-v211')||localStorage.getItem('jewel-mine-v210')||localStorage.getItem('jewel-mine-v29')||localStorage.getItem('jewel-mine-v28')||localStorage.getItem('jewel-mine-v27')||localStorage.getItem('jewel-mine-v26')||localStorage.getItem('jewel-mine-v25')||localStorage.getItem('jewel-mine-v24')||localStorage.getItem('jewel-mine-v23')||localStorage.getItem('jewel-mine-v22')||localStorage.getItem('jewel-mine-v21')||localStorage.getItem('jewel-mine-v20')||localStorage.getItem('animal-block-v20')||localStorage.getItem('animal-block-v19')||localStorage.getItem('animal-block-v18')||localStorage.getItem('animal-block-v17')||localStorage.getItem('animal-block-v16')||localStorage.getItem('animal-block-v15')||localStorage.getItem('animal-block-v14')||localStorage.getItem('animal-block-v13')||localStorage.getItem('animal-block-v12')||localStorage.getItem('animal-block-v11')||localStorage.getItem('animal-block-v10')||localStorage.getItem('animal-block-v09')||'null');if(validScoreSnapshot(x)){state=x;loadedCounterKnown=Number.isInteger(x.totalLines)&&x.totalLines>=0;if(!validVersionedMetadata(x)||x.scoreRecords&&!validScoreRecordShape(x.scoreRecords)||x.legacyProgressRuleId&&x.legacyProgressRuleId!==SCORE_RULE_V1)scorePersistenceBlocked=true}else {if(x!==null)scorePersistenceBlocked=true;state=fresh(persistedScoreRecords.allBest,persistedScoreRecords)}}catch(e){scorePersistenceBlocked=true;state=fresh(persistedScoreRecords.allBest,persistedScoreRecords)}state.sessionBest=Number.isFinite(state.sessionBest)&&state.sessionBest>=0?state.sessionBest:Math.max(0,Number(state.best)||0);state.bonus=Number.isFinite(state.bonus)?state.bonus:0;state.finds=state.finds||{};state.gems=Array.isArray(state.gems)&&state.gems.length===64?state.gems:Array(64).fill(null);let retainedGem=false;state.gems=state.gems.map((gem,i)=>{if(gem===null||state.board[i]===null||retainedGem)return null;retainedGem=true;return gem});delete state.animalAt;state.feverProgress=Number.isFinite(state.feverProgress)?state.feverProgress:0;state.feverTurns=Number.isFinite(state.feverTurns)?state.feverTurns:0;state.totalLines=Number.isFinite(state.totalLines)?state.totalLines:0;if(state.gemFeverVersion!==1){state.feverProgress=0;state.bonus=0;state.gemFeverVersion=1;}state.pieces.forEach(p=>{if((p.s===27||p.s===29)&&!p.used)p.s=5});if(!scorePersistenceBlocked)hydrateScoreRun(state,persistedScoreRecords,loadedCounterKnown,pieceGenerator.config.firstBest);
+// Older saves have no reliable revive history. Preserve the game and reserve revives for new games.
+if(!Number.isInteger(state.revivesUsed)||state.revivesUsed<0||state.revivesUsed>MAX_REVIVES)state.revivesUsed=MAX_REVIVES;
 const save=()=>{
  if(scorePersistenceBlocked)return false;
  state.scoreRecords=mergeScoreRecords(knownScoreRecords,state.scoreRecords,{allBest:state.best});knownScoreRecords=state.scoreRecords;
@@ -1560,7 +1575,10 @@ function finishGame(){
  const total=state.score;
  const isRecord=total>state.best;
  state.best=Math.max(state.best,total);finishScoreRun(state);
- const over=$('over');
+ const over=$('over'),revive=$('revive');
+ const remaining=MAX_REVIVES-state.revivesUsed;
+ revive.disabled=remaining===0;
+ revive.textContent=remaining===0?'復活上限に達しました':`広告を見て復活（残り${remaining}回）`;
  over.classList.toggle('new-record',isRecord);
  const burst=$('recordBurst');burst.replaceChildren();
  if(isRecord){
@@ -1788,13 +1806,23 @@ async function requestBoardReset(){
 }
 // AdMob revive uses the same single-flight gate; no reward means no mutation.
 async function requestRevive(){
- if(rewardedAds.busy||drag||animationLocked||scorePersistenceBlocked)return;
+ const over=$('over');
+ if(!over.open||rewardedAds.busy||drag||animationLocked||scorePersistenceBlocked||state.revivesUsed>=MAX_REVIVES)return;
  const snapshot=JSON.stringify(state);
  const earned=await rewardedAds.request('revive');
  if(!earned){toast('広告を完了できませんでした。ゲームはそのままです');return}
- if(scorePersistenceBlocked||JSON.stringify(state)!==snapshot)return;
- state.board.fill(null);state.gems.fill(null);prev=null;selected=-1;
- $('over').close();$('message').textContent='';render();
+ if(!over.open||scorePersistenceBlocked||JSON.stringify(state)!==snapshot)return;
+ const next={...state,board:Array(64).fill(null),gems:Array(64).fill(null),revivesUsed:state.revivesUsed+1};
+ try{
+  if(localStorage.getItem(KEY)!==snapshot)throw new Error('Saved game changed');
+  const serialized=JSON.stringify(next);
+  localStorage.setItem(KEY,serialized);
+  lastSavedState=serialized;
+ }catch(_){
+  toast('復活を保存できませんでした。ゲームはそのままです');return;
+ }
+ state=next;prev=null;selected=-1;
+ over.close();$('message').textContent='';render();
 }
 $('revive').addEventListener('click',requestRevive);
 $('restart').addEventListener('click',()=>{if(!rewardedAds.busy&&!drag&&!animationLocked&&!scorePersistenceBlocked)$('resetConfirm').showModal()});$('resetNo').addEventListener('click',()=>$('resetConfirm').close());$('resetYes').addEventListener('click',requestBoardReset);$('again').addEventListener('click',()=>{if(!rewardedAds.busy)reset()});render();if(scorePersistenceBlocked)document.querySelector('.footer').textContent='保存データを保持しています（要復元確認）';if(!scorePersistenceBlocked&&!canPlay())finishGame();if(document.hidden)syncVisibility()
