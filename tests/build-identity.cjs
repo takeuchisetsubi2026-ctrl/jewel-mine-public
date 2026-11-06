@@ -1,7 +1,7 @@
 const fs=require('node:fs'),cp=require('node:child_process'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {generate,render}=require('../scripts/build-identity.cjs');
 const config=require('../config/test-release.json'),m=generate({requireClean:false}),source=fs.readFileSync('index.html','utf8'),base=cp.execFileSync('git',['show','d513c89:index.html'],{encoding:'utf8',maxBuffer:4e6});
-// Preserve the PR4 game logic and styles except the explicit viewport adapter.
+// Compare PR4 gameplay after removing the viewport and rewarded-ad additions.
 const gameSource=source
  .replace(/<style id="game-viewport-lock">[\s\S]*?<\/style>\n/,'')
  .replace(/<script>\n\/\/ Layout-only fitting:[\s\S]*?<\/script>/,'')
@@ -10,6 +10,10 @@ const gameSource=source
  .replace('drag||rewardedAds.busy||animationLocked','drag||animationLocked')
  .replace('suppressTap||rewardedAds.busy||scorePersistenceBlocked','suppressTap||scorePersistenceBlocked')
  .replace('window.JewelMineAds?.newGame();','')
+ .replace('const MAX_REVIVES=2;\n','')
+ .replace('revivesUsed:0,','')
+ .replace(/\/\/ Older saves have no reliable revive history[^\n]*\nif\(!Number\.isInteger\(state\.revivesUsed\)[^\n]*\n/,'')
+ .replace(/ const over=\$\('over'\),revive=\$\('revive'\);\n const remaining=MAX_REVIVES-state\.revivesUsed;\n revive\.disabled=[^\n]*\n revive\.textContent=[^\n]*\n/," const over=$('over');\n")
  .replace(";void rewardedAds.request('game-over')",'');
 assert.deepEqual([...gameSource.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]),[...base.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]));
 assert.equal(gameSource.split('</head>')[0],base.split('</head>')[0]);
