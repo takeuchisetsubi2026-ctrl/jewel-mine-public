@@ -2,7 +2,19 @@ const fs=require('node:fs'),cp=require('node:child_process'),assert=require('nod
 const {generate,render}=require('../scripts/build-identity.cjs');
 const config=require('../config/test-release.json'),m=generate({requireClean:false}),source=fs.readFileSync('index.html','utf8'),base=cp.execFileSync('git',['show','d513c89:index.html'],{encoding:'utf8',maxBuffer:4e6});
 // Compare PR4 gameplay after removing the viewport and rewarded-ad additions.
-const gameSource=source
+const withoutFeedback = html => html
+ .replace(/<style id="game-feedback-style">[\s\S]*?<\/style>\n/,'')
+ .replace(/\/\/ Haptics only work[^\n]*\nfunction buzz[^\n]*\nlet clearHintActive[^\n]*\nfunction setClearHint[^\n]*\n/,'')
+ .replace("const feedback=window.JewelMineFeedback;\nfunction buzz(kind){feedback.cue(kind)}\n",'')
+ .replace(/setClearHint\((?:false|glowing.size>0)\);/g,'')
+ .replace(/^[ ]cosmeticTimeout\(\(\)=>buzz\('(?:fever|score)'\)[^\n]*\n/gm,'')
+ .replace("cosmeticTimeout(()=>buzz('clear'),38,'clear-feedback');","buzz('clear');")
+ .replace('feedback.setFever(state.feverTurns>0);','')
+ .replace('function dragPosition(e,moveFeedback=true){','function dragPosition(e){')
+ .replace(/ const cell=r>=0&&c>=0&&r<N&&c<N\?r\*N\+c:null;\n if\(moveFeedback[^\n]*\n d.feedbackCell=cell;\n/,'')
+ .replace('dragPosition(e,false);','dragPosition(e);')
+ .replace("feedback.afterOpening(()=>{if(!scorePersistenceBlocked&&!canPlay())finishGame()});feedback.startOpening();","if(!scorePersistenceBlocked&&!canPlay())finishGame();");
+const gameSource=withoutFeedback(source)
  .replace(/<style id="game-viewport-lock">[\s\S]*?<\/style>\n/,'')
  .replace(/<script>\n\/\/ Layout-only fitting:[\s\S]*?<\/script>/,'')
   .replace("window.addEventListener('gameviewportresize',refreshDragOrigin);",'')
@@ -15,7 +27,7 @@ const gameSource=source
  .replace(/\/\/ Older saves have no reliable revive history[^\n]*\nif\(!Number\.isInteger\(state\.revivesUsed\)[^\n]*\n/,'')
  .replace(/ const over=\$\('over'\),revive=\$\('revive'\);\n const remaining=MAX_REVIVES-state\.revivesUsed;\n revive\.disabled=[^\n]*\n revive\.textContent=[^\n]*\n/," const over=$('over');\n")
  .replace(";void rewardedAds.request('game-over')",'');
-assert.deepEqual([...gameSource.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]),[...base.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]));
+assert.deepEqual([...gameSource.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]),[...withoutFeedback(base).matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]));
 assert.equal(gameSource.split('</head>')[0],base.split('</head>')[0]);
 assert.equal(m.applicationId,'com.wilduncle.jewelmine.codextest');
 assert.equal(m.versionName,config.versionName);assert.equal(m.appName,String(config.testNumber).padStart(2,'0')+' ジュエルマイン');assert.ok(m.versionCode>26);
