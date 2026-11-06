@@ -1,0 +1,165 @@
+name: Jewelmine2 sign AAB 10000101
+
+on:
+  workflow_dispatch:
+    inputs:
+      sign:
+        description: Sign with the registered upload key (false only verifies input)
+        type: boolean
+        default: false
+  push:
+    branches: [ops/jewelmine2-iphone-sign-10000101]
+    paths:
+      - .github/workflows/jewelmine2-sign.yml
+      - .github/jewelmine2-sign-request.txt
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: jewelmine2-sign-10000101
+  cancel-in-progress: false
+
+env:
+  INPUT_SHA256: f6809cb9257d7b2b7a7b35fc5ce97c5b62a73021c805bcf742fc9656df10de39
+  CERT_SHA256: 93E91932BA20F8C37B33E73A3FD38EF2C969D4385854C904E29A3A078F131109
+  APP_ID: com.takeuchisetsubi.jewelmine2
+  VERSION_CODE: '10000101'
+
+jobs:
+  preflight:
+    if: github.ref == 'refs/heads/ops/jewelmine2-iphone-sign-10000101'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    outputs:
+      sign: ${{ steps.intent.outputs.sign }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Read manual request
+        id: intent
+        env:
+          MANUAL_SIGN: ${{ inputs.sign }}
+        run: |
+          sign=false
+          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+            [[ "$MANUAL_SIGN" != true ]] || sign=true
+          elif [[ -f .github/jewelmine2-sign-request.txt ]]; then
+            request=$(cat .github/jewelmine2-sign-request.txt)
+            if [[ "$request" =~ ^sign[[:space:]][0-9A-Za-z_-]+$ ]]; then
+              sign=true
+            elif [[ ! "$request" =~ ^verify[[:space:]][0-9A-Za-z_-]+$ ]]; then
+              echo "::error::Invalid signing request."
+              exit 1
+            fi
+          fi
+          printf 'sign=%s\n' "$sign" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@v4
+        with:
+          name: jewelmine2-pixel7-fixes-unsigned-not-for-upload
+          github-token: ${{ github.token }}
+          run-id: 42214307760
+          path: input
+      - name: Verify exact unsigned source
+        run: |
+          printf '%s  %s\n' "$INPUT_SHA256" input/app-release.aab | sha256sum -c -
+          python3 scripts/verify-aab-package.py input/app-release.aab "$APP_ID"
+          python3 - <<'PY'
+          import os, runpy, zipfile
+          parser = runpy.run_path('scripts/verify-aab-package.py')
+          fields, string = parser['fields'], parser['string_field']
+          with zipfile.ZipFile('input/app-release.aab') as z:
+              assert z.testzip() is None
+              assert not any(n.upper().startswith('META-INF/') and n.upper().endswith(('.RSA','.DSA','.EC','.SF')) for n in z.namelist())
+              data = z.read('base/manifest/AndroidManifest.xml')
+          root, = (v for n,w,v in fields(data) if (n,w) == (1,2))
+          attrs = {string(v,2): string(v,3) for n,w,v in fields(root) if (n,w) == (4,2)}
+          assert attrs['versionCode'] == os.environ['VERSION_CODE'], attrs
+          print('Unsigned input CRC, package and versionCode verified:', attrs['versionCode'])
+          PY
+
+  sign:
+    needs: preflight
+    if: github.ref == 'refs/heads/ops/jewelmine2-iphone-sign-10000101' && needs.preflight.outputs.sign == 'true'
+    environment: jewelmine2-signing
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: jewelmine2-pixel7-fixes-unsigned-not-for-upload
+          github-token: ${{ github.token }}
+          run-id: 42214307760
+          path: input
+      - name: Sign the approved AAB
+        env:
+          KEYSTORE_B64: ${{ secrets.JEWELMINE2_KEYSTORE_B64 }}
+          STORE_PASSWORD: ${{ secrets.JEWELMINE2_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.JEWELMINE2_KEY_PASSWORD }}
+        run: |
+          printf '%s  %s\n' "$INPUT_SHA256" input/app-release.aab | sha256sum -c -
+          if [[ -z "$KEYSTORE_B64" || -z "$STORE_PASSWORD" ]]; then
+            echo "::error::Signing environment secrets are missing."
+            exit 1
+          fi
+          export KEY_PASSWORD="${KEY_PASSWORD:-$STORE_PASSWORD}"
+          umask 077
+          scratch=$(mktemp -d "$RUNNER_TEMP/jewelmine2-sign.XXXXXXXX")
+          trap 'rm -rf -- "$scratch"' EXIT
+          printf '%s' "$KEYSTORE_B64" | base64 --decode > "$scratch/upload.p12"
+          unset KEYSTORE_B64
+          export LC_ALL=C
+          keytool -list -v -storetype PKCS12 -keystore "$scratch/upload.p12" \
+            -storepass:env STORE_PASSWORD -alias jewelmine2-upload > "$scratch/cert"
+          grep -q '^Entry type: PrivateKeyEntry$' "$scratch/cert"
+          fingerprint=$(awk '/^[[:space:]]*SHA256:/{gsub(/:/,"",$2); print toupper($2); exit}' "$scratch/cert")
+          if [[ "$fingerprint" != "$CERT_SHA256" ]]; then
+            echo "::error::Upload certificate fingerprint mismatch."
+            exit 1
+          fi
+          mkdir -p output
+          jarsigner -storetype PKCS12 -keystore "$scratch/upload.p12" \
+            -storepass:env STORE_PASSWORD -keypass:env KEY_PASSWORD \
+            -signedjar output/jewelmine2-signed-10000101.aab input/app-release.aab jewelmine2-upload
+      - name: Verify signed bundle and record evidence
+        run: |
+          export LC_ALL=C
+          signed=output/jewelmine2-signed-10000101.aab
+          jarsigner -verify "$signed" | tee "$RUNNER_TEMP/jewelmine2-jarsigner.txt"
+          grep -Fxq 'jar verified.' "$RUNNER_TEMP/jewelmine2-jarsigner.txt"
+          if grep -qi 'unsigned entries' "$RUNNER_TEMP/jewelmine2-jarsigner.txt"; then
+            echo 'AAB contains unsigned entries.'
+            exit 1
+          fi
+          keytool -printcert -jarfile "$signed" > "$RUNNER_TEMP/jewelmine2-cert.txt"
+          fingerprint=$(awk '/^[[:space:]]*SHA256:/{gsub(/:/,"",$2); print toupper($2); exit}' "$RUNNER_TEMP/jewelmine2-cert.txt")
+          test "$fingerprint" = "$CERT_SHA256"
+          python3 scripts/verify-aab-package.py "$signed" "$APP_ID"
+          python3 - <<'PY'
+          import re, zipfile
+          sig = re.compile(r'^META-INF/(?:MANIFEST\.MF|[^/]+\.(?:SF|RSA|EC|DSA))$', re.I)
+          with zipfile.ZipFile('input/app-release.aab') as before, zipfile.ZipFile('output/jewelmine2-signed-10000101.aab') as after:
+              assert after.testzip() is None
+              payload = set(before.namelist())
+              assert len(after.namelist()) == len(set(after.namelist()))
+              assert {n for n in after.namelist() if not sig.fullmatch(n)} == payload
+              assert all(before.read(n) == after.read(n) for n in payload)
+          print('All bundle payloads, including manifest versionCode, are unchanged.')
+          PY
+          {
+            printf 'applicationId=%s\nversionCode=%s\ncertificateSha256=%s\nunsignedSha256=%s\n' "$APP_ID" "$VERSION_CODE" "$fingerprint" "$INPUT_SHA256"
+            sha256sum "$signed"
+          } | tee output/verification.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jewelmine2-signed-10000101
+          path: |
+            output/jewelmine2-signed-10000101.aab
+            output/verification.txt
+          if-no-files-found: error
+          retention-days: 7
