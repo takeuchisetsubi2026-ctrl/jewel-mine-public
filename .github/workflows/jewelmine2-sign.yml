@@ -10,7 +10,6 @@ on:
   push:
     branches: [ops/jewelmine2-iphone-sign-10000101]
     paths:
-      - .github/workflows/jewelmine2-sign.yml
       - .github/jewelmine2-sign-request.txt
 
 permissions:
