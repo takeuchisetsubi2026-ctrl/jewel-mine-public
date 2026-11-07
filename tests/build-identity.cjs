@@ -3,6 +3,9 @@ const {generate,render}=require('../scripts/build-identity.cjs');
 const config=require('../config/test-release.json'),m=generate({requireClean:false}),source=fs.readFileSync('index.html','utf8'),base=cp.execFileSync('git',['show','d513c89:index.html'],{encoding:'utf8',maxBuffer:4e6});
 // Compare PR4 gameplay after removing the viewport and rewarded-ad additions.
 const withoutFeedback = html => html
+ .replace(/\n if\(comboChain>1\) cosmeticTimeout[^\n]*\n/,'\n')
+ .replace(/\n cosmeticTimeout\(\(\)=>feedback.cue\('gem'\)[^\n]*\n/,'\n')
+ .replace(".finally(()=>feedback.cue('over'))",'')
  .replace("$('footerStatus').textContent","document.querySelector('.footer').textContent")
  .replace(/<style id="game-feedback-style">[\s\S]*?<\/style>\n/,'')
  .replace(/\/\/ Haptics only work[^\n]*\nfunction buzz[^\n]*\nlet clearHintActive[^\n]*\nfunction setClearHint[^\n]*\n/,'')

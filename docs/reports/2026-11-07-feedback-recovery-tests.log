@@ -1,0 +1,82 @@
+
+> jewel-mine-android-test@1.0.0 test
+> node tests/piece-generation.cjs && node tests/regression.cjs && node tests/piece-browser.cjs && node tests/simultaneous-reward.cjs && node tests/reward-scoring.cjs && node tests/reward-integration.cjs && node tests/score-versioning.cjs && node tests/score-versioning-browser.cjs && node tests/build-identity.cjs && node tests/viewport-lock.cjs && node tests/rewarded-board-reset.cjs && node tests/admob-integration.cjs && node tests/game-feedback.cjs
+
+Piece functional + 200000 base draws: PASS
+{
+  "baseline": [
+    {
+      "cells": 8,
+      "nodes": 82,
+      "medianMs": 0.8999999999068677,
+      "p95Ms": 7.7999999998137355
+    },
+    {
+      "cells": 16,
+      "nodes": 163,
+      "medianMs": 1.7000000001862645,
+      "p95Ms": 3
+    },
+    {
+      "cells": 32,
+      "nodes": 323,
+      "medianMs": 2.900000000372529,
+      "p95Ms": 4.7999999998137355
+    },
+    {
+      "cells": 64,
+      "nodes": 323,
+      "medianMs": 3,
+      "p95Ms": 7.5
+    }
+  ],
+  "current": [
+    {
+      "cells": 8,
+      "nodes": 9,
+      "medianMs": 0.09999999962747097,
+      "p95Ms": 0.20000000018626451
+    },
+    {
+      "cells": 16,
+      "nodes": 9,
+      "medianMs": 0,
+      "p95Ms": 0.3000000002793968
+    },
+    {
+      "cells": 32,
+      "nodes": 9,
+      "medianMs": 0.09999999962747097,
+      "p95Ms": 0.40000000037252903
+    },
+    {
+      "cells": 64,
+      "nodes": 9,
+      "medianMs": 0,
+      "p95Ms": 0.39999999990686774
+    }
+  ],
+  "checks": {
+    "reused": true,
+    "visibleAfter1100": true,
+    "hiddenAfter1320": true,
+    "feverFits": true,
+    "savedScore": 12345,
+    "score": 12345,
+    "font": "72px"
+  }
+}
+Session snapshot, threshold, refill, restore and legacy saves: PASS
+Reusable reward UI, 2..16 lines, nonblocking drag, hidden/reduced motion lifecycle: PASS
+Line reward arithmetic (180 combinations): PASS
+Actual placement, display/score equality, cross lines, FEVER, cached drag and lifecycle: PASS
+Score provenance, independent records, exact event progress, migration and sticky boundary: PASS
+Selected generator equals compared prototype: PASS
+Legacy-resume piece evaluation matches PR3: PASS
+Legacy migration, immutable original, mixed/pure records, resume, sticky mode, storage failure: PASS
+Build identity, label, versionCode and PR4 logic/CSS preservation outside viewport adapter: PASS
+412×800 CSS px, simulated WebView: {"web":{"board":260.2794189453125,"score":36.183635253906246,"tile":15.968070983886719,"footerGap":126.23504638671875},"native":{"board":325.5814208984375,"score":42.15814453125,"tile":23.255813598632812,"footerGap":7.5435791015625}}
+Viewport lock: [{"width":360,"height":640,"edgeGestures":4,"successfulDrags":3,"layoutStable":true,"saveUnchangedByEdgeGestures":true},{"width":393,"height":851,"edgeGestures":4,"successfulDrags":3,"layoutStable":true,"saveUnchangedByEdgeGestures":true},{"width":412,"height":915,"edgeGestures":4,"successfulDrags":3,"layoutStable":true,"saveUnchangedByEdgeGestures":true},{"width":800,"height":360,"edgeGestures":4,"successfulDrags":3,"layoutStable":true,"saveUnchangedByEdgeGestures":true}]
+Rewarded board reset: confirmation/cancel/missing provider/failure/stale reward/state preservation/repeated reward/shared revive lock/reload PASS
+AdMob bridge: cancellation, restart during ad, two revives, third blocked after reload, fresh game, post-ad drag, test IDs PASS
+Opening 2000ms/skip and ad gate, saved state, ad/FEVER BGM return, settings, drag haptics, real combo/jewel and game-over sounds: PASS

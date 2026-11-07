@@ -1,0 +1,100 @@
+name: Jewelmine2 feedback unsigned AAB
+on:
+  push:
+    branches: [feat/jewelmine2-feedback-resume-20261107]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-unsigned-aab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Check runner Android SDK (no automatic license acceptance)
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          test -d "$ANDROID_HOME"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --version
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --list_installed
+      - name: Install required Android SDK packages
+        run: "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \"platforms;android-36\" \"build-tools;36.0.0\""
+      - run: npm ci
+      - run: npm run build:web
+      - name: Prepare isolated Jewelmine2 generated identity
+        run: |
+          test "$GITHUB_REF_NAME" = 'feat/jewelmine2-feedback-resume-20261107'
+          node scripts/prepare-jewelmine2-ci.cjs
+          python3 - <<'PY'
+          import json, os, pathlib, re
+          # Verification-only range distinct from the existing 10,000,101 bundle.
+          # Play Console maximum is unknown; this artifact must never be uploaded.
+          run, attempt = (int(os.environ[k]) for k in ('GITHUB_RUN_NUMBER', 'GITHUB_RUN_ATTEMPT'))
+          assert run > 0 and 0 < attempt < 100
+          code = 20_000_000 + run * 100 + attempt
+          assert code <= 2_100_000_000
+          for filename in ('build/identity.json', 'www/build-info.json'):
+              path = pathlib.Path(filename)
+              data = json.loads(path.read_text())
+              data['versionCode'] = code
+              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
+          path = pathlib.Path('www/index.html')
+          def update(match):
+              data = json.loads(match[2])
+              data['versionCode'] = code
+              return match[1] + json.dumps(data, ensure_ascii=False).replace('<', r'\u003c') + match[3]
+          html, count = re.subn(r'(<script type="application/json" id="buildMetadata">)(.*?)(</script>)', update, path.read_text(), flags=re.S)
+          assert count == 1
+          path.write_text(html)
+          print(f'Jewelmine2 versionCode: {code}')
+          PY
+      - run: npx cap sync android
+      - name: Build unsigned new-package AAB
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon -PplayApplicationId=com.takeuchisetsubi.jewelmine2 bundleRelease
+      - name: Verify new package and unsigned status
+        run: |
+          python3 scripts/verify-aab-package.py android/app/build/outputs/bundle/release/app-release.aab com.takeuchisetsubi.jewelmine2
+          python3 - <<'PY'
+          import zipfile,pathlib,json,re,hashlib,os
+          p=pathlib.Path('android/app/build/outputs/bundle/release/app-release.aab')
+          with zipfile.ZipFile(p) as z:
+              assert 'base/manifest/AndroidManifest.xml' in z.namelist()
+              signed=[n for n in z.namelist() if n.upper().startswith('META-INF/') and n.upper().endswith(('.RSA','.DSA','.EC'))]
+              assert not signed, f'Unexpected signed AAB: {signed}'
+              cap=json.loads(z.read('base/assets/capacitor.config.json'))
+              info=json.loads(z.read('base/assets/public/build-info.json'))
+              html=z.read('base/assets/public/index.html').decode('utf-8')
+              assert cap['appId']=='com.takeuchisetsubi.jewelmine2', cap
+              assert cap['appName']=='ジュエルマイン2', cap
+              assert info['applicationId']=='com.takeuchisetsubi.jewelmine2', info
+              assert info['appName']=='ジュエルマイン2', info
+              match=re.search(r'<script type="application/json" id="buildMetadata">(.*?)</script>',html,re.S)
+              assert match and json.loads(match.group(1))['applicationId']=='com.takeuchisetsubi.jewelmine2'
+              assert 'Jewelmine2｜v' in html
+              assert info == json.loads(match.group(1))
+              assert info['gitSha'] == os.environ['GITHUB_SHA']
+              assert info['versionCode'] >= 20_000_101 and info['certificateSha256'] is None
+              assert info['sourceSha256'] == hashlib.sha256(pathlib.Path('index.html').read_bytes()).hexdigest()
+              assert z.read('base/assets/public/assets/opening/jewel-mine.png') == pathlib.Path('assets/opening/jewel-mine.png').read_bytes()
+              assert z.testzip() is None
+              assert z.read('base/assets/public/index.html') == pathlib.Path('www/index.html').read_bytes()
+          print('AAB SHA-256:', hashlib.sha256(p.read_bytes()).hexdigest())
+          print('Unsigned jewelmine2 AAB verified; NOT FOR PLAY UPLOAD')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jewelmine2-feedback-unsigned-not-for-upload
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 7

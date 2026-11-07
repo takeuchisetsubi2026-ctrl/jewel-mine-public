@@ -14,9 +14,14 @@ public final class JewelMineHapticsPlugin extends Plugin {
         final int effect;
         switch (kind) {
             case "pick":
-            case "step":
             case "score":
                 effect = HapticFeedbackConstants.CLOCK_TICK;
+                break;
+            case "step":
+                // Honor system settings; do not request IGNORE_* flags.
+                effect = Build.VERSION.SDK_INT >= 34
+                        ? HapticFeedbackConstants.SEGMENT_FREQUENT_TICK
+                        : HapticFeedbackConstants.CLOCK_TICK;
                 break;
             case "place":
             case "fever":

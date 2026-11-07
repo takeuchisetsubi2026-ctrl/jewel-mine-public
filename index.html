@@ -1102,13 +1102,16 @@ html.native-banner #gameViewport>.app{display:flex;flex-direction:column;justify
 dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:pan-y}
 </style>
 <style id="game-feedback-style">
-#mineOpening{position:fixed;inset:0;z-index:20000;width:100%;height:100%;border:0;display:grid;place-content:center;justify-items:center;gap:18px;color:#fff0bc;background:radial-gradient(ellipse at 50% 42%,#472850,#1e1328 44%,#100d16 75%);touch-action:manipulation}
+#mineOpening{position:fixed;inset:0;z-index:20000;width:100%;height:100%;padding:0;border:0;display:grid;place-content:center;justify-items:center;color:#fff0bc;background:#100d16;touch-action:manipulation;overflow:hidden}
 #mineOpening[hidden]{display:none}
-#mineOpening strong{font-size:clamp(34px,10vw,76px);letter-spacing:.1em;text-shadow:0 0 24px #ffb75a99}
-#mineOpening small{color:#ffe6ba;font-size:15px}
-.mine-opening-gem{width:clamp(76px,22vw,136px);aspect-ratio:1;background:conic-gradient(from 20deg,#a9fff4,#3cd5db,#3273bf,#ad7ee5,#5bfaf7,#a9fff4);clip-path:polygon(50% 0,88% 22%,100% 48%,50% 100%,0 48%,12% 22%);animation:mineGlow 1s ease-in-out infinite alternate}
-@keyframes mineGlow{from{transform:scale(.86);filter:brightness(.85)}to{transform:scale(1.08);filter:brightness(1.6)}}
-@media(prefers-reduced-motion:reduce){.mine-opening-gem{animation:none}}
+.mine-opening-art{position:relative;display:block;width:min(100vw,75dvh);aspect-ratio:3/4;pointer-events:none}
+.mine-opening-art img{display:block;width:100%;height:100%;object-fit:contain}
+#mineOpening small{position:absolute;bottom:max(12px,env(safe-area-inset-bottom));left:0;right:0;color:#fff3d7;font-size:14px;text-shadow:0 1px 4px #000;background:#100d1699;padding:8px}
+.mine-opening-sparkle{position:absolute;left:50%;top:11%;width:10%;aspect-ratio:1;background:radial-gradient(ellipse,#fff 0 5%,#fff9c2aa 12%,transparent 65%);clip-path:polygon(50% 0,58% 40%,100% 50%,58% 60%,50% 100%,42% 60%,0 50%,42% 40%);animation:mineGlow .8s ease-in-out infinite alternate}
+.mine-opening-sparkle:nth-of-type(2){left:34%;top:17%;animation-delay:-.4s}
+.mine-opening-sparkle:nth-of-type(3){left:77%;top:47%;animation-delay:-.2s}
+@keyframes mineGlow{from{opacity:.25;transform:scale(.65)}to{opacity:1;transform:scale(1.25)}}
+@media(prefers-reduced-motion:reduce){.mine-opening-sparkle{animation:none}}
 #feedbackSettings{color:#fff0d3;background:#4c2d19;border:1px solid #c39155;border-radius:8px;min-height:32px;padding:4px 10px;margin-left:8px}
 #feedbackDialog{color:#fff0d3;background:#322016;border:1px solid #c39155;border-radius:16px;min-width:min(240px,75vw);padding:20px}
 #feedbackDialog label{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:44px}
@@ -1125,7 +1128,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
   for(const k of Object.keys(settings))if(typeof saved?.[k]==='boolean')settings[k]=saved[k];
  }catch(_){}
  const cues={
-  pick:[410],step:[270],place:[330,440],clear:[440,554,659],score:[620],fever:[523,659,784,1047]
+  pick:[410],place:[330,440],clear:[440,554,659],combo:[659,784,988],gem:[880,1175,1568],score:[620],fever:[523,659,784,1047],over:[440,370,294,220]
  };
  const musicNotes=[45,52,57,60,43,50,55,59,41,48,53,57,43,50,55,59];
  const feverNotes=[57,60,64,69,67,64,62,64,55,59,62,67,65,62,60,62];
@@ -1177,7 +1180,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
    if(now-lastStep<65)return;
    lastStep=now;
   }
-  if(settings.haptics){
+  if(settings.haptics&&['pick','step','place','clear','score','fever'].includes(kind)){
    try{
     const haptics=window.Capacitor?.Plugins?.JewelMineHaptics;
     if(haptics)Promise.resolve(haptics.play({kind})).catch(()=>{});
@@ -1247,7 +1250,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
  }};
  window.JewelMineAds={newGame};
 })();
-</script><button id="mineOpening" type="button" hidden aria-label="オープニングをスキップ"><span class="mine-opening-gem" aria-hidden="true"></span><strong>JEWEL MINE</strong><small>タップでスキップ</small></button><div id="gameViewport"><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer"><span id="footerStatus">テスト広告 ・自動保存</span><button id="feedbackSettings" type="button">音・振動</button></div><div class="footer" id="buildIdentity">TEST 09｜v4.0.9｜開発ソース（未ビルド）</div><div class="ad-space" aria-hidden="true"></div></main></div><dialog id="feedbackDialog"><h2>音・振動</h2><label>BGM <input id="feedback-music" type="checkbox"></label><label>効果音 <input id="feedback-effects" type="checkbox"></label><label>振動 <input id="feedback-haptics" type="checkbox"></label><form method="dialog"><button>閉じる</button></form></dialog><div id="simultaneousReward" class="simultaneous-reward" hidden aria-live="polite" aria-atomic="true"><i class="reward-glow" aria-hidden="true"></i><strong class="reward-multiplier"></strong><span class="reward-points"></span></div><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>広告を見て盤面をリセット？</h2><p>広告の報酬獲得後に盤面と宝石を消します。<br>スコア・FEVER・手持ちブロックは保持します。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">広告を見て盤面リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="revive">広告を見て復活</button><button id="again">もう一回！</button></dialog><script>
+</script><button id="mineOpening" type="button" hidden aria-label="オープニングをスキップ"><span class="mine-opening-art" aria-hidden="true"><img src="assets/opening/jewel-mine.png" width="1086" height="1448" alt="" fetchpriority="high"><i class="mine-opening-sparkle"></i><i class="mine-opening-sparkle"></i><i class="mine-opening-sparkle"></i></span><small>タップでスキップ</small></button><div id="gameViewport"><main class="app"><div class="cave-decor cave-lantern" aria-hidden="true"></div><div class="cave-decor cave-crystal" aria-hidden="true"></div><div class="cave-decor cave-pickaxe" aria-hidden="true"></div><div class="hud"><div class="bestcard"><span>👑 BEST</span><strong id="best">0</strong></div><section class="scorehero"><div class="scorelabel">SCORE</div><div class="scorevalue" id="score">0</div></section><button class="topreset" id="restart" aria-label="リセット">⟳</button></div><div class="rulebar"><span class="text" id="ruleText">光る鉱石を採掘しよう・全消し +1,000</span><span id="rescued" hidden>0</span></div><section class="boardshell"><div id="feverMeter" aria-hidden="true"><div id="meterSegs"></div></div><section class="boardwrap"><div aria-label="8×8 パズル盤面" class="board" id="board"></div></section></section><div aria-live="polite" class="banner" id="message"></div><div class="tray" id="tray"></div><div class="footer"><span id="footerStatus">テスト広告 ・自動保存</span><button id="feedbackSettings" type="button">音・振動</button></div><div class="footer" id="buildIdentity">TEST 09｜v4.0.9｜開発ソース（未ビルド）</div><div class="ad-space" aria-hidden="true"></div></main></div><dialog id="feedbackDialog"><h2>音・振動</h2><label>BGM <input id="feedback-music" type="checkbox"></label><label>効果音 <input id="feedback-effects" type="checkbox"></label><label>振動 <input id="feedback-haptics" type="checkbox"></label><form method="dialog"><button>閉じる</button></form></dialog><div id="simultaneousReward" class="simultaneous-reward" hidden aria-live="polite" aria-atomic="true"><i class="reward-glow" aria-hidden="true"></i><strong class="reward-multiplier"></strong><span class="reward-points"></span></div><div class="burst-layer" id="burstLayer" aria-hidden="true"></div><div class="toast" id="toast"></div><dialog id="resetConfirm" class="reset-dialog"><div class="reset-icon">⛏️</div><h2>広告を見て盤面をリセット？</h2><p>広告の報酬獲得後に盤面と宝石を消します。<br>スコア・FEVER・手持ちブロックは保持します。</p><div class="confirm-actions"><button id="resetNo" class="cancel-reset">キャンセル</button><button id="resetYes" class="agree-reset">広告を見て盤面リセット</button></div></dialog><dialog id="over"><div id="recordBurst" aria-hidden="true"></div><div class="record-crown" aria-hidden="true">👑</div><div class="record-title">NEW HIGH SCORE!</div><div class="record-congrats">🎉 おめでとう！新記録達成！ 🎉</div><div class="over-normal-icon" style="font-size:52px">💎</div><h2 class="over-normal-title">採掘終了！</h2><p class="record-score-label">スコア <strong id="final">0</strong></p><div class="bonus-result">通常スコア <strong id="basefinal">0</strong><br/>FEVER条件 <strong id="bonusfinal">宝石5個</strong><div id="foundfinal">今回の宝石なし</div></div><p style="color:#7f6a55">もう一度チャレンジしてみよう</p><button id="revive">広告を見て復活</button><button id="again">もう一回！</button></dialog><script>
 (()=>{'use strict';const N=8,KEY='jewel-mine-v36-score-rules';const SHAPES=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,0],[1,0],[2,0],[3,0]],[[0,0],[1,0],[2,0],[0,1]],[[0,0],[1,0],[2,0],[1,1],[1,2]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]],[[1,0],[1,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[1,1],[2,1]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[1,0],[1,1],[2,1]],[[1,0],[2,0],[0,1],[1,1]],[[0,0],[0,1],[0,2],[0,3]],[[0,0],[1,0],[2,0],[3,0],[4,0]],[[0,0],[0,1],[0,2],[0,3],[0,4]],[[0,0],[1,0],[2,0],[0,1],[2,1]],[[0,0],[1,0],[2,0],[0,1],[1,1]],[[0,0],[1,0],[1,1],[2,1],[2,2]],[[2,0],[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]],[[1,0],[0,1],[1,1],[0,2]],[[0,0],[1,0],[2,0],[3,0],[1,1]],[[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]];const COLORS=['#ff6594','#34baf2','#ff9a39','#f5d14f','#62ce74','#aa85f4'];const EDGES=['#b92b60','#147bb1','#b85913','#b09216','#258746','#704ac1'];let state,selected=-1,prev=null,drag=null,suppressTap=false;let boardEl=document.getElementById('board'),tray=document.getElementById('tray');const $=id=>document.getElementById(id);
 const feedback=window.JewelMineFeedback;
 function buzz(kind){feedback.cue(kind)}
@@ -1718,7 +1721,7 @@ function finishGame(){
    burst.append(bit);
   }
  }
-$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal();void rewardedAds.request('game-over')}
+$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal();void rewardedAds.request('game-over').finally(()=>feedback.cue('over'))}
 let animationLocked=false;let revealTimers=[];
 // Points are supplied by the scoring transaction; presentation never recalculates rewards.
 let simultaneousAnimation=null,simultaneousGlow=null;
@@ -1771,6 +1774,7 @@ function syncVisibility(){
 }
 document.addEventListener('visibilitychange',syncVisibility);
 function showClearToast(lines,comboChain,lineEventPoints){
+ if(comboChain>1) cosmeticTimeout(()=>feedback.cue('combo'),135,'combo-feedback');
  const feverShowing=$('toast').classList.contains('fever-notice')&&$('toast').classList.contains('show');
  if(lines>=2){if(!feverShowing){clearTimeout(toast.timer);$('toast').classList.remove('show')}showSimultaneousReward(lines,lineEventPoints);return}
  stopSimultaneousReward();if(feverShowing)return;centerComboOnBoard();
@@ -1780,6 +1784,7 @@ function showClearToast(lines,comboChain,lineEventPoints){
 // Non-blocking, brief jewel reward. Players may immediately move the next piece.
 function animateRescue(found){
  if(document.hidden)return;
+ cosmeticTimeout(()=>feedback.cue('gem'),230,'gem-feedback');
  const type=found.type;
  document.querySelector('.gem-bonus-pop')?.remove();
  const pop=document.createElement('div');pop.className='gem-bonus-pop';
