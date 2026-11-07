@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "applicationId": "com.takeuchisetsubi.jewelmine2",
+  "versionCode": 20000201,
+  "versionName": "4.0.9",
+  "gitSha": "4f739212c403b9d83d139da045162dabd9590b02",
+  "unsigned": true,
+  "imageMatches": true,
+  "crcValid": true,
+  "bytes": 9723842,
+  "sha256": "b0520771302dbd0510c88006c71edcd9bdcc22c3e40db1920efff5758120ed8d"
+}

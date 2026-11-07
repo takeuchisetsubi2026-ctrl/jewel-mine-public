@@ -20,7 +20,7 @@
 
 ## CI
 
-新規ブランチpush後に専用workflowを実行予定。結果とAAB検証は追記する。
+最終結果は以下を参照。
 
 ## 制約・未検証
 
@@ -33,4 +33,21 @@ main・既存ブランチ・既存PRの変更/マージ、署名鍵変更、Play
 - 初回AAB CI 42357584669: success、実物を取得してID/署名なし/画像一致/CRC/metadataを確認。versionCode 20000101、SHA256 a1472efdbb3a6f6c88409e48b16e2e26b9850043dbb27e87cc48071469bed3ff。
 - 併走debug CI 42357584650: admob-integrationで `setClearHint is not defined` を検出。復旧元に残っていた無効位置preview内の未定義関数呼出しを除去。game-feedbackでpreview(-1,-1)を直接検証し成功。
 - build-identityの既存ソース比較では、その除去1箇所のみを両側で正規化。ゲームルール/得点/保存/広告の変更はない。
-- 修正後の全13テストとCIは再検証中。初回AABを最終成果物と混同しない。
+- 修正後の全13テストとCIは成功。初回AABを最終成果物と混同しない。
+
+
+## 最終検証結果
+
+- 実装SHA: 4f739212c403b9d83d139da045162dabd9590b02。
+- 修正後のローカル全13スクリプト: 終了コード0。最終ログは 2026-11-07-feedback-recovery-tests.log。
+- 専用AAB CI: https://github.com/takeuchisetsubi2026-ctrl/jewel-mine-public/actions/runs/42357941701 （success）。
+- 既存debug CI: https://github.com/takeuchisetsubi2026-ctrl/jewel-mine-public/actions/runs/42357941661 （success、npm test全13本・APKビルドと検査成功）。これはTEST 09用でjewelmine2更新用ではない。
+- 最終AAB artifact ID: 13568222365、名前 jewelmine2-feedback-unsigned-not-for-upload、保存期間7日。
+- 実際に取得したAABのprotobuf manifest: com.takeuchisetsubi.jewelmine2 / versionCode 20000201 / versionName 4.0.9。
+- 実物の署名ブロック/SFなし、ZIP CRC正常、採用画像原本とバイト一致、Capacitor/HTML/build-infoのID一致、metadataの実装SHAとソースhash一致、dirty=falseを確認。
+- AABサイズ: 9,723,842 bytes。
+- AAB SHA256: b0520771302dbd0510c88006c71edcd9bdcc22c3e40db1920efff5758120ed8d。
+- 検証JSON: 2026-11-07-feedback-aab-verification.json。
+- ZIP変更11ファイル＋今回の報告/ログ/検証JSON3ファイル、合計14ファイル。ZIPとの差異はworkflowの番号レンジ、過去報告の履歴表示、および上記の限定不具合修正と回帰チェック。
+- Playの最大versionCodeと実機確認は未完了。署名/Playへのアップロード/配信/公開は未実施。
+- 最終報告コミットは文書と証拠のみ。AABのビルド対象は上記実装SHA。
