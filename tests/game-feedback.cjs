@@ -102,6 +102,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
    state.gems[0]=BONUS_TABLE[0].id;state.comboChain=1;state.comboRemain=2;
    state.pieces=[{s:0,color:0,used:false},{s:0,color:0,used:false},{s:0,color:0,used:false}];
    selected=0;render();`);
+  await run('preview(-1,-1)'); // Invalid placement must clear hints without calling a removed helper.
   const before=await count();
   await run('place(0,7)');
   await page.waitForTimeout(350);

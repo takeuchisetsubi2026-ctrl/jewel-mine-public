@@ -27,3 +27,10 @@
 Pixel 7実機の振動・実音量/音質・OS設定追従・実広告切替・更新時データ保持は未検証。テストの音/振動/広告はモック。
 Play Consoleの使用済みversionCode最大値は未確認。本成果は未署名の検証専用で、Playへアップロードしない。
 main・既存ブランチ・既存PRの変更/マージ、署名鍵変更、Playアップロード/配信/公開は実施しない。
+
+## 初回CIで見つかった復旧元の不具合と修正
+
+- 初回AAB CI 42357584669: success、実物を取得してID/署名なし/画像一致/CRC/metadataを確認。versionCode 20000101、SHA256 a1472efdbb3a6f6c88409e48b16e2e26b9850043dbb27e87cc48071469bed3ff。
+- 併走debug CI 42357584650: admob-integrationで `setClearHint is not defined` を検出。復旧元に残っていた無効位置preview内の未定義関数呼出しを除去。game-feedbackでpreview(-1,-1)を直接検証し成功。
+- build-identityの既存ソース比較では、その除去1箇所のみを両側で正規化。ゲームルール/得点/保存/広告の変更はない。
+- 修正後の全13テストとCIは再検証中。初回AABを最終成果物と混同しない。
