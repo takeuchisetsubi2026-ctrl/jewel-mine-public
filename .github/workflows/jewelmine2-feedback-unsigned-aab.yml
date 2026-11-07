@@ -28,6 +28,8 @@ jobs:
       - name: Install required Android SDK packages
         run: "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \"platforms;android-36\" \"build-tools;36.0.0\""
       - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
       - run: npm run build:web
       - name: Prepare isolated Jewelmine2 generated identity
         run: |
