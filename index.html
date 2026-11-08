@@ -1118,7 +1118,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
 #feedbackDialog h2{margin:0 0 8px}
 #feedbackDialog button{margin-top:12px;min-height:36px}
 </style>
-<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断04｜BGM小音量</div><script id="game-feedback">
+<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断05｜コンボ音一本化</div><script id="game-feedback">
 (()=>{
  const native=window.Capacitor?.Plugins?.JewelMineAds;
  const settingsKey='jewel-mine-feedback-v1';
@@ -1810,7 +1810,7 @@ function syncVisibility(){
 }
 document.addEventListener('visibilitychange',syncVisibility);
 function showClearToast(lines,comboChain,lineEventPoints){
- if(comboChain>1) cosmeticTimeout(()=>feedback.cue('combo'),135,'combo-feedback');
+ // Combo audio is triggered once by the line-clear transaction in place().
  const feverShowing=$('toast').classList.contains('fever-notice')&&$('toast').classList.contains('show');
  if(lines>=2){if(!feverShowing){clearTimeout(toast.timer);$('toast').classList.remove('show')}showSimultaneousReward(lines,lineEventPoints);return}
  stopSimultaneousReward();if(feverShowing)return;centerComboOnBoard();
@@ -1873,10 +1873,12 @@ function place(r,c){
  const found=[];
  let justTriggeredFever=false;
  if(lines){
-   cosmeticTimeout(()=>buzz('clear'),38,'clear-feedback');document.querySelector('.boardwrap').classList.add('haptic-clear');cosmeticTimeout(()=>document.querySelector('.boardwrap').classList.remove('haptic-clear'),190,'haptic');
+   document.querySelector('.boardwrap').classList.add('haptic-clear');cosmeticTimeout(()=>document.querySelector('.boardwrap').classList.remove('haptic-clear'),190,'haptic');
    if(state.comboRemain>0) state.comboChain += 1;
    else state.comboChain = 1;
    state.comboRemain = 3;
+   // SFX-02: a combo replaces the normal line-clear cue; never stack both.
+   cosmeticTimeout(()=>buzz(state.comboChain>1?'combo':'clear'),38,'clear-feedback');
    const clearCells=[...new Set(Array.from({length:64},(_,i)=>i).filter(i=>rows.includes(Math.floor(i/N))||cols.includes(i%N)))];
    burstClearedCells(clearCells);
    found.push(...collectGems(clearCells));
