@@ -1118,15 +1118,17 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
 #feedbackDialog h2{margin:0 0 8px}
 #feedbackDialog button{margin-top:12px;min-height:36px}
 </style>
-</head><body><script id="game-feedback">
+<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断02｜BGM停止</div><script id="game-feedback">
 (()=>{
  const native=window.Capacitor?.Plugins?.JewelMineAds;
  const settingsKey='jewel-mine-feedback-v1';
- const settings={music:true,effects:true,haptics:true};
+ const settings={music:false,effects:true,haptics:true};
  try{
   const saved=JSON.parse(localStorage.getItem(settingsKey));
   for(const k of Object.keys(settings))if(typeof saved?.[k]==='boolean')settings[k]=saved[k];
  }catch(_){}
+ // Diagnostic build: force BGM off regardless of persisted user preference.
+ settings.music=false;
  const cues={
   pick:[410],place:[330,440],clear:[440,554,659],combo:[659,784,988],gem:[880,1175,1568],score:[620],fever:[523,659,784,1047],over:[440,370,294,220]
  };
