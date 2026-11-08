@@ -1903,7 +1903,7 @@ function place(r,c){
    }
  }
  advanceScoreRun(state,{cells:targets.length,lines,previousLines:previousLineTotal,comboChain:state.comboChain,feverActive:feverWasActive,fullClear:lines>0&&state.board.every(v=>v===null)},state.score-scoreBefore);
- cosmeticTimeout(()=>buzz('score'),90,'score-feedback');
+ // SFX-01: avoid long score fanfare on every placement; the short place cue is sufficient.
  ensureSingleGem();
  state.turn++;
  if(feverWasActive && state.feverTurns>0){
