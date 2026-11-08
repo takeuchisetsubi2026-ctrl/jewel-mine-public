@@ -1118,7 +1118,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
 #feedbackDialog h2{margin:0 0 8px}
 #feedbackDialog button{margin-top:12px;min-height:36px}
 </style>
-<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断02｜BGM停止</div><script id="game-feedback">
+<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断03｜設置音強調</div><script id="game-feedback">
 (()=>{
  const native=window.Capacitor?.Plugins?.JewelMineAds;
  const settingsKey='jewel-mine-feedback-v1';
@@ -1193,7 +1193,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
    // SFX-01 WEB TEST: user-selected D1 short / D3 crystal, isolated branch only.
    const patterns={
     pick:[[660,.09,.16,'square',880,0],[1100,.08,.09,'triangle',null,.08]],
-    place:[[440,.065,.13,'triangle',245,0]],
+    place:[[740,.12,.32,'triangle',370,0],[1110,.07,.12,'sine',null,.012]],
     clear:[[784,.23,.13,'square',null,0],[988,.23,.13,'square',null,.055],[1175,.23,.13,'square',null,.11],[1568,.23,.13,'square',null,.165],[2093,.50,.10,'sine',null,.24]],
     gem:[[1047,.25,.12,'triangle',null,0],[1319,.25,.12,'triangle',null,.075],[1568,.25,.12,'triangle',null,.15],[2093,.25,.12,'triangle',null,.225],[2637,.40,.09,'sine',null,.32]],
     combo:[[523,.18,.15,'square',null,0],[659,.18,.15,'square',null,.065],[784,.18,.15,'square',null,.13],[988,.18,.15,'square',null,.195],[1175,.18,.15,'square',null,.26],[1568,.18,.15,'square',null,.325],[1568,.60,.06,'sine',null,.4],[2093,.60,.06,'sine',null,.4]],
@@ -1202,7 +1202,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
     over:[[659,.37,.13,'triangle',null,0],[494,.37,.13,'triangle',null,.18],[392,.37,.13,'triangle',null,.36],[262,.37,.13,'triangle',null,.54]]
    };
    const isD1=kind==='pick'||kind==='place';
-   const scale=isD1?.57:1.35;
+   const scale=kind==='place'?1:(isD1?.57:1.35);
    const strength=isD1?.88:.8;
    const entries=patterns[kind];
    if(entries)for(const [hz,dur,vol,wave,end,offset] of entries){
