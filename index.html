@@ -1118,7 +1118,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
 #feedbackDialog h2{margin:0 0 8px}
 #feedbackDialog button{margin-top:12px;min-height:36px}
 </style>
-<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断05｜コンボ音一本化</div><script id="game-feedback">
+<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断07｜BGMと効果音バランス</div><script id="game-feedback">
 (()=>{
  const native=window.Capacitor?.Plugins?.JewelMineAds;
  const settingsKey='jewel-mine-feedback-v1';
@@ -1157,7 +1157,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
   bus.gain.value=blocked()?0:1;
   if(blocked()||!settings.music||ctx.state!=='running'){stopMusic();return}
   if(timer)return;
-  music=ctx.createGain();music.gain.value=.12;music.connect(bus);
+  music=ctx.createGain();music.gain.value=.65;music.connect(bus);
   const play=()=>{
    const melody=fever?feverNotes:musicNotes;
    const midi=melody[beat++%melody.length];
@@ -1203,7 +1203,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
    };
    const isD1=kind==='pick'||kind==='place';
    const scale=kind==='place'?1:(isD1?.57:1.35);
-   const strength=isD1?.88:.8;
+   const strength=kind==='place'?.55:(kind==='clear'||kind==='combo'?.26:.38);
    const entries=patterns[kind];
    if(entries)for(const [hz,dur,vol,wave,end,offset] of entries){
     const start=ctx.currentTime+offset*scale, length=dur*scale;
@@ -1218,7 +1218,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
      const shimmer=ctx.createOscillator(),tail=ctx.createGain(),tailLen=length*1.3;
      shimmer.type='sine';shimmer.frequency.value=hz*2.005;
      tail.gain.setValueAtTime(.0001,start);
-     tail.gain.exponentialRampToValueAtTime(vol*.23,start+.013);
+     tail.gain.exponentialRampToValueAtTime(vol*.23*strength,start+.013);
      tail.gain.exponentialRampToValueAtTime(.0001,start+tailLen);
      shimmer.connect(tail);tail.connect(bus);shimmer.start(start);shimmer.stop(start+tailLen+.03);
     }
