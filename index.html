@@ -1118,7 +1118,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
 #feedbackDialog h2{margin:0 0 8px}
 #feedbackDialog button{margin-top:12px;min-height:36px}
 </style>
-<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断05｜コンボ音一本化</div><script id="game-feedback">
+<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断06｜コンボ音分離</div><script id="game-feedback">
 (()=>{
  const native=window.Capacitor?.Plugins?.JewelMineAds;
  const settingsKey='jewel-mine-feedback-v1';
@@ -1136,6 +1136,8 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
  const feverNotes=[57,60,64,69,67,64,62,64,55,59,62,67,65,62,60,62];
  let opening=!!native, ad=false, fever=false, paused=false, ctx, bus, music, timer=0, beat=0;
  let lastStep=-Infinity;
+ let comboAudioUntil=0;
+ let comboDuckTimer=0;
  const openingCallbacks=[];
  const blocked=()=>opening||ad||paused||document.hidden;
  function note(out,hz,length,gain,wave='sine',delay=0){
@@ -1177,6 +1179,14 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
  }
  function cue(kind){
   if(blocked())return;
+  // Diagnostic 06: prevent other effects from overlapping a combo.
+  if(kind!=='combo' && performance.now()<comboAudioUntil && kind!=='pick' && kind!=='place' && kind!=='step')return;
+  if(kind==='combo'){
+   comboAudioUntil=performance.now()+1650;
+   if(music){music.gain.value=0;}
+   clearTimeout(comboDuckTimer);
+   comboDuckTimer=setTimeout(()=>{if(music)music.gain.value=.12;},1650);
+  }
   if(kind==='step'){
    const now=performance.now();
    if(now-lastStep<65)return;
