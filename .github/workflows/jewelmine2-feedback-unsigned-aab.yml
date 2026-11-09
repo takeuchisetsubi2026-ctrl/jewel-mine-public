@@ -1,7 +1,7 @@
 name: Jewelmine2 feedback unsigned AAB
 on:
   push:
-    branches: [feat/work3-bgm-ci-20261110]
+    branches: [feat/work3-n1-l1-integration-20261110]
   workflow_dispatch:
 permissions:
   contents: read
@@ -37,7 +37,7 @@ jobs:
         run: git diff --exit-code -- index.html assets config capacitor.config.json android scripts package.json package-lock.json tests .github
       - name: Prepare isolated Jewelmine2 generated identity
         run: |
-          test "$GITHUB_REF_NAME" = 'feat/work3-bgm-ci-20261110'
+          test "$GITHUB_REF_NAME" = 'feat/work3-n1-l1-integration-20261110'
           node scripts/prepare-jewelmine2-ci.cjs
           python3 - <<'PY'
           import json, os, pathlib, re

@@ -8,15 +8,21 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
   const errors=[];
   page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
-   const mock=window.feedbackMock={ads:0,haptics:[],notes:[],stopped:0};
+   const mock=window.feedbackMock={ads:0,haptics:[],notes:[],oscillators:[],stopped:0};
    window.Capacitor={Plugins:{
     JewelMineAds:{initialize:async()=>{mock.ads++},showRewarded:req=>new Promise(resolve=>{mock.dismiss=()=>resolve({...req,dismissed:true,rewardEarned:false})})},
     JewelMineHaptics:{play:async({kind})=>{mock.haptics.push(kind)}}
    }};
    window.AudioContext=class{
-    currentTime=0; state='running';destination={};
-    createGain(){return {connect(){},disconnect(){mock.stopped++},gain:{value:1,setValueAtTime(){},exponentialRampToValueAtTime(){}}}}
-    createOscillator(){return {frequency:{value:0,setValueAtTime(v){this.value=v},exponentialRampToValueAtTime(){}},connect(){},start(){mock.notes.push(this.frequency.value)},stop(){}}}
+    constructor(){mock.audio=this}
+    currentTime=0; state='running';destination={};sampleRate=48000;
+    param(value=0){return {value,setValueAtTime(v){this.value=v},exponentialRampToValueAtTime(){}}}
+    createGain(){return {connect(){},disconnect(){mock.stopped++},gain:this.param(1)}}
+    createOscillator(){const oscillator={type:'sine',frequency:this.param(),connect(){},start(time){mock.notes.push(this.frequency.value);mock.oscillators.push({type:this.type,frequency:this.frequency.value,time})},stop(){mock.stopped++}};return oscillator}
+    createBiquadFilter(){return {type:'lowpass',frequency:this.param(),connect(){}}}
+    createBuffer(channels,length,rate){const data=new Float32Array(length);return {duration:length/rate,getChannelData(){return data}}}
+    createBufferSource(){return {buffer:null,connect(){},start(){},stop(){mock.stopped++}}}
+    resume(){this.state='running';return Promise.resolve()}
    };
   });
   const html=fs.readFileSync('index.html','utf8').replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');
@@ -58,13 +64,35 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
   assert.equal(await count(),during);
   await page.evaluate(()=>feedbackMock.dismiss());
   await page.waitForFunction(n=>feedbackMock.notes.length>n,during);
+  assert.deepEqual(await page.evaluate(()=>JewelMineFeedback.debug().track),'N1');
+  assert(await page.evaluate(()=>feedbackMock.oscillators.some(x=>x.type==='triangle'&&Math.round(x.frequency)===784)),'N1 lead');
+  const beforeFeverStop=await page.evaluate(()=>feedbackMock.stopped);
   await run('state.feverTurns=2;render()');
-  assert.equal(Math.round(await page.evaluate(()=>feedbackMock.notes.at(-1))),220);
+  assert.deepEqual(await page.evaluate(()=>JewelMineFeedback.debug().track),'L1');
+  assert((await page.evaluate(()=>feedbackMock.stopped))>beforeFeverStop,'N1 voices stopped');
+  assert(await page.evaluate(()=>feedbackMock.oscillators.some(x=>x.type==='sawtooth'&&Math.round(x.frequency)===698)),'L1 lead');
+  const repeated=await page.evaluate(()=>feedbackMock.stopped);await run('render()');assert.equal(await page.evaluate(()=>feedbackMock.stopped),repeated,'repeated FEVER render must not restart music');
   await run('state.feverTurns=0;render()');
-  assert.equal(Math.round(await page.evaluate(()=>feedbackMock.notes.at(-1))),110);
+  assert.deepEqual(await page.evaluate(()=>JewelMineFeedback.debug().track),'N1');
+  await page.evaluate(()=>window.dispatchEvent(new Event('pagehide')));
+  assert.deepEqual(await page.evaluate(()=>JewelMineFeedback.debug()),{track:null,running:false,voices:0,step:0,blocked:true});
+  await page.evaluate(()=>{feedbackMock.audio.state='suspended'});
+  await page.evaluate(()=>window.dispatchEvent(new Event('pageshow')));
+  await page.waitForFunction(()=>feedbackMock.audio.state==='running');
+  assert.deepEqual(await page.evaluate(()=>JewelMineFeedback.debug().track),'N1');
+  await run(`state=fresh(0);state.board=Array(64).fill(null);state.gems=Array(64).fill(null);
+   for(let i=0;i<7;i++)state.board[i]=0;state.gems[0]=BONUS_TABLE[0].id;state.feverProgress=4;
+   state.pieces=[{s:0,color:0,used:false},{s:0,color:0,used:false},{s:0,color:0,used:false}];selected=0;render();place(0,7)`);
+  assert.equal(await run('state.feverTurns'),5);assert.equal(await page.evaluate(()=>JewelMineFeedback.debug().track),'L1');
+  for(let turn=0;turn<5;turn++){
+   await run(`state.pieces[0]={s:0,color:0,used:false};selected=0;render();place(1,${turn})`);
+   assert.equal(await run('state.feverTurns'),4-turn);
+   assert.equal(await page.evaluate(()=>JewelMineFeedback.debug().track),turn===4?'N1':'L1');
+  }
 
   await page.locator('#feedbackSettings').click();
   await page.locator('#feedback-music').uncheck();
+  assert.equal(await page.evaluate(()=>JewelMineFeedback.debug().running),false,'music setting stops scheduler');
   await page.locator('#feedback-effects').uncheck();
   const silent=await count();
   await page.evaluate(()=>JewelMineFeedback.cue('place'));
