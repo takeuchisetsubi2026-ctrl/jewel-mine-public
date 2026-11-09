@@ -103,12 +103,14 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
    state.pieces=[{s:0,color:0,used:false},{s:0,color:0,used:false},{s:0,color:0,used:false}];
    selected=0;render();`);
   await run('preview(-1,-1)'); // Invalid placement must clear hints without calling a removed helper.
+  await page.evaluate(()=>{feedbackMock.cues=[];const cue=JewelMineFeedback.cue;JewelMineFeedback.cue=kind=>{feedbackMock.cues.push(kind);return cue(kind)}});
   const before=await count();
   await run('place(0,7)');
   await page.waitForTimeout(350);
   const notes=await page.evaluate(n=>feedbackMock.notes.slice(n),before);
   assert(notes.includes(988),'combo sound');assert(notes.includes(2637),'jewel sound');
-  assert(!notes.includes(2093*2.005),'normal clear cue must not stack with combo');
+  assert.equal(await page.evaluate(()=>feedbackMock.cues.filter(k=>k==='combo').length),1,'one combo cue');
+  assert.equal(await page.evaluate(()=>feedbackMock.cues.filter(k=>k==='clear').length),0,'no stacked clear cue');
   assert.equal(await run('state.comboChain'),2);
   assert.equal(await run('state.finds[BONUS_TABLE[0].id]'),1);
   const beforeOver=await count();
