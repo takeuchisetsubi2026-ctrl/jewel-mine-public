@@ -16,7 +16,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
    window.AudioContext=class{
     currentTime=0; state='running';destination={};
     createGain(){return {connect(){},disconnect(){mock.stopped++},gain:{value:1,setValueAtTime(){},exponentialRampToValueAtTime(){}}}}
-    createOscillator(){return {frequency:{value:0},connect(){},start(){mock.notes.push(this.frequency.value)},stop(){}}}
+    createOscillator(){return {frequency:{value:0,setValueAtTime(v){this.value=v},exponentialRampToValueAtTime(){}},connect(){},start(){mock.notes.push(this.frequency.value)},stop(){}}}
    };
   });
   const html=fs.readFileSync('index.html','utf8').replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');
@@ -107,13 +107,14 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
   await run('place(0,7)');
   await page.waitForTimeout(350);
   const notes=await page.evaluate(n=>feedbackMock.notes.slice(n),before);
-  assert(notes.includes(988),'combo sound');assert(notes.includes(1568),'jewel sound');
+  assert(notes.includes(988),'combo sound');assert(notes.includes(2637),'jewel sound');
+  assert(!notes.includes(2093*2.005),'normal clear cue must not stack with combo');
   assert.equal(await run('state.comboChain'),2);
   assert.equal(await run('state.finds[BONUS_TABLE[0].id]'),1);
   const beforeOver=await count();
   await run('finishGame()');
   await page.waitForFunction(n=>feedbackMock.notes.length>n,beforeOver);
-  assert.deepEqual(await page.evaluate(n=>feedbackMock.notes.slice(n),beforeOver),[440,370,294,220]);
+  assert.deepEqual(await page.evaluate(n=>feedbackMock.notes.slice(n),beforeOver),[659,659*2.005,494,494*2.005,392,392*2.005,262,262*2.005]);
   assert.deepEqual(errors,[]);
   console.log('Opening 2000ms/skip and ad gate, saved state, ad/FEVER BGM return, settings, drag haptics, real combo/jewel and game-over sounds: PASS');
  }finally{await browser.close()}

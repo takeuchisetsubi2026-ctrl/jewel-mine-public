@@ -1122,13 +1122,11 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
 (()=>{
  const native=window.Capacitor?.Plugins?.JewelMineAds;
  const settingsKey='jewel-mine-feedback-v1';
- const settings={music:false,effects:true,haptics:true};
+ const settings={music:true,effects:true,haptics:true};
  try{
   const saved=JSON.parse(localStorage.getItem(settingsKey));
   for(const k of Object.keys(settings))if(typeof saved?.[k]==='boolean')settings[k]=saved[k];
  }catch(_){}
- // SFX diagnostic 04: enable BGM at reduced volume, keeping the verified short placement cue.
- settings.music=true;
  const cues={
   pick:[410],place:[330,440],clear:[440,554,659],combo:[659,784,988],gem:[880,1175,1568],score:[620],fever:[523,659,784,1047],over:[440,370,294,220]
  };
