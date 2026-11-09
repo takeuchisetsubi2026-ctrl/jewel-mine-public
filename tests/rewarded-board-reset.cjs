@@ -4,7 +4,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const browser=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']}:{channel:'chrome'});
 try{
  const page=await browser.newPage({viewport:{width:393,height:851}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
- const source=fs.readFileSync('index.html','utf8').replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');
+ const source=fs.readFileSync('index.html','utf8').replace("(()=>{'use strict';","(()=>{'use strict';window.__testEval=code=>eval(code);");
  await page.route('http://jewel.test/**',r=>r.fulfill({contentType:'text/html',body:source}));await page.goto('http://jewel.test/');
  const run=code=>page.evaluate(code=>window.__testEval(code),code);
  await run('state=fresh(12345);state.score=1000;state.feverTurns=3;state.board[0]=1;state.gems[0]="quartz";render()');

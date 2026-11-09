@@ -7,7 +7,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
  for(const [width,height] of [[360,640],[393,851],[412,915],[800,360]]){
   const context=await browser.newContext({viewport:{width,height},hasTouch:true,isMobile:true});
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
-  const source=fs.readFileSync('index.html','utf8').replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');
+  const source=fs.readFileSync('index.html','utf8').replace("(()=>{'use strict';","(()=>{'use strict';window.__testEval=code=>eval(code);");
   await page.route('http://jewel.test/**',r=>r.fulfill({contentType:'text/html',body:source}));await page.goto('http://jewel.test/');
   const run=code=>page.evaluate(code=>window.__testEval(code),code);
   await page.waitForTimeout(150);

@@ -1,7 +1,7 @@
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');
 (async()=>{const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']}:{channel:'chrome'});try{
  const p=await b.newPage({viewport:{width:360,height:800}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
- const html=fs.readFileSync('index.html','utf8').replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');await p.route('http://jewel.test/**',r=>r.fulfill({contentType:'text/html',body:html}));await p.goto('http://jewel.test/');
+ const html=fs.readFileSync('index.html','utf8').replace("(()=>{'use strict';","(()=>{'use strict';window.__testEval=code=>eval(code);");await p.route('http://jewel.test/**',r=>r.fulfill({contentType:'text/html',body:html}));await p.goto('http://jewel.test/');
  const cases=await p.evaluate(()=>window.__testEval(`(()=>{
  const out=[];
  for(let count=1;count<=6;count++)for(const fever of [false,true])for(const previous of [0,10])for(const chain of [1,3]){

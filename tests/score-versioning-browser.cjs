@@ -1,7 +1,7 @@
 const {chromium}=require('playwright'),fs=require('fs'),cp=require('child_process'),assert=require('assert/strict');
 (async()=>{const browser=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']}:{channel:'chrome'});try{
- const html=fs.readFileSync('index.html','utf8').replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');
- const baseline=cp.execFileSync('git',['show','1ac50c0:index.html'],{encoding:'utf8',maxBuffer:4e6}).replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');
+ const html=fs.readFileSync('index.html','utf8').replace("(()=>{'use strict';","(()=>{'use strict';window.__testEval=code=>eval(code);");
+ const baseline=cp.execFileSync('git',['show','1ac50c0:index.html'],{encoding:'utf8',maxBuffer:4e6}).replace("(()=>{'use strict';","(()=>{'use strict';window.__testEval=code=>eval(code);");
  const fixturePage=await browser.newPage();await fixturePage.route('http://old.test/**',r=>r.fulfill({contentType:'text/html',body:baseline}));await fixturePage.goto('http://old.test/');
  const raw=await fixturePage.evaluate(()=>window.__testEval("state=fresh(50000);state.score=12345;state.turn=17;state.totalLines=9;state.board.fill(null);state.board[17]=1;state.gems.fill(null);state.gems[17]='quartz';state.feverTurns=3;state.pieces=[{s:5,color:1,used:false},{s:12,color:2,used:false},{s:13,color:0,used:true}];JSON.stringify(state)"));await fixturePage.close();
  const context=await browser.newContext(),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));

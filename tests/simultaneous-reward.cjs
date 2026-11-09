@@ -1,7 +1,7 @@
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert/strict');
 (async()=>{const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']}:{channel:'chrome'});try{
  const p=await b.newPage({viewport:{width:360,height:800}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
- const html=fs.readFileSync('index.html','utf8').replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');
+ const html=fs.readFileSync('index.html','utf8').replace("(()=>{'use strict';","(()=>{'use strict';window.__testEval=code=>eval(code);");
  await p.route('http://jewel.test/**',r=>r.fulfill({contentType:'text/html',body:html}));await p.goto('http://jewel.test/');
  const evaluate=f=>p.evaluate(c=>window.__testEval('('+c+')()'),f.toString());
  const cases=await evaluate(()=>{const root=$('simultaneousReward');return [2,3,4,5,6,16].map(lines=>{showSimultaneousReward(lines,lines*600);return {lines,text:root.querySelector('.reward-multiplier').textContent,points:root.querySelector('.reward-points').textContent,tier:root.dataset.tier,duration:simultaneousAnimation.effect.getTiming().duration,nodes:document.querySelectorAll('#simultaneousReward').length,sameRoot:root===$('simultaneousReward'),pointerEvents:getComputedStyle(root).pointerEvents,color:getComputedStyle(root).color,runningAnimations:root.getAnimations({subtree:true}).length}})});

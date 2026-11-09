@@ -25,7 +25,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
     resume(){this.state='running';return Promise.resolve()}
    };
   });
-  const html=fs.readFileSync('index.html','utf8').replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');
+  const html=fs.readFileSync('index.html','utf8').replace("(()=>{'use strict';","(()=>{'use strict';window.__testEval=code=>eval(code);");
   await page.route('http://jewel.test/**',r=>r.request().url().endsWith('/assets/opening/jewel-mine.png')?r.fulfill({contentType:'image/png',path:'assets/opening/jewel-mine.png'}):r.fulfill({contentType:'text/html',body:html}));
   await page.clock.install();
   await page.clock.pauseAt(new Date(Date.now()+2000));

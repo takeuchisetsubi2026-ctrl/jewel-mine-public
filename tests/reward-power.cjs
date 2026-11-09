@@ -12,7 +12,7 @@ const old=cp.execFileSync('git',['show',(process.env.POWER_BASELINE_REF||'d4c092
   for(let trial=0;trial<3;trial++){
    const p=await browser.newPage({viewport:{width:360,height:800}});
    await p.addInitScript(()=>{const raf=window.requestAnimationFrame,cancel=window.cancelAnimationFrame;window.__raf={callbacks:0,pending:new Set()};window.requestAnimationFrame=fn=>{let id=raf.call(window,t=>{window.__raf.pending.delete(id);window.__raf.callbacks++;fn(t)});window.__raf.pending.add(id);return id};window.cancelAnimationFrame=id=>{window.__raf.pending.delete(id);cancel.call(window,id)}});
-   const html=(version===baselineLabel?old:current).replace('})();</script>','window.__testEval=code=>eval(code);})();</script>');
+   const html=(version===baselineLabel?old:current).replace("(()=>{'use strict';","(()=>{'use strict';window.__testEval=code=>eval(code);");
    await p.route('http://jewel.test/**',r=>r.fulfill({contentType:'text/html',body:html}));await p.goto('http://jewel.test/');
    await p.evaluate(fever=>window.__testEval(`state=fresh(10000);state.board.fill(null);state.gems.fill(null);state.board[27]=0;state.gems[27]='quartz';state.feverTurns=${fever?3:0};render();snapScoreTo(0)`),name==='feverIdle'||name==='hiddenFever');
    if(name==='hiddenFever')await p.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'))});
