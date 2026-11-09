@@ -21,7 +21,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
     createOscillator(){const oscillator={type:'sine',frequency:this.param(),connect(){},start(time){mock.notes.push(this.frequency.value);mock.oscillators.push({type:this.type,frequency:this.frequency.value,time})},stop(){mock.stopped++}};return oscillator}
     createBiquadFilter(){return {type:'lowpass',frequency:this.param(),connect(){}}}
     createBuffer(channels,length,rate){const data=new Float32Array(length);return {duration:length/rate,getChannelData(){return data}}}
-    createBufferSource(){return {buffer:null,connect(){},start(){},stop(){mock.stopped++}}}
+    createBufferSource(){let started=false;return {buffer:null,connect(){},start(){started=true},stop(){if(!started)throw Error('buffer source stopped before start');mock.stopped++}}}
     resume(){this.state='running';return Promise.resolve()}
    };
   });

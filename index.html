@@ -1188,9 +1188,10 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
   }
   const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),level=ctx.createGain(),isFever=track.name==='L1';
   source.buffer=isFever?musicNoise.l1:musicNoise[type];filter.type='highpass';filter.frequency.value=type==='snare'?(isFever?1550:1350):(isFever?6300:5700);
-  if(isFever){const duration=type==='snare'?.09:.028;level.gain.setValueAtTime(type==='snare'?.063:.018,start);level.gain.exponentialRampToValueAtTime(.0001,start+duration);source.stop(start+duration+.01)}
-  else{level.gain.value=type==='snare'?.048:.013;source.stop(start+source.buffer.duration)}
-  source.connect(filter);filter.connect(level);level.connect(musicOutput);source.start(start);rememberMusic(source);
+  let stopAt;
+  if(isFever){const duration=type==='snare'?.09:.028;level.gain.setValueAtTime(type==='snare'?.063:.018,start);level.gain.exponentialRampToValueAtTime(.0001,start+duration);stopAt=start+duration+.01}
+  else{level.gain.value=type==='snare'?.048:.013;stopAt=start+source.buffer.duration}
+  source.connect(filter);filter.connect(level);level.connect(musicOutput);source.start(start);source.stop(stopAt);rememberMusic(source);
  }
  function scheduleMusic(){
   if(!musicTrack||!ctx||ctx.state!=='running')return;
