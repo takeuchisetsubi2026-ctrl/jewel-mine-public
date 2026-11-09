@@ -1,0 +1,68 @@
+{
+  "branch": "feat/work3-n1-l1-integration-20261110",
+  "sourceSha": "0edb97ee087791aaae5d40196925c5dd4210b41b",
+  "sourceSha256": "afb5e810134f9f84c2676a082347dc00f63980dfd8c7f86670b97a1196fe047e",
+  "ci": [
+    {
+      "kind": "jewelmine2-unsigned-aab",
+      "runId": 42722422415,
+      "conclusion": "success",
+      "artifactId": 13721516797,
+      "artifactName": "jewelmine2-feedback-unsigned-not-for-upload",
+      "artifactZipSha256": "5ec0423db9a1e4c11ba52111e9cfbb24544e8f65f0a1a2bca383eec19961abc9",
+      "file": "app-release.aab",
+      "fileSize": 9733564,
+      "fileSha256": "a09951d939e27f318f607b654d23bab155643fd44a07cc4e67b5e77b1b0f94de",
+      "applicationId": "com.takeuchisetsubi.jewelmine2",
+      "versionCode": 20001201,
+      "versionName": "4.0.9",
+      "signed": false,
+      "usage": "verification-only; not for Play upload"
+    },
+    {
+      "kind": "android-debug-apk",
+      "runId": 42722422428,
+      "conclusion": "success",
+      "artifactId": 13719889974,
+      "artifactName": "jewel-mine-test-09-0edb97e-91-1",
+      "artifactZipSha256": "d64565ace5c83178e94b64659b97b6e699e714362168dfbaf8a54fc1d909167a",
+      "file": "jewel-mine-test-09-v4.0.9-0edb97e-91-1-debug.apk",
+      "fileSize": 11759141,
+      "fileSha256": "dbb04d488ef97d9087581862d54db4f157cf64b211d47ba3a1a2f63aca0d616e",
+      "applicationId": "com.wilduncle.jewelmine.codextest",
+      "versionCode": 9000911,
+      "versionName": "4.0.9",
+      "certificateSha256": "adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029",
+      "usage": "TEST09 only; not a jewelmine2 update package"
+    }
+  ],
+  "auditionSources": {
+    "N1": {
+      "engineSha256": "f32f2fb2df9507000ebea68276a07004d5ef737669272803d3123956cde45a90",
+      "extractSha256": "859a834c315949ec03d6ef14b071ef7a3eb18dc454dd31a5e3031c8a7135a942",
+      "originalTrackEqual": true
+    },
+    "L1": {
+      "engineSha256": "a5dec3e813e7b4973e007bff158ea5a523666bef64e1cc73fe09df47d671e889",
+      "extractSha256": "33e295582518e54496e90cdd9e3c1d8d719df08869cfdc5bad22a04c1e3b75c2",
+      "originalTrackEqual": true
+    }
+  },
+  "verified": [
+    "artifact ZIP digests and CRC",
+    "APK and AAB internal CRC",
+    "AAB protobuf application ID",
+    "embedded build metadata and source hash",
+    "embedded complete N1/L1 engine hashes",
+    "AAB has no META-INF signature block",
+    "CI browser regression including FEVER five-turn transition, duplicate prevention and suspended resume"
+  ],
+  "notVerified": [
+    "audible balance and timing on Pixel 7",
+    "Android OS interruption behavior on Pixel 7",
+    "jewelmine2 signed install/update",
+    "Play Protect result",
+    "Google Play upload or distribution"
+  ],
+  "verifiedAtJst": "202611100846"
+}
