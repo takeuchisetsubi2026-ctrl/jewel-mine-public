@@ -1,0 +1,57 @@
+[
+  {
+    "file": "artifact-check/aab/app-release.aab",
+    "size": 9727360,
+    "sha256": "50771d5e9d37747d17b8d92d933d0373e72a4d998750658e671ab7072b9e8872",
+    "metadata": {
+      "schema": 1,
+      "testNumber": 9,
+      "testLabel": "Jewelmine2",
+      "appName": "ジュエルマイン2",
+      "versionName": "4.0.9",
+      "versionCode": 20000701,
+      "applicationId": "com.takeuchisetsubi.jewelmine2",
+      "gitSha": "994c0ad095bbf911e52d9f493ff51114c2ed8be2",
+      "dirty": false,
+      "buildUtc": "2026-11-09T22:25:06.137Z",
+      "sourceSha256": "95e19e57ea7048e0ac7fa88ab72587d87b9a10d29f1ba8eef9a59bec9c070e8c",
+      "certificateSha256": null,
+      "runNumber": 7,
+      "runAttempt": 1,
+      "runUrl": "https://github.com/takeuchisetsubi2026-ctrl/jewel-mine-public/actions/runs/42711584479",
+      "artifactName": "jewel-mine-test-09-994c0ad-7-1",
+      "apkFileName": "jewel-mine-test-09-v4.0.9-994c0ad-7-1-debug.apk"
+    },
+    "checks": "CRC, HTML metadata, source hash, extract bytes, Capacitor identity; AAB protobuf package and unsigned state",
+    "manifestAttributes": {
+      "package": "com.takeuchisetsubi.jewelmine2",
+      "versionCode": "20000701",
+      "versionName": "4.0.9"
+    }
+  },
+  {
+    "file": "artifact-check/apk/jewel-mine-test-09-v4.0.9-994c0ad-86-1-debug.apk",
+    "size": 11752482,
+    "sha256": "8b0a0fe5e158ccdf0d42c6b8f551f28e8a553e939cd172f165260d0eb938cf1a",
+    "metadata": {
+      "schema": 1,
+      "testNumber": 9,
+      "testLabel": "TEST 09",
+      "appName": "09 ジュエルマイン",
+      "versionName": "4.0.9",
+      "versionCode": 9000861,
+      "applicationId": "com.wilduncle.jewelmine.codextest",
+      "gitSha": "994c0ad095bbf911e52d9f493ff51114c2ed8be2",
+      "dirty": false,
+      "buildUtc": "2026-11-09T22:25:03.780Z",
+      "sourceSha256": "95e19e57ea7048e0ac7fa88ab72587d87b9a10d29f1ba8eef9a59bec9c070e8c",
+      "certificateSha256": "adf316980df6f14b7b5510eafd42c6557d6b6f70623dc35466940bc9c2a4b029",
+      "runNumber": 86,
+      "runAttempt": 1,
+      "runUrl": "https://github.com/takeuchisetsubi2026-ctrl/jewel-mine-public/actions/runs/42711584117",
+      "artifactName": "jewel-mine-test-09-994c0ad-86-1",
+      "apkFileName": "jewel-mine-test-09-v4.0.9-994c0ad-86-1-debug.apk"
+    },
+    "checks": "CRC, HTML metadata, source hash, extract bytes, Capacitor identity; AAB protobuf package and unsigned state"
+  }
+]
