@@ -1,6 +1,8 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const source=fs.readFileSync('index.html','utf8');
-for(const match of source.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(match[1]);
+for(const match of source.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){
+ if(!/type=["']application\/json["']/.test(match[1]))new vm.Script(match[2]);
+}
 for(const token of ['82.8px','72px',"mode==='fever'?1250",'Math.min(8,indices.length)','drag-source'])assert.ok(source.includes(token),token);
 const {render}=require('./build-identity.cjs'),metadata=JSON.parse(fs.readFileSync('build/identity.json','utf8')),expected=render(source,metadata);
 assert.equal(fs.readFileSync('www/index.html','utf8'),expected);
