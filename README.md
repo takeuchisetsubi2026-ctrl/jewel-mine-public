@@ -8,3 +8,7 @@ Androidテスト版のビルド・ダウンロード・インストール手順�
 - [Android debug APKの実行一覧](https://github.com/wild-uncle/jewel-mine-public/actions/workflows/android-debug.yml) の成功した実行からArtifactsを取得できます（GitHubログインが必要）。
 - 旧APKの更新互換性は不明です。今回のテスト版は別IDと専用テスト署名を使用します。
 - 開発ルール: [AGENTS.md](AGENTS.md)。mainへのマージ・公開にはユーザー承認が必要です。
+
+## 2026-11-11 署名鍵の確定記録
+
+[署名鍵の確定記録](docs/JEWELMINE2_SIGNING_RECORD.md)を署名関連作業の前に必ず読む。正式ID・証明書・旧アプリとの区別は同文書を正とする。既存記述は各記録日時の状態を保持する。
