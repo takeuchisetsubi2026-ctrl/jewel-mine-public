@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const ID = 'com.takeuchisetsubi.jewelmine2';
 assert.equal(process.env.CI, 'true', 'CI-only tool');
-assert.ok(['feature/jewelmine2-unsigned-aab-20261104','feat/jewelmine2-feedback-resume-20261107','feat/work3-bgm-ci-20261110','feat/work3-n1-l1-integration-20261110'].includes(process.env.GITHUB_REF_NAME), 'Unexpected branch');
+assert.ok(['feature/jewelmine2-unsigned-aab-20261104','feat/jewelmine2-feedback-resume-20261107','feat/work3-bgm-ci-20261110','feat/work3-n1-l1-integration-20261110','fix/jewelmine2-final-ad-cadence-20261113'].includes(process.env.GITHUB_REF_NAME), 'Unexpected branch');
 const identityPath = 'build/identity.json';
 const m = JSON.parse(fs.readFileSync(identityPath, 'utf8'));
 assert.equal(m.applicationId, 'com.wilduncle.jewelmine.codextest', 'Unexpected source identity');
