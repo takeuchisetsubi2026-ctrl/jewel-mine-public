@@ -1,7 +1,7 @@
 name: Jewelmine2 feedback unsigned AAB
 on:
   push:
-    branches: [feat/work3-n1-l1-integration-20261110]
+    branches: [fix/jewelmine2-final-ad-cadence-20261113]
   workflow_dispatch:
 permissions:
   contents: read
@@ -37,7 +37,7 @@ jobs:
         run: git diff --exit-code -- index.html assets config capacitor.config.json android scripts package.json package-lock.json tests .github
       - name: Prepare isolated Jewelmine2 generated identity
         run: |
-          test "$GITHUB_REF_NAME" = 'feat/work3-n1-l1-integration-20261110'
+          test "$GITHUB_REF_NAME" = 'fix/jewelmine2-final-ad-cadence-20261113'
           node scripts/prepare-jewelmine2-ci.cjs
           python3 - <<'PY'
           import json, os, pathlib, re
@@ -45,7 +45,7 @@ jobs:
           # Play Console maximum is unknown; this artifact must never be uploaded.
           run, attempt = (int(os.environ[k]) for k in ('GITHUB_RUN_NUMBER', 'GITHUB_RUN_ATTEMPT'))
           assert run > 0 and 0 < attempt < 100
-          code = 20_000_000 + run * 100 + attempt
+          code = 21_000_000 + run * 100 + attempt
           assert code <= 2_100_000_000
           for filename in ('build/identity.json', 'www/build-info.json'):
               path = pathlib.Path(filename)
@@ -90,7 +90,7 @@ jobs:
               assert 'Jewelmine2｜v' in html
               assert info == json.loads(match.group(1))
               assert info['gitSha'] == os.environ['GITHUB_SHA']
-              assert info['versionCode'] >= 20_000_101 and info['certificateSha256'] is None
+              assert info['versionCode'] >= 21_000_101 and info['certificateSha256'] is None
               assert info['sourceSha256'] == hashlib.sha256(pathlib.Path('index.html').read_bytes()).hexdigest()
               assert z.read('base/assets/public/assets/opening/jewel-mine.png') == pathlib.Path('assets/opening/jewel-mine.png').read_bytes()
               assert z.testzip() is None
@@ -100,7 +100,7 @@ jobs:
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: jewelmine2-feedback-unsigned-not-for-upload
+          name: jewelmine2-final-ads-unsigned-not-for-upload
           path: android/app/build/outputs/bundle/release/app-release.aab
           if-no-files-found: error
           retention-days: 7

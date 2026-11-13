@@ -6,7 +6,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
  const page=await browser.newPage({viewport:{width:393,height:851},hasTouch:true}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.addInitScript(()=>{
-  window.adMock={calls:[],count:0,last:null};
+  window.adMock={calls:[],finals:[],shown:0};
   window.Capacitor={Plugins:{JewelMineAds:{
    initialize:async()=>{},
    showRewarded:request=>new Promise(resolve=>{
@@ -16,9 +16,17 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
     adMock.fail=()=>resolve({...request,dismissed:false,rewardEarned:false});
    }),
    gameOver:async request=>{
-    if(adMock.last===request.eventId)return {...request,dismissed:false};
-    adMock.last=request.eventId;adMock.count++;
-    return {...request,dismissed:adMock.count%3===0};
+    adMock.finals.push(request.eventId);
+    if(localStorage.getItem('mock-last-final')===request.eventId)return {...request,dismissed:false};
+    localStorage.setItem('mock-last-final',request.eventId);
+    const parity=localStorage.getItem('mock-parity')==='1'?'0':'1';
+    localStorage.setItem('mock-parity',parity);
+    if(parity==='1')return {...request,dismissed:false};
+    adMock.shown++;
+    return new Promise(resolve=>{
+     adMock.closeFinal=()=>resolve({...request,dismissed:true});
+     adMock.failFinal=()=>resolve({...request,dismissed:false});
+    });
    }
   }}};
  });
@@ -46,8 +54,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
  await run('state.board[1]=1;render()');const failure=await snapshot(),failureSave=await page.evaluate(()=>JSON.stringify(localStorage));
  await page.locator('#restart').click();await page.locator('#resetYes').click();await page.evaluate(()=>adMock.fail());await page.waitForTimeout(30);
  assert.equal(await snapshot(),failure);assert.equal(await page.evaluate(()=>JSON.stringify(localStorage)),failureSave);assert.deepEqual(await page.locator('.boardshell').boundingBox(),pos);
- const cadence=await page.evaluate(async()=>{const p=Capacitor.Plugins.JewelMineAds;adMock.count=0;adMock.last=null;const shown=[];for(let i=1;i<=6;i++)shown.push((await p.gameOver({eventId:String(i)})).dismissed);return shown});
- assert.deepEqual(cadence,[false,false,true,false,false,true]);assert.deepEqual(errors,[]);
+ assert.equal(await page.evaluate(()=>adMock.finals.length),0,'opening game over and reviving do not finalize');
+ assert.equal(await page.locator('#sfxDiagLabel').count(),0);
  const deadBoard='state.board.fill(1);state.gems.fill(null);render();finishGame()';
  await run(deadBoard);
  await page.reload();await page.locator('#mineOpening').click();
@@ -73,7 +81,29 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
  await run('requestRevive()');
  assert.equal(await page.evaluate(()=>adMock.calls.length),0);
  await page.locator('#again').click();
+ await page.waitForFunction(()=>!document.querySelector('#over').open);
  assert.equal(await run('state.revivesUsed'),0);
+ assert.equal(await page.evaluate(()=>adMock.finals.length),1);
+ assert.equal(await page.evaluate(()=>adMock.shown),0);
+ await run(deadBoard);
+ await page.reload();await page.locator('#mineOpening').click();
+ await page.locator('#again').click();
+ await page.waitForFunction(()=>adMock.shown===1);
+ await page.locator('#again').dispatchEvent('click');
+ await page.locator('#revive').dispatchEvent('click');
+ assert.equal(await page.evaluate(()=>adMock.finals.length),1);
+ assert.equal(await page.evaluate(()=>adMock.calls.length),0);
+ assert(await run("$('over').open&&state.board.every(x=>x===1)"));
+ await page.evaluate(()=>adMock.closeFinal());
+ await page.waitForFunction(()=>!document.querySelector('#over').open);
+ await run(deadBoard);
+ await page.locator('#again').click();
+ await page.waitForFunction(()=>!document.querySelector('#over').open);
+ await run(deadBoard);
+ await page.locator('#again').click();
+ await page.waitForFunction(()=>adMock.shown===2);
+ await page.evaluate(()=>adMock.failFinal());
+ await page.waitForFunction(()=>!document.querySelector('#over').open);
  await run(deadBoard);
  await page.locator('#revive').click();
  await page.waitForFunction(()=>adMock.calls.length===1);
@@ -92,8 +122,12 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
  assert.deepEqual(errors,[]);
  // Test-only IDs and native reward/dismiss split cannot be overridden by JS IDs.
  const java=fs.readFileSync('android/app/src/main/java/com/wilduncle/jewelmine/codextest/JewelMineAdsPlugin.java','utf8');
- assert(java.includes('complete(call, earned[0], true'));assert(!java.includes('8200983228535531'));
+ assert(java.includes('complete(call, earned[0], true'));
+ assert.match(java,/column\.addView\(web,[^\n]*\n\s*bannerHost = new FrameLayout[^\n]*\n\s*column\.addView\(bannerHost,/);
+ assert.match(java,/putString\("lastFinalGame", eventId\)[\s\S]*?putInt\("finalGameParity", parity\)\.commit\(\)/);
+ assert(java.includes('prefs.getInt("finalGameParity", 0) == 0 ? 1 : 0'));
+ assert(java.includes('eventId.equals(prefs.getString("lastFinalGame", ""))'));assert(!java.includes('8200983228535531'));
  assert(fs.readFileSync('android/app/src/main/AndroidManifest.xml','utf8').includes('ca-app-pub-3940256099942544~3347511713'));
- console.log('AdMob bridge: cancellation, restart during ad, two revives, third blocked after reload, fresh game, post-ad drag, test IDs PASS');
+ console.log('AdMob bridge: cancellation, restart during ad, two revives, third blocked after reload, final cadence across reload, duplicate clicks, dismissal and failed interstitial, banner separation, post-ad drag, test IDs PASS');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

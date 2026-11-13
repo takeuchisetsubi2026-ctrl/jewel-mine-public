@@ -141,25 +141,61 @@ public class JewelMineAdsPlugin extends Plugin {
         getActivity().runOnUiThread(() -> {
             String eventId = call.getString("eventId", "");
             if (eventId.isEmpty()) { call.reject("Missing game event"); return; }
-            if (!begin(call)) return;
+            if (destroyed || fullScreen) { call.reject("Ads unavailable or busy"); return; }
+            fullScreen = true;
+            pending = call;
             android.content.SharedPreferences prefs = getContext().getSharedPreferences("jewel-mine-ad-cadence", 0);
-            if (eventId.equals(prefs.getString("last", ""))) { complete(call,false,false,"duplicate"); return; }
-            int count = prefs.getInt("count",0) % 3 + 1;
-            prefs.edit().putString("last",eventId).putInt("count",count).apply();
-            InterstitialAd ad = interstitial;
-            if (count != 3 || ad == null) {
-                complete(call,false,false,"skipped");
-                if (ad == null) preloadInterstitial();
+            if (eventId.equals(prefs.getString("lastFinalGame", ""))) {
+                complete(call, false, false, "duplicate");
                 return;
             }
+            // The legacy counter included games that were subsequently revived.
+            int parity = prefs.getInt("finalGameParity", 0) == 0 ? 1 : 0;
+            boolean saved = prefs.edit().putString("lastFinalGame", eventId)
+                    .putInt("finalGameParity", parity).commit();
+            if (!saved || parity != 0 || !initialized) {
+                complete(call, false, false, saved ? "skipped" : "cadence-write-failed");
+                return;
+            }
+            InterstitialAd ad = interstitial;
             interstitial = null;
-            ad.setFullScreenContentCallback(new FullScreenContentCallback() {
-                @Override public void onAdDismissedFullScreenContent() { complete(call,false,true,"dismissed"); preloadInterstitial(); }
-                @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError error) { complete(call,false,false,"show-failed"); preloadInterstitial(); }
-            });
-            try { ad.show(getActivity()); }
-            catch (RuntimeException error) { complete(call,false,false,"show-failed"); preloadInterstitial(); }
+            if (ad != null) {
+                showFinalAd(call, ad);
+                return;
+            }
+            timeout = () -> complete(call, false, false, "load-timeout");
+            handler.postDelayed(timeout, 30000);
+            InterstitialAd.load(getContext(), INTERSTITIAL, new AdRequest.Builder().build(),
+                    new InterstitialAdLoadCallback() {
+                        @Override public void onAdLoaded(@NonNull InterstitialAd loaded) {
+                            if (pending != call || destroyed) return;
+                            handler.removeCallbacks(timeout);
+                            timeout = null;
+                            showFinalAd(call, loaded);
+                        }
+                        @Override public void onAdFailedToLoad(@NonNull LoadAdError error) {
+                            complete(call, false, false, "load-failed");
+                        }
+                    });
         });
+    }
+
+    private void showFinalAd(PluginCall call, InterstitialAd ad) {
+        ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override public void onAdDismissedFullScreenContent() {
+                complete(call, false, true, "dismissed");
+                preloadInterstitial();
+            }
+            @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError error) {
+                complete(call, false, false, "show-failed");
+                preloadInterstitial();
+            }
+        });
+        try { ad.show(getActivity()); }
+        catch (RuntimeException error) {
+            complete(call, false, false, "show-failed");
+            preloadInterstitial();
+        }
     }
 
     @Override protected void handleOnPause() { if (banner != null) banner.pause(); }

@@ -6,7 +6,7 @@ const withoutFeedback = html => html
  .replace('else{setClearHint(false)}','') // Removed stale helper call in invalid preview.
  .replace(/\n if\(comboChain>1\) cosmeticTimeout[^\n]*\n/,'\n')
  .replace(/\n cosmeticTimeout\(\(\)=>feedback.cue\('gem'\)[^\n]*\n/,'\n')
- .replace(".finally(()=>feedback.cue('over'))",'')
+ .replace(";feedback.cue('over')",'')
  .replace("$('footerStatus').textContent","document.querySelector('.footer').textContent")
  .replace(/<style id="game-feedback-style">[\s\S]*?<\/style>\n/,'')
  .replace(/\/\/ Haptics only work[^\n]*\nfunction buzz[^\n]*\nlet clearHintActive[^\n]*\nfunction setClearHint[^\n]*\n/,'')
@@ -31,7 +31,6 @@ const normalizeGame = html => withoutFeedback(html)
  .replace('revivesUsed:0,','')
  .replace(/\/\/ Older saves have no reliable revive history[^\n]*\nif\(!Number\.isInteger\(state\.revivesUsed\)[^\n]*\n/,'')
  .replace(/ const over=\$\('over'\),revive=\$\('revive'\);\n const remaining=MAX_REVIVES-state\.revivesUsed;\n revive\.disabled=[^\n]*\n revive\.textContent=[^\n]*\n/," const over=$('over');\n")
- .replace(";void rewardedAds.request('game-over')",'')
  // Approved SFX diagnostic changes: exact audio-only substitutions, not gameplay wildcards.
  .replace(' // Combo audio is triggered once by the line-clear transaction in place().\n','')
  .replace("   // SFX-02: a combo replaces the normal line-clear cue; never stack both.\n   cosmeticTimeout(()=>buzz(state.comboChain>1?'combo':'clear'),38,'clear-feedback');\n",'')

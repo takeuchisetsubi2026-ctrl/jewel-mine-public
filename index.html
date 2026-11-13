@@ -1118,7 +1118,7 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
 #feedbackDialog h2{margin:0 0 8px}
 #feedbackDialog button{margin-top:12px;min-height:36px}
 </style>
-<style>#sfxDiagLabel{position:fixed;z-index:99999;top:3px;left:3px;background:#1c2840;color:#fff;border:2px solid #62e2b6;border-radius:7px;padding:4px 8px;font:700 11px sans-serif;pointer-events:none}</style></head><body><div id="sfxDiagLabel">SFX診断07｜BGMと効果音バランス</div><script id="game-feedback">
+</head><body><script id="game-feedback">
 (()=>{
  const native=window.Capacitor?.Plugins?.JewelMineAds;
  const settingsKey='jewel-mine-feedback-v1';
@@ -1347,8 +1347,8 @@ dialog{max-height:90dvh;overflow:auto;overscroll-behavior:contain;touch-action:p
  const ready=new Promise((resolve,reject)=>window.JewelMineFeedback.afterOpening(()=>Promise.resolve().then(()=>native.initialize()).then(resolve,reject)));
  ready.catch(()=>{});
  window.JewelMineRewardedAdProvider={async show(request){
-  await ready;
   if(request.purpose==='game-over')return native.gameOver({...request,eventId:gameId});
+  await ready;
   return native.showRewarded(request);
  }};
  window.JewelMineAds={newGame};
@@ -1824,7 +1824,7 @@ function finishGame(){
    burst.append(bit);
   }
  }
-$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal();void rewardedAds.request('game-over').finally(()=>feedback.cue('over'))}
+$('final').textContent=total.toLocaleString();$('basefinal').textContent=state.score.toLocaleString();$('bonusfinal').textContent='宝石5個でFEVER';const types=BONUS_TABLE.filter(x=>state.finds[x.id]);$('foundfinal').textContent=types.length?types.map(x=>x.icon+'×'+state.finds[x.id]).join(' '):'今回の宝石なし';render();$('over').showModal();feedback.cue('over')}
 let animationLocked=false;let revealTimers=[];
 // Points are supplied by the scoring transaction; presentation never recalculates rewards.
 let simultaneousAnimation=null,simultaneousGlow=null;
@@ -1991,7 +1991,7 @@ function place(r,c){
  const noMoves=!hasMoves();
  playReveals(found,()=>{if(noMoves)finishGame()});
 }
-function reset(){if(scorePersistenceBlocked){toast('保存データを保持中です。復元確認が必要です');return}window.JewelMineAds?.newGame();stopSimultaneousReward();cosmeticTimers.forEach(clearTimeout);cosmeticTimers.clear();cosmeticKeys.clear();pendingFeverNotice=false;$('burstLayer').replaceChildren();const best=state.best,records=clone(state.scoreRecords);state=fresh(best,records);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
+function reset(){if(scorePersistenceBlocked){toast('保存データを保持中です。復元確認が必要です');return}stopSimultaneousReward();cosmeticTimers.forEach(clearTimeout);cosmeticTimers.clear();cosmeticKeys.clear();pendingFeverNotice=false;$('burstLayer').replaceChildren();const best=state.best,records=clone(state.scoreRecords);state=fresh(best,records);state.best=best;snapScoreTo(state.score);prev=null;selected=-1;revealTimers.forEach(clearTimeout);revealTimers=[];document.querySelector('.gem-bonus-pop')?.remove();$('over').close?.();$('message').textContent='';render()};boardEl.addEventListener('click',e=>{if(drag||suppressTap||animationLocked)return;const el=e.target.closest('.cell');if(!el)return;const i=Number(el.dataset.i);place(Math.floor(i/N),i%N)});
 // Pointer drag v0.2: a real floating block follows ABOVE the finger, showing exact placement.
 function dragCellSize(){const c=boardEl.children[0], n=boardEl.children[1];return {size:c.getBoundingClientRect().width,pitch:n.getBoundingClientRect().left-c.getBoundingClientRect().left};}
 function dragPosition(e,moveFeedback=true){
@@ -2065,7 +2065,17 @@ async function requestRevive(){
  over.close();$('message').textContent='';render();
 }
 $('revive').addEventListener('click',requestRevive);
-$('restart').addEventListener('click',()=>{if(!rewardedAds.busy&&!drag&&!animationLocked&&!scorePersistenceBlocked)$('resetConfirm').showModal()});$('resetNo').addEventListener('click',()=>$('resetConfirm').close());$('resetYes').addEventListener('click',requestBoardReset);$('again').addEventListener('click',()=>{if(!rewardedAds.busy)reset()});render();if(scorePersistenceBlocked)$('footerStatus').textContent='保存データを保持しています（要復元確認）';feedback.afterOpening(()=>{if(!scorePersistenceBlocked&&!canPlay())finishGame()});feedback.startOpening();if(document.hidden)syncVisibility()
+$('restart').addEventListener('click',()=>{if(!rewardedAds.busy&&!drag&&!animationLocked&&!scorePersistenceBlocked)$('resetConfirm').showModal()});$('resetNo').addEventListener('click',()=>$('resetConfirm').close());$('resetYes').addEventListener('click',requestBoardReset);$('over').addEventListener('cancel',event=>event.preventDefault());
+$('again').addEventListener('click',async()=>{
+ const over=$('over');
+ if(!over.open||rewardedAds.busy||scorePersistenceBlocked)return;
+ const ended=state;
+ await rewardedAds.request('game-over');
+ if(over.open&&state===ended&&!scorePersistenceBlocked){
+  reset();
+  window.JewelMineAds?.newGame();
+ }
+});render();if(scorePersistenceBlocked)$('footerStatus').textContent='保存データを保持しています（要復元確認）';feedback.afterOpening(()=>{if(!scorePersistenceBlocked&&!canPlay())finishGame()});feedback.startOpening();if(document.hidden)syncVisibility()
 })();</script>
 <script>
 // Layout-only fitting: never reads or changes scores, pieces or saved data.
